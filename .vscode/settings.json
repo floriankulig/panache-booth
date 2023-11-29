@@ -1,0 +1,6 @@
+{
+  "editor.formatOnSave": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "redhat.telemetry.enabled": false, // Kein Telemetrie-Tracking (Frechheit Microsoft)
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}
