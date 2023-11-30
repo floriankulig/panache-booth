@@ -9,7 +9,7 @@ import { IconsModule } from "../../../icons/icons.module";
   styleUrl: "./profile-menu.component.scss",
 })
 export class ProfileMenuComponent {
-  open = signal(true);
+  open = signal(false);
 
   constructor(private elementRef: ElementRef) {}
 
