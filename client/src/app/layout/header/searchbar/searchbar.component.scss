@@ -1,0 +1,53 @@
+@use "variables.scss" as *;
+
+:host {
+  display: flex;
+  align-items: center;
+  border: 1px solid $textSecondary;
+  border-radius: $grid * 1.5;
+  overflow: hidden;
+  color: $textPrimary;
+  padding: 0 $grid * 2;
+  transition: border-color 0.2s ease-in-out;
+
+  &:focus-within {
+    border-color: $textPrimary;
+  }
+
+  i-feather.search {
+    color: $textSecondary;
+    scale: 0.95;
+    &.active {
+      scale: 1;
+      color: $textPrimary;
+    }
+  }
+
+  input {
+    font-family: "Urbanist", sans-serif;
+    border: none;
+    font-size: 1rem;
+    flex: 1;
+    padding: $grid * 2 $grid * 1.5;
+  }
+
+  .clear {
+    cursor: pointer;
+    margin-left: auto;
+
+    color: $textSecondary;
+    &:hover {
+      color: $textSecondaryDark;
+    }
+    &.hidden {
+      opacity: 0;
+      scale: 0.9;
+    }
+  }
+
+  .clear,
+  .search {
+    transition: 0.2s ease-in-out;
+    transition-property: opacity, scale, color;
+  }
+}

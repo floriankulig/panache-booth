@@ -1,3 +1,5 @@
+@use "variables.scss" as *;
+
 html {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -37,4 +39,9 @@ a {
   text-decoration: none;
   width: min-content;
   color: currentColor;
+}
+
+@font-face {
+  font-family: "Urbanist";
+  src: url("assets/Urbanist-VariableFont_wght.ttf");
 }

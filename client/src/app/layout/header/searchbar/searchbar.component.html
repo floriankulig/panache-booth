@@ -1,0 +1,10 @@
+<i-feather name="search" [class]="{ search, active: !!search() }"></i-feather>
+<input
+  type="text"
+  [value]="search()"
+  (input)="updateQuery($event)"
+  placeholder="Search for an article..."
+/>
+<div [class]="clearButtonClasses()" (click)="clearSearch()">
+  <i-feather name="x"></i-feather>
+</div>
