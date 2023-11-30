@@ -1,12 +1,14 @@
-import express, { Request, Response } from 'express';
+import './util/load-env';
+import express from 'express';
+import path from 'node:path';
+import {apiRouter} from "./api";
 
 const app = express();
-const port = process.env.PORT || 3000;
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, TypeScript Express!');
+app.use('/api', apiRouter);
+
+
+app.listen(process.env.NODE_PORT, () => {
+  console.log(`App listening at http://localhost:${process.env.NODE_PORT}`)
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
