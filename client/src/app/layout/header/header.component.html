@@ -1,5 +1,19 @@
 <nav class="inner">
-  header
   <app-searchbar></app-searchbar>
+  <div class="actions">
+    <div class="orders">
+      <i-feather name="shopping-bag"></i-feather>
+      <div class="indicator"></div>
+    </div>
+    <span class="div"></span>
+    <div class="cart">
+      <i-feather name="shopping-cart"></i-feather>
+      <div [class]="{ count: true, big: productsInCart() > 100 }">
+        {{ productsInCart() > 100 ? "99+" : productsInCart() }}
+      </div>
+    </div>
+    <span class="div"></span>
+    <app-profile-menu></app-profile-menu>
+  </div>
 </nav>
 <div class="divider"></div>

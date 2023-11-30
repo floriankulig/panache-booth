@@ -1,0 +1,90 @@
+@use "variables.scss" as *;
+
+:host {
+  position: relative;
+}
+
+.icon-wrapper {
+  place-items: center;
+  width: 48px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  cursor: pointer;
+  display: grid;
+  background-color: $bgSecondary;
+}
+
+.profile-menu {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  min-width: 200px;
+  max-width: 400px;
+  backdrop-filter: blur($grid * 3);
+  background: linear-gradient(
+    to right bottom,
+    rgba($bgPrimary, 0.8),
+    rgba($bgPrimary, 0.7)
+  );
+  //   background-color: #423c5a80;
+  border: 2px solid rgba($bgSecondary, 0.9);
+  background-blend-mode: overlay;
+  box-shadow: 3px 8px 16px rgba($textPrimary, 0.03);
+  border-radius: $grid * 2;
+  display: flex;
+  z-index: 1;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+
+  .user-info {
+    padding: $grid * 2;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .name {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: rgba($textPrimary, 0.9);
+    }
+
+    .role {
+      margin-top: $grid;
+      color: rgba($textPrimary, 0.7);
+    }
+  }
+
+  .divider {
+    width: calc(100% - $grid * 2.5);
+    height: 1px;
+    background: rgba(121, 121, 121, 0.3);
+    mix-blend-mode: overlay;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: $grid * 1.5 0;
+
+    &-item {
+      height: $grid * 6;
+      display: flex;
+      gap: 2 * $grid;
+      align-items: center;
+      padding: 0 $grid * 2;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        background-color: rgba($primary, 0.2);
+      }
+
+      i-feather {
+        width: 20px;
+        aspect-ratio: 1;
+      }
+    }
+  }
+}

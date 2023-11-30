@@ -1,0 +1,23 @@
+<div class="icon-wrapper" (click)="toggleMenu()">
+  <i-feather name="user"></i-feather>
+</div>
+@if (open()) {
+<div class="profile-menu">
+  <div class="user-info">
+    <span class="name">Florian Kulig</span>
+    <span class="role">Vendor</span>
+  </div>
+  <div class="divider"></div>
+  <ul class="profile-menu__actions">
+    <li class="profile-menu__actions-item">
+      <i-feather name="user-check"></i-feather> Log in
+    </li>
+    <li class="profile-menu__actions-item">
+      <i-feather name="user-plus"></i-feather> Sign up
+    </li>
+    <li class="profile-menu__actions-item">
+      <i-feather name="log-out"></i-feather> Log out
+    </li>
+  </ul>
+</div>
+}
