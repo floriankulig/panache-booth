@@ -1,0 +1,47 @@
+@use "../../../variables.scss" as *;
+
+:host {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: $sidebarWidth;
+  color: $textPrimaryDark;
+  z-index: 999;
+
+  & > * {
+    padding: $grid * 3;
+  }
+
+  .header-logo {
+    height: $headerHeight;
+    background: $bgPrimaryDark;
+
+    .logo {
+      padding-top: $grid * 0.25;
+      position: relative;
+      z-index: 0;
+    }
+
+    span {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .circle {
+      background: rgba($textSecondaryDark, 0.2);
+      border-radius: 50%;
+      aspect-ratio: 1;
+      width: 2.5rem;
+      position: absolute;
+      bottom: -0.65rem;
+      right: $grid * 9;
+      z-index: -1;
+    }
+  }
+
+  .content {
+    background: $bgSecondaryDark;
+    flex: 1;
+  }
+}
