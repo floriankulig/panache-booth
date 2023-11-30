@@ -6,3 +6,9 @@ Web Engineering 2 Online Shop
 
 Lars
 Flo
+
+## Features
+
+### Non-Functional
+
+- Etablierter Code Style Guide für bestmögliche Code-Qualität
