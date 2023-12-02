@@ -1,4 +1,5 @@
 @use "variables.scss" as *;
+@use "mixins.scss" as *;
 
 html {
   -webkit-box-sizing: border-box;
@@ -39,6 +40,10 @@ a {
   text-decoration: none;
   width: min-content;
   color: currentColor;
+}
+
+button {
+  @include button;
 }
 
 @font-face {

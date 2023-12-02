@@ -1,0 +1,192 @@
+<div class="left">
+  <h1>Register ({{ formStep }}/2)</h1>
+  <p>
+    Already have an account?
+    <span routerLink="/login">Log in here</span>
+  </p>
+</div>
+<form [formGroup]="formGroup" (submit)="confirm($event)" class="right">
+  <div class="form-controls">
+    @if (formStep === 1) {
+    <div class="input">
+      <div>
+        <span>Username</span>
+        @if (formGroup.get("username")?.errors &&
+        formGroup.get("username")?.touched) {
+        <span class="input-error"
+          >@if (formGroup.get("username")?.errors?.["required"]) {Required}@else
+          {Must be within 4-32 characters}</span
+        >
+        }
+      </div>
+      <input
+        required
+        minlength="4"
+        maxlength="32"
+        pattern="[a-zA-Z0-9]*"
+        type="text"
+        placeholder="username123"
+        formControlName="username"
+      />
+    </div>
+    <div class="input">
+      <div>
+        <span>Email</span>
+        @if (formGroup.get("email")?.errors && formGroup.get("email")?.touched)
+        {
+        <span class="input-error"
+          >@if (formGroup.get("email")?.errors?.["required"]) {Required} @else
+          {Invalid format}</span
+        >
+        }
+      </div>
+      <input
+        required
+        type="email"
+        formControlName="email"
+        placeholder="example@company.com"
+      />
+    </div>
+    <div class="input">
+      <div>
+        <span>Password</span>
+        @if (formGroup.get("password")?.errors &&
+        formGroup.get("password")?.touched) {
+        <span class="input-error"
+          >@if (formGroup.get("password")?.errors?.["required"]) {Required}
+          @else if (formGroup.get("password")?.errors?.["minlength"] ||
+          formGroup.get("password")?.errors?.["maxlength"] ) {Must be within
+          6-24 characters} @else {Must contain 1 capital letter}</span
+        >
+        }
+      </div>
+      <input
+        required
+        minlength="6"
+        maxlength="24"
+        type="password"
+        pattern="[a-zA-Z0-9\@\,\.\!\?\-]*[A-Z][a-zA-Z0-9\@\,\.\!\?\-]*"
+        title="Das Passwort muss 6 bis 12 Zeichen lang sein und mindestens einen Großbuchstaben enthalten."
+        formControlName="password"
+        placeholder="6-12 Characters, at least one capital letter"
+      />
+    </div>
+    <div class="input">
+      <div>
+        <span>Confirm Password</span>
+        @if (formGroup.get("confirmPassword")?.errors &&
+        formGroup.get("confirmPassword")?.touched) {
+        <span class="input-error"
+          >@if (formGroup.get("confirmPassword")?.errors?.["required"])
+          {Required} @else if
+          (formGroup.get("confirmPassword")?.errors?.["minlength"] ||
+          formGroup.get("confirmPassword")?.errors?.["maxlength"]) {Must be
+          within 6-24 characters} @else if
+          (formGroup.get("confirmPassword")?.errors?.["passwordMismatch"] )
+          {Must match password} @else {Must contain 1 capital letter}</span
+        >
+        }
+      </div>
+      <input
+        formControlName="confirmPassword"
+        minlength="6"
+        maxlength="24"
+        required
+        type="password"
+        pattern="[a-zA-Z0-9\@\,\.\!\?\-]*[A-Z][a-zA-Z0-9\@\,\.\!\?\-]*"
+        title="Das Passwort muss 6 bis 12 Zeichen lang sein und mindestens einen Großbuchstaben enthalten."
+        placeholder="Confirm Password"
+      />
+    </div>
+    } @else if (formStep === 2) {
+    <h2>Where should your packages be delivered?</h2>
+    <div style="display: flex; gap: 16px; width: 100%">
+      <div class="input">
+        <div>
+          <span>Street</span>
+          @if ((formGroup.get("street")?.errors &&
+          formGroup.get("street")?.touched) ||
+          (formGroup.get("houseNumber")?.errors &&
+          formGroup.get("houseNumber")?.touched)) {
+          <span class="input-error"
+            >@if (formGroup.get("street")?.errors?.["required"]||
+            formGroup.get("houseNumber")?.errors?.["required"]) {Required} @else
+            {Invalid Housenumber}</span
+          >
+          }
+        </div>
+        <input
+          type="text"
+          required
+          formControlName="street"
+          placeholder="e.g. Daimlerstraße"
+        />
+      </div>
+      <div class="input" style="width: 30%">
+        <div>
+          <span>Housenumber</span>
+        </div>
+        <input
+          type="number"
+          required
+          positiveNumber
+          min="1"
+          formControlName="houseNumber"
+          max="999"
+          [maxLength]="3"
+          minlength="1"
+          placeholder="###"
+        />
+      </div>
+    </div>
+    <div style="display: flex; gap: 16px; width: 100%">
+      <div class="input" style="width: 30%">
+        <div>
+          <span>Postcode</span>
+        </div>
+        <input
+          type="number"
+          required
+          placeholder="#####"
+          positiveNumber
+          formControlName="postcode"
+          min="10000"
+          max="99999"
+          [maxLength]="5"
+          minlength="5"
+        />
+      </div>
+      <div class="input">
+        <div>
+          <span>City</span>
+          @if ((formGroup.get("city")?.errors && formGroup.get("city")?.touched)
+          || (formGroup.get("postcode")?.errors &&
+          formGroup.get("postcode")?.touched)) {
+          <span class="input-error"
+            >@if (formGroup.get("city")?.errors?.["required"]||
+            formGroup.get("postcode")?.errors?.["required"]) {Required} @else
+            {Postcode must be 5 digits}</span
+          >
+          }
+        </div>
+        <input
+          type="text"
+          required
+          placeholder="e.g. Stuttgart"
+          formControlName="city"
+        />
+      </div>
+    </div>
+    }
+  </div>
+  <div [class]="{ error: true, hidden: !errorMessage }">
+    <i-feather name="alert-circle"></i-feather>
+    <p>Error: {{ errorMessage }}</p>
+  </div>
+  <div class="form-actions">
+    <button class="secondary" type="button" (click)="back()">
+      @if (formStep === 1) {Cancel} @else {Back}
+    </button>
+    <button type="submit">{{ primaryText }}</button>
+  </div>
+</form>

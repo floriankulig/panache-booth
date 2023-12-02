@@ -1,0 +1,192 @@
+@use "variables.scss" as *;
+
+@mixin auth {
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  min-height: 650px;
+  overflow: hidden;
+  box-shadow: 4 8 30px rgba(#000, 0.2);
+  border-radius: $grid * 2;
+  box-sizing: border-box;
+  width: clamp(200px, 95%, 1200px);
+
+  .left,
+  .right {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 50%;
+    padding: $grid * 10 $grid * 6;
+    backdrop-filter: blur(4px);
+  }
+
+  .left {
+    width: 35%;
+    justify-content: space-between;
+    max-width: 500px;
+    background: rgba($bgSecondary, 0.65);
+
+    h1 {
+      font-size: clamp(1.75rem, 10vw, 2.5rem);
+      font-weight: 700;
+      color: $textPrimary;
+    }
+
+    p {
+      margin-top: $grid * 2;
+      span {
+        display: inline-block;
+        margin-top: $grid;
+        line-break: none;
+        color: #4717e1;
+        cursor: pointer;
+        transition: 0.15s linear;
+        text-decoration: underline;
+      }
+    }
+  }
+  .right {
+    flex: 1;
+    backdrop-filter: blur(8px);
+    padding: $grid * 10 $grid * 8;
+    background: rgba($bgSecondary, 0.75);
+    justify-content: space-between;
+
+    .input {
+      margin-bottom: $grid * 4;
+      width: 100%;
+      & > div {
+        display: flex;
+        gap: $grid;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 0 $grid $grid * 2;
+
+        span {
+          display: block;
+          color: rgba($textPrimary, 0.75);
+          font-size: 0.875rem;
+          font-weight: 600;
+
+          &:nth-child(2) {
+            font-weight: 400;
+            color: rgba($warning, 0.9);
+          }
+        }
+      }
+
+      input {
+        width: 100%;
+        background: rgba($bgPrimary, 0.5);
+        border: none;
+        border-radius: $grid;
+        padding: $grid * 2;
+        color: $textPrimary;
+        font-size: 1rem;
+        font-weight: 500;
+      }
+    }
+
+    .form-controls {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: center;
+
+      h2 {
+        margin-bottom: $grid * 4;
+      }
+    }
+
+    .error {
+      display: flex;
+      gap: $grid;
+      border-radius: $grid;
+      padding: $grid * 1.5;
+      color: $warning;
+      background: rgba($warning, 0.1);
+      max-height: $grid * 14;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: 0.3s ease-in-out;
+      transition-property: scale, opacity;
+
+      i-feather {
+        flex-shrink: 0;
+      }
+      p {
+        line-height: $grid * 3;
+      }
+
+      &.hidden {
+        opacity: 0;
+        scale: 0.5;
+      }
+    }
+
+    .form-actions {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: $grid * 4;
+
+      @media screen and (max-width: 500px) {
+        flex-direction: column-reverse;
+        gap: $grid * 2;
+
+        button {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+
+    .left,
+    .right {
+      width: 100%;
+      padding: $grid * 6 $grid * 4;
+      flex: 1;
+    }
+    .left {
+      max-width: 100%;
+      padding: $grid * 6 $grid * 4 $grid * 4;
+      flex: 0;
+      height: auto;
+    }
+  }
+}
+
+@mixin button {
+  cursor: pointer;
+  font-family: "Urbanist", sans-serif;
+  font-weight: 600;
+  padding: $grid * 1.75 $grid * 4;
+  font-size: 1rem;
+  border: none;
+  background: darken($primary, 0);
+  color: $textPrimaryDark;
+  border-radius: $grid;
+  transition: 0.15s linear;
+  transition-property: background, scale;
+
+  &:hover {
+    background-color: darken($primary, 5);
+  }
+
+  &:active {
+    scale: 0.95;
+  }
+
+  &.secondary {
+    background: $bgSecondary;
+    color: $textPrimary;
+    &:hover {
+      background-color: darken($bgSecondary, 5);
+    }
+  }
+}

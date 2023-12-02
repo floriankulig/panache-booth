@@ -1,0 +1,55 @@
+@use "variables.scss" as *;
+
+:host {
+  min-height: 100dvh;
+  width: 100dvw;
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  padding: 5% 0;
+  background: linear-gradient(
+    to top left,
+    rgba(#6e45e2, 0.2),
+    rgba(#88d3ce, 0.3)
+  );
+
+  .bg {
+    position: fixed;
+    aspect-ratio: 1;
+    z-index: -1;
+    width: 60%;
+    object-fit: contain;
+    animation: pulsate 30s ease-in-out infinite alternate both;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
+    @media screen and (max-width: 420px) {
+      width: 120%;
+    }
+  }
+
+  router-outlet {
+    display: none;
+  }
+}
+
+@keyframes pulsate {
+  0% {
+    scale: 0.9;
+    rotate: -8deg;
+  }
+  50% {
+    transform: translate(40px, 60px);
+  }
+  75% {
+    transform: translate(-40px, 20px);
+  }
+  100% {
+    scale: 1;
+    rotate: 8deg;
+  }
+}
