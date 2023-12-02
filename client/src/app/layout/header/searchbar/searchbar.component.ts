@@ -33,6 +33,7 @@ export class SearchbarComponent {
       relativeTo: this.activatedRoute,
       queryParams,
       queryParamsHandling: "merge",
+      replaceUrl: true,
     });
   }
 
@@ -43,6 +44,7 @@ export class SearchbarComponent {
       relativeTo: this.activatedRoute,
       queryParams: { q: undefined },
       queryParamsHandling: "merge",
+      replaceUrl: true,
     });
   }
 }

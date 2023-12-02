@@ -9,6 +9,7 @@ import {
   User,
   UserCheck,
   UserPlus,
+  AlertCircle,
   LogOut,
 } from "angular-feather/icons";
 
@@ -22,6 +23,7 @@ const icons = {
   LogOut,
   UserCheck,
   UserPlus,
+  AlertCircle,
 };
 
 @NgModule({

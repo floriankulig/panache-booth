@@ -1,10 +1,11 @@
 import { signal, Component, ElementRef } from "@angular/core";
 import { IconsModule } from "../../../icons/icons.module";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-profile-menu",
   standalone: true,
-  imports: [IconsModule],
+  imports: [IconsModule, RouterLink],
   templateUrl: "./profile-menu.component.html",
   styleUrl: "./profile-menu.component.scss",
 })
