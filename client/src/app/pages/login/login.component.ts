@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Location } from "@angular/common";
 import { AxiosError } from "axios";
 import { IconsModule } from "../../icons/icons.module";
@@ -19,7 +19,7 @@ import { AuthService } from "../../services/auth.service";
   templateUrl: "./login.component.html",
   styleUrl: "./login.component.scss",
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   submitting = false;
   errorMessage = "";
   formGroup: FormGroup;
@@ -36,6 +36,13 @@ export class LoginComponent {
       password: ["", Validators.required],
     });
   }
+
+  ngOnInit() {
+    if (!!this.authService.isLoggedIn()) {
+      this.router.navigate(["/"]);
+    }
+  }
+
   goBack() {
     if (
       window.history.length > 1 ||

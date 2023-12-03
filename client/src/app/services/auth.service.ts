@@ -17,7 +17,9 @@ export interface RegisterUser
 export class AuthService {
   user: WritableSignal<User | null> = signal(null);
 
-  constructor() {}
+  constructor() {
+    this.getUserFromLocalStorage();
+  }
 
   async login(email: string, password: string): Promise<User> | never {
     try {
@@ -49,6 +51,25 @@ export class AuthService {
     } catch (error) {
       throw error as AxiosError;
     }
+  }
+
+  async getUserFromLocalStorage(): Promise<User | null> {
+    const uid = JSON.parse(localStorage.getItem("uid") || "");
+    if (!uid) {
+      return null;
+    }
+    try {
+      const res = await axios.get(`${API_URL}/user/${uid}`);
+      const user = res.data;
+      this.user.set(user);
+      return user;
+    } catch (error) {
+      throw error as AxiosError;
+    }
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem("uid");
   }
 
   logout(): void {
