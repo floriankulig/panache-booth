@@ -1,11 +1,13 @@
 <app-sidebar
   [class]="{ open: sidebarOpen() }"
   (close)="closeSidebar()"
-  outsideClick="closeSidebar()"
 ></app-sidebar>
-<main [class]="{ sidebarOpen: sidebarOpen() }">
+<main>
   <app-header (openSidebar)="sidebarOpen.set(true)"></app-header>
   <div class="content">
     <router-outlet></router-outlet>
   </div>
 </main>
+@if (sidebarOpen()) {
+<div class="blur-bg" (click)="sidebarOpen.set(false)"></div>
+}
