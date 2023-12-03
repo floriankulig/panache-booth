@@ -8,7 +8,7 @@ import {
   userById,
 } from "../services/user";
 import { IUser } from "../models/IUser";
-import { getUserById } from "../models/user";
+import { deleteUserById, getUserById } from "../models/user";
 
 const router = express.Router();
 
@@ -88,7 +88,8 @@ router.delete("/:userId", async (req, res) => {
   const userId = req.params.userId;
   try {
     if (getUserById(userId) !== undefined) {
-      res.status(200).json(await deleteUser(userId));
+      const user = await  deleteUser(userId);
+      res.status(200).send(200);
     } else {
       res.status(400).send("User not existing");
     }
