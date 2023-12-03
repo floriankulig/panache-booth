@@ -114,11 +114,14 @@ export class RegisterComponent {
     const { username, email, password } = this.steps[0].value as {
       [key: string]: string;
     };
-    const address = this.steps[1].value as Address;
+    const { postcode, houseNumber, ...address } = this.steps[1]
+      .value as Address;
     const user: RegisterUser = {
       userName: username,
       email,
       password,
+      houseNumber: houseNumber.toString(),
+      postcode: postcode.toString(),
       ...address,
       isVendor: this.formType === "vendor",
     };
