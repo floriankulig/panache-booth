@@ -4,9 +4,14 @@ import { IUser } from "./IUser";
 export function getUserById(id: string) {
   try {
     let user = database.prepare("select * from user where userid = ?").get(id);
-    // @ts-ignore
-    user["isVendor"] = user["isVendor"] !== 0;
-    return user;
+    if (user != undefined) {
+      // @ts-ignore
+      user["isVendor"] = user["isVendor"] !== 0;
+      return user;
+    }
+    else {
+      return undefined
+    }
   } catch (e: unknown) {
     return e;
   }
@@ -19,7 +24,6 @@ export function getAllUsers() {
     // @ts-ignore
     key["isVendor"] = key["isVendor"] !== 0;
   });
-  console.log(user);
   return user;
 }
 
@@ -90,7 +94,6 @@ export function loggedInUser(email: string, password: string){
     return database.prepare(`select userId from user where (email = '${email}') and (password = '${password}');`).get()
   }
   catch (e: unknown) {
-    console.log(e)
     return e;
   }
 

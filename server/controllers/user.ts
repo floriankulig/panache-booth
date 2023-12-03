@@ -67,7 +67,6 @@ router.post("/addUser", async (req, res) => {
       shippingCost: req.body.shippingCost,
       shippingFreeFrom: req.body.shippingFreeFrom,
     };
-    console.log(user);
     res.status(200).json(await addUser(user));
   } catch (e: unknown) {
     res.status(404).send("Error: Something went wrong!");
@@ -77,18 +76,25 @@ router.post("/addUser", async (req, res) => {
 router.put("/updateUserById/:userId([0-9]+)", async (req, res) => {
   try {
     const userId = req.params.userId;
-    const userMap = new Map<string, string>();
-    for (let key in req.body) {
-      if (req.body.hasOwnProperty(key)) {
-        if (key === "isVendor") {
-          let temp = req.body[key];
-          userMap.set(key, temp.toString());
-        } else {
-          userMap.set(key, req.body[key]);
+    const user = await userById(userId);
+    if (user != undefined) {
+      const userMap = new Map<string, string>();
+      for (let key in req.body) {
+        if (req.body.hasOwnProperty(key)) {
+          if (key === "isVendor") {
+            let temp = req.body[key];
+            userMap.set(key, temp.toString());
+          } else {
+            userMap.set(key, req.body[key]);
+          }
         }
       }
+      res.status(200).json(await updateUser(userMap, userId));
     }
-    res.status(200).json(await updateUser(userMap, userId));
+    else {
+      res.status(400).send("User not existing!")
+    }
+
   } catch (e: unknown) {
     res.status(404).send("Error: Something went wrong!");
   }
