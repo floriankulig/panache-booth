@@ -7,14 +7,14 @@ export interface IUser {
   password: string;
   street: string;
   houseNumber: string;
-  postalCode: string;
+  postcode: string;
   isVendor: boolean;
   //address: IPostalCode;
   city: string;
   iban?: string;
   bic?: string;
   shippingCost?: number;
-  shippingFreeForm?: number;
+  shippingFreeFrom?: number;
   createdAt?: string;
   updatedAt?: string;
 }

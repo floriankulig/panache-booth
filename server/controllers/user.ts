@@ -1,5 +1,11 @@
 import express from "express";
-import { addUser, allUsers, deleteUser, updateUser, userById } from "../services/user";
+import {
+  addUser,
+  allUsers,
+  deleteUser,
+  updateUser,
+  userById,
+} from "../services/user";
 import { IUser } from "../models/IUser";
 import { getUserById } from "../models/user";
 
@@ -13,7 +19,7 @@ router.get("/getUserById/:userId([0-9]+)", async (req, res) => {
     } else {
       res.status(400).send("User not existing");
     }
-  } catch (e: unknown){
+  } catch (e: unknown) {
     res.status(404).send("Error: Something went wrong!");
   }
 });
@@ -21,8 +27,7 @@ router.get("/getUserById/:userId([0-9]+)", async (req, res) => {
 router.get("/allUsers", async (req, res) => {
   try {
     res.status(200).json(await allUsers());
-  }
-  catch (e: unknown){
+  } catch (e: unknown) {
     res.status(404).send("Error: Something went wrong!");
   }
 });
@@ -34,19 +39,18 @@ router.post("/addUser", async (req, res) => {
       email: req.body.email,
       street: req.body.street,
       houseNumber: req.body.houseNumber,
-      postalCode: req.body.postalCode,
+      postcode: req.body.postcode,
       city: req.body.city,
       password: req.body.password,
       isVendor: req.body.isVendor,
       bic: req.body.bic,
       iban: req.body.iban,
       shippingCost: req.body.shippingCost,
-      shippingFreeForm: req.body.shippingFreeForm
-    }
+      shippingFreeFrom: req.body.shippingFreeFrom,
+    };
     console.log(user);
     res.status(200).json(await addUser(user));
-  }
-  catch (e: unknown){
+  } catch (e: unknown) {
     res.status(404).send("Error: Something went wrong!");
   }
 });
@@ -54,21 +58,19 @@ router.post("/addUser", async (req, res) => {
 router.put("/updateUserById/:userId([0-9]+)", async (req, res) => {
   try {
     const userId = req.params.userId;
-    const userMap = new Map<string, string>;
+    const userMap = new Map<string, string>();
     for (let key in req.body) {
       if (req.body.hasOwnProperty(key)) {
-        if (key === "isVendor"){
-          let temp = req.body[key]
+        if (key === "isVendor") {
+          let temp = req.body[key];
           userMap.set(key, temp.toString());
-        }
-        else {
+        } else {
           userMap.set(key, req.body[key]);
         }
       }
     }
     res.status(200).json(await updateUser(userMap, userId));
-  }
-  catch (e: unknown){
+  } catch (e: unknown) {
     res.status(404).send("Error: Something went wrong!");
   }
 });
@@ -81,9 +83,9 @@ router.delete("/deleteUserById/:userId([0-9]+)", async (req, res) => {
     } else {
       res.status(400).send("User not existing");
     }
-  } catch (e: unknown){
+  } catch (e: unknown) {
     res.status(404).send("Error: Something went wrong. User was not deleted!");
   }
 });
 
-export { router as userController }
+export { router as userController };
