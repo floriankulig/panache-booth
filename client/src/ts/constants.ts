@@ -30,3 +30,5 @@ export const CATEGORIES = [
   { displayValue: "Shoes", id: "shoes" },
   { displayValue: "Watches", id: "watches" },
 ] as const;
+
+export const API_URL = "http://localhost:3000/api" as const;

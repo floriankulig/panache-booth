@@ -1,5 +1,6 @@
 import { Location } from "@angular/common";
-import { Component, Output } from "@angular/core";
+import { AxiosError } from "axios";
+import { Input, Component, Output } from "@angular/core";
 import { IconsModule } from "../../icons/icons.module";
 import {
   FormsModule,
@@ -10,9 +11,9 @@ import {
   AbstractControlOptions,
 } from "@angular/forms";
 import { PositiveNumberDirective } from "../../directives/positive-number.directive";
-import { RouterModule } from "@angular/router";
+import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { Address } from "../../../ts";
-import { AuthService } from "../../services/auth.service";
+import { AuthService, RegisterUser } from "../../services/auth.service";
 
 @Component({
   selector: "app-register",
@@ -28,6 +29,7 @@ import { AuthService } from "../../services/auth.service";
   styleUrl: "./register.component.scss",
 })
 export class RegisterComponent {
+  @Input() formType: "vendor" | "customer" = "customer";
   submitting = false;
   errorMessage = "";
   formStep = 1;
@@ -55,6 +57,8 @@ export class RegisterComponent {
 
   constructor(
     private location: Location,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     private formBuilder: FormBuilder,
     private authService: AuthService,
   ) {
@@ -74,7 +78,18 @@ export class RegisterComponent {
       this.formStep--;
       this.formGroup = this.steps[this.formStep - 1];
     } else {
+      this.locationBack();
+    }
+  }
+
+  locationBack() {
+    if (
+      window.history.length > 1 ||
+      this.activatedRoute.snapshot.queryParams["redirect"]
+    ) {
       this.location.back();
+    } else {
+      this.router.navigate(["/"]);
     }
   }
 
@@ -82,7 +97,6 @@ export class RegisterComponent {
     event?.preventDefault();
     this.errorMessage = "";
     this.submitting = false;
-    console.log(this.formGroup.controls);
     this.formGroup.markAllAsTouched();
     if (!this.formGroup.valid) {
       return;
@@ -101,8 +115,21 @@ export class RegisterComponent {
       [key: string]: string;
     };
     const address = this.steps[1].value as Address;
-    const user = { username, email, password, address };
-    console.log(user);
+    const user: RegisterUser = {
+      userName: username,
+      email,
+      password,
+      ...address,
+      isVendor: this.formType === "vendor",
+    };
+    try {
+      await this.authService.register(user);
+      this.locationBack();
+    } catch (e) {
+      this.errorMessage = (e as AxiosError).response?.data as string;
+    } finally {
+      this.submitting = false;
+    }
   }
 
   customValidators(formGroup: FormGroup) {

@@ -1,7 +1,8 @@
 import { Component } from "@angular/core";
 import { Location } from "@angular/common";
+import { AxiosError } from "axios";
 import { IconsModule } from "../../icons/icons.module";
-import { RouterModule } from "@angular/router";
+import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import {
   FormBuilder,
   FormGroup,
@@ -25,21 +26,41 @@ export class LoginComponent {
 
   constructor(
     private location: Location,
+    private router: Router,
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private activatedRoute: ActivatedRoute,
   ) {
     this.formGroup = this.formBuilder.group({
       email: ["", Validators.required],
       password: ["", Validators.required],
     });
   }
-  cancel() {
-    this.location.back();
+  goBack() {
+    if (
+      window.history.length > 1 ||
+      this.activatedRoute.snapshot.queryParams["redirect"]
+    ) {
+      this.location.back();
+    } else {
+      this.router.navigate(["/"]);
+    }
   }
 
-  login(e: SubmitEvent) {
+  async login(e: SubmitEvent) {
     e.preventDefault();
     if (this.submitting || !this.formGroup.valid) return;
     console.log(this.formGroup.value);
+
+    this.submitting = true;
+    const { email, password } = this.formGroup.value;
+    try {
+      await this.authService.login(email, password);
+      this.goBack();
+    } catch (e) {
+      this.errorMessage = (e as AxiosError).response?.data as string;
+    } finally {
+      this.submitting = false;
+    }
   }
 }
