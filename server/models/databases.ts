@@ -4,7 +4,7 @@ export const database = new Database("./database/webEngineering.db");
 
 const createUserTable =
   "create table if not exists user (" +
-  "userId integer not null primary key autoincrement, " +
+  "userId varchar(36) not null primary key, " +
   "userName varchar(32) not null, " +
   "email varchar(255) not null, " +
   "password varchar(12) not null, " +

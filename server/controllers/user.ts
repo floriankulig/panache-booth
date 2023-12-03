@@ -12,20 +12,7 @@ import { getUserById } from "../models/user";
 
 const router = express.Router();
 
-router.get("/getUserById/:userId([0-9]+)", async (req, res) => {
-  const userId = req.params.userId;
-  try {
-    if (getUserById(userId) !== undefined) {
-      res.status(200).json(await userById(userId));
-    } else {
-      res.status(400).send("User does not exist");
-    }
-  } catch (e: unknown) {
-    res.status(404).send("Error: Something went wrong!");
-  }
-});
-
-router.get("/allUsers", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     res.status(200).json(await allUsers());
   } catch (e: unknown) {
@@ -33,7 +20,7 @@ router.get("/allUsers", async (req, res) => {
   }
 });
 
-router.get("/login", async (req, res) => {
+router.get('/login', async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
@@ -49,7 +36,7 @@ router.get("/login", async (req, res) => {
   }
 });
 
-router.post("/addUser", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const user: IUser = {
       userName: req.body.userName,
@@ -71,7 +58,7 @@ router.post("/addUser", async (req, res) => {
   }
 });
 
-router.put("/updateUserById/:userId([0-9]+)", async (req, res) => {
+router.put("/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
     const user = await userById(userId);
@@ -96,7 +83,7 @@ router.put("/updateUserById/:userId([0-9]+)", async (req, res) => {
   }
 });
 
-router.delete("/deleteUserById/:userId([0-9]+)", async (req, res) => {
+router.delete("/:userId", async (req, res) => {
   const userId = req.params.userId;
   try {
     if (getUserById(userId) !== undefined) {
@@ -106,6 +93,19 @@ router.delete("/deleteUserById/:userId([0-9]+)", async (req, res) => {
     }
   } catch (e: unknown) {
     res.status(404).send("Error: Something went wrong. User was not deleted!");
+  }
+});
+
+router.get("/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    if (getUserById(userId) !== undefined) {
+      res.status(200).json(await userById(userId));
+    } else {
+      res.status(400).send("User does not exist");
+    }
+  } catch (e: unknown) {
+    res.status(404).send("Error: Something went wrong!");
   }
 });
 

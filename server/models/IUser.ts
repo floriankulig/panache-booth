@@ -1,7 +1,7 @@
 import { IPostalCode } from "./IPostalCode";
 
 export interface IUser {
-  userId?: number;
+  userId?: string;
   userName: string;
   email: string;
   password: string;

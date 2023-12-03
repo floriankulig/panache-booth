@@ -1,5 +1,6 @@
 import { database } from "./databases";
 import { IUser } from "./IUser";
+import { v4 as uuidv4 } from "uuid";
 
 export function getUserById(id: string) {
   try {
@@ -31,9 +32,11 @@ export function getAllUsers() {
 }
 
 export function createUser(user: IUser) {
+  user.userId = uuidv4();
   const currentTimestamp = new Date().toISOString();
   user.createdAt = currentTimestamp;
   user.updatedAt = currentTimestamp;
+
   let isVendorNumeric = null;
   if (user.isVendor) {
     isVendorNumeric = 1;
@@ -43,13 +46,14 @@ export function createUser(user: IUser) {
 
   const stmt = database.prepare(
     "insert into user " +
-      "(userName, email, password, isVendor, postcode, city, street, houseNumber, " +
+      "(userId, userName, email, password, isVendor, postcode, city, street, houseNumber, " +
       "iban, bic, shippingCost, shippingFreeFrom, " +
       "createdAt, updatedAt) " +
       "values " +
-      "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
   );
   const info = stmt.run(
+    user.userId,
     user.userName,
     user.email,
     user.password,
