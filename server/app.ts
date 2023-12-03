@@ -7,6 +7,10 @@ const app = express();
 
 app.use('/api', apiRouter);
 
+app.use(express.static("../client/src"));
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, "../client/src/index.html"))
+});
 
 app.listen(process.env.NODE_PORT, () => {
   console.log(`App listening at http://localhost:${process.env.NODE_PORT}`)
