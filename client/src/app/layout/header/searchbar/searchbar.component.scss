@@ -8,6 +8,7 @@
   overflow: hidden;
   color: $textPrimary;
   padding: 0 $grid * 2;
+  flex-shrink: 1;
   transition: border-color 0.4s ease-in-out;
 
   &:focus-within {

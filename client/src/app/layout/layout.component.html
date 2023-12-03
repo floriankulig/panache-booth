@@ -1,6 +1,10 @@
-<app-sidebar></app-sidebar>
-<main>
-  <app-header></app-header>
+<app-sidebar
+  [class]="{ open: sidebarOpen() }"
+  (close)="closeSidebar()"
+  outsideClick="closeSidebar()"
+></app-sidebar>
+<main [class]="{ sidebarOpen: sidebarOpen() }">
+  <app-header (openSidebar)="sidebarOpen.set(true)"></app-header>
   <div class="content">
     <router-outlet></router-outlet>
   </div>

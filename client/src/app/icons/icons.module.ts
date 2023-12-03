@@ -10,6 +10,7 @@ import {
   UserCheck,
   UserPlus,
   AlertCircle,
+  Menu,
   LogOut,
 } from "angular-feather/icons";
 
@@ -23,6 +24,7 @@ const icons = {
   LogOut,
   UserCheck,
   UserPlus,
+  Menu,
   AlertCircle,
 };
 
