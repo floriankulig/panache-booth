@@ -21,8 +21,8 @@ interface User {
   id: string;
   userName: string;
   email: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   isVendor: boolean;
   iban?: string;
   bic?: string;

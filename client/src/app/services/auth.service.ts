@@ -1,4 +1,4 @@
-import { WritableSignal, Injectable, signal } from "@angular/core";
+import { WritableSignal, Injectable, signal, effect } from "@angular/core";
 import axios, { AxiosError } from "axios";
 import { API_URL, User } from "../../ts";
 
@@ -16,6 +16,7 @@ export interface RegisterUser
 })
 export class AuthService {
   user: WritableSignal<User | null> = signal(null);
+
   constructor() {}
 
   async login(email: string, password: string): Promise<User> | never {
@@ -25,8 +26,9 @@ export class AuthService {
         password,
       });
       const user = res.data;
-      this.user.set(user);
       console.log(user);
+      this.user.set(user);
+      this.saveUidToLocalStorage(user.id);
       return user;
     } catch (error) {
       throw error as AxiosError;
@@ -41,9 +43,20 @@ export class AuthService {
       });
       const user = res.data;
       console.log(user);
+      this.user.set(user);
+      this.saveUidToLocalStorage(user.id);
       return user;
     } catch (error) {
       throw error as AxiosError;
     }
+  }
+
+  logout(): void {
+    this.user.set(null);
+    localStorage.removeItem("uid");
+  }
+
+  private saveUidToLocalStorage(uid: string): void {
+    localStorage.setItem("uid", JSON.stringify(uid));
   }
 }
