@@ -1,6 +1,8 @@
 # Panache Booth
 
-Web Engineering 2 Online Shop
+Web Engineering 2 Online Shop.
+
+[GitHub](https://github.com/floriankulig/panache-booth)
 
 ## Authoren
 
