@@ -1,6 +1,7 @@
 import { database } from "./databases";
 import { IUser } from "./IUser";
 import { v4 as uuidv4 } from "uuid";
+import { userById } from "../services/user";
 
 export function getUserById(id: string) {
   try {
@@ -69,11 +70,12 @@ export function createUser(user: IUser) {
     user.createdAt,
     user.updatedAt,
   );
-  return info;
+  return getUserById(user.userId);
 }
 
 export function updateUserById(userChanges: Map<string, string>, id: string) {
   let sqlString = "update user set";
+
   userChanges.forEach((value: string, key: string) => {
     if (key === "isVendor") {
       if (value === "true") {
@@ -85,11 +87,11 @@ export function updateUserById(userChanges: Map<string, string>, id: string) {
       sqlString += ` ${key} = \'${value}\',`;
     }
   });
-  //sqlString = sqlString.substring(0, sqlString.length - 1);
+
   const currentTimestamp = new Date().toISOString();
-  sqlString += `updatedAt = '${currentTimestamp}' where userId = ${id};`;
-  //sqlString += ` where userId = ${id};`;
-  return database.prepare(sqlString).run();
+  sqlString += `updatedAt = '${currentTimestamp}' where userId = '${id}';`;
+  database.prepare(sqlString).run();
+  return getUserById(id)
 }
 
 export function deleteUserById(id: string) {
