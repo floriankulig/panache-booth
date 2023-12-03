@@ -3,7 +3,8 @@ import { IUser } from "./IUser";
 
 export function getUserById(id: string) {
   try {
-    let user = database.prepare("select * from user where userid = ?").get(id);
+    let user = database.prepare("select userId, userName, email, street, houseNumber, postcode, isVendor, city, " +
+      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where userid = ?").get(id);
     if (user != undefined) {
       // @ts-ignore
       user["isVendor"] = user["isVendor"] !== 0;
@@ -13,12 +14,14 @@ export function getUserById(id: string) {
       return undefined
     }
   } catch (e: unknown) {
+    console.log(e)
     return e;
   }
 }
 
 export function getAllUsers() {
-  let user = database.prepare("select * from user").all();
+  let user = database.prepare("select userId, userName, email, street, houseNumber, postcode, isVendor, city, " +
+    "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user").all();
 
   user.forEach((key) => {
     // @ts-ignore
