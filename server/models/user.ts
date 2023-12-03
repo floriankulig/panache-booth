@@ -116,7 +116,6 @@ export function loggedInUser(email: string, password: string){
     else {
       return undefined
     }
-    return user;
   }
   catch (e: unknown) {
     console.log(e)
