@@ -18,7 +18,7 @@ router.get("/getUserById/:userId([0-9]+)", async (req, res) => {
     if (getUserById(userId) !== undefined) {
       res.status(200).json(await userById(userId));
     } else {
-      res.status(400).send("User not existing");
+      res.status(400).send("User does not exist");
     }
   } catch (e: unknown) {
     res.status(404).send("Error: Something went wrong!");
@@ -38,14 +38,12 @@ router.get("/login", async (req, res) => {
   const password = req.body.password;
 
   try {
-    const user = await loginUser(email, password)
+    const user = await loginUser(email, password);
     if (user === undefined) {
-      res.status(404).send("Email or password incorrect!")
-    }
-    else {
+      res.status(404).send("Email or password incorrect!");
+    } else {
       res.status(200).json(user);
     }
-
   } catch (e: unknown) {
     res.status(404).send("Error: Something went wrong!");
   }
@@ -90,11 +88,9 @@ router.put("/updateUserById/:userId([0-9]+)", async (req, res) => {
         }
       }
       res.status(200).json(await updateUser(userMap, userId));
+    } else {
+      res.status(400).send("User not existing!");
     }
-    else {
-      res.status(400).send("User not existing!")
-    }
-
   } catch (e: unknown) {
     res.status(404).send("Error: Something went wrong!");
   }
