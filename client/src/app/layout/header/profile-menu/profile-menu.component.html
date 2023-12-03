@@ -9,8 +9,8 @@
       <span class="name">{{ "@" + user()?.userName }}</span>
       <span class="role">{{ user()?.isVendor ? "Vendor" : userJoin }}</span>
     </div>
-    }
     <div class="divider"></div>
+    }
     <ul class="profile-menu__actions">
       @if (!user()) {
       <li class="profile-menu__actions-item" routerLink="/login">
