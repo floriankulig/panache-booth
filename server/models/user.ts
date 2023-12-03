@@ -89,13 +89,13 @@ export function updateUserById(userChanges: Map<string, string>, id: string) {
   });
 
   const currentTimestamp = new Date().toISOString();
-  sqlString += `updatedAt = '${currentTimestamp}' where userId = '${id}';`;
+  sqlString += `updatedAt = '${currentTimestamp}' where id = '${id}';`;
   database.prepare(sqlString).run();
   return getUserById(id)
 }
 
 export function deleteUserById(id: string) {
-  return database.prepare("delete from user where userid = ?").run(id);
+  return database.prepare("delete from user where id = ?").run(id);
 }
 
 export function loggedInUser(email: string, password: string){
