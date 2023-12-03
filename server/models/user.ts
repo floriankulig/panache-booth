@@ -5,8 +5,8 @@ import { userById } from "../services/user";
 
 export function getUserById(id: string) {
   try {
-    let user = database.prepare("select userId, userName, email, street, houseNumber, postcode, isVendor, city, " +
-      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where userid = ?").get(id);
+    let user = database.prepare("select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
+      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where id = ?").get(id);
     if (user != undefined) {
       // @ts-ignore
       user["isVendor"] = user["isVendor"] !== 0;
@@ -22,7 +22,7 @@ export function getUserById(id: string) {
 }
 
 export function getAllUsers() {
-  let user = database.prepare("select userId, userName, email, street, houseNumber, postcode, isVendor, city, " +
+  let user = database.prepare("select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
     "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user").all();
 
   user.forEach((key) => {
@@ -47,7 +47,7 @@ export function createUser(user: IUser) {
 
   const stmt = database.prepare(
     "insert into user " +
-      "(userId, userName, email, password, isVendor, postcode, city, street, houseNumber, " +
+      "(id, userName, email, password, isVendor, postcode, city, street, houseNumber, " +
       "iban, bic, shippingCost, shippingFreeFrom, " +
       "createdAt, updatedAt) " +
       "values " +
@@ -100,10 +100,28 @@ export function deleteUserById(id: string) {
 
 export function loggedInUser(email: string, password: string){
   try {
-    return database.prepare(`select userId from user where (email = '${email}') and (password = '${password}');`).get()
+    let sql = "select id, userName, email, password, " +
+      "isVendor" +
+      ", postcode, city, street, houseNumber, " +
+      "iban, bic, shippingCost, shippingFreeFrom, " +
+      "createdAt, updatedAt from user "
+    sql += `where (email = '${email}') and (password = '${password}');`
+    console.log(sql)
+    let user = database.prepare(sql).get()
+    if (user != undefined) {
+      // @ts-ignore
+      user["isVendor"] = user["isVendor"] !== 0;
+      return user;
+    }
+    else {
+      return undefined
+    }
+    return user;
   }
   catch (e: unknown) {
+    console.log(e)
     return e;
   }
-
 }
+
+

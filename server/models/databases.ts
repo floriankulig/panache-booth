@@ -4,7 +4,7 @@ export const database = new Database("./database/webEngineering.db");
 
 const createUserTable =
   "create table if not exists user (" +
-  "userId varchar(36) not null primary key, " +
+  "id varchar(36) not null primary key, " +
   "userName varchar(32) not null, " +
   "email varchar(255) not null unique, " +
   "password varchar(12) not null, " +
@@ -35,12 +35,6 @@ const createArticleTable =
   "isVisible integer " +
   ");";
 
-/*const createPostalCodeTable = "create table if not exists postcode (" +
-  "plz integer not null primary key, " +
-  "city varchar(255) not null" +
-  ");";
-*/
 
-//database.exec(createPostalCodeTable);
 database.exec(createUserTable);
 database.exec(createArticleTable);
