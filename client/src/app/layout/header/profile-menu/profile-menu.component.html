@@ -4,10 +4,12 @@
   </div>
   @if (open()) {
   <div class="profile-menu">
+    @if (!!user) {
     <div class="user-info">
-      <span class="name">Florian Kulig</span>
-      <span class="role">Vendor</span>
+      <span class="name">{{ "@" + user.userName }}</span>
+      <span class="role">{{ user.isVendor ? "Vendor" : userJoinDate }}</span>
     </div>
+    }
     <div class="divider"></div>
     <ul class="profile-menu__actions">
       <li class="profile-menu__actions-item" routerLink="/login">

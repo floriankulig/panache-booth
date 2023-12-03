@@ -1,4 +1,2 @@
-export const isAuthUrl = (route: string) =>
-  ["/login", "/register", "registerVendor"].some((url) =>
-    route.startsWith(url),
-  );
+export * from "./getDistanceToDate";
+export * from "./isAuthUrl";
