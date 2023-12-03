@@ -6,7 +6,7 @@ const createUserTable =
   "create table if not exists user (" +
   "userId varchar(36) not null primary key, " +
   "userName varchar(32) not null, " +
-  "email varchar(255) not null, " +
+  "email varchar(255) not null unique, " +
   "password varchar(12) not null, " +
   "isVendor boolean not null, " +
   "postcode varchar(5) not null, " +
