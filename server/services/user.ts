@@ -1,4 +1,4 @@
-import { createUser, deleteUserById, getAllUsers, getUserById, updateUserById } from "../models/user";
+import { createUser, deleteUserById, getAllUsers, getUserById, loggedInUser, updateUserById } from "../models/user";
 import { IUser } from "../models/IUser";
 
 export function userById(id: string){
@@ -19,5 +19,9 @@ export function updateUser(userChanges: Map<string, string>, id: string){
 
 export function deleteUser(id: string){
   return deleteUserById(id);
+}
+
+export function loginUser(email: string, password: string){
+  return loggedInUser(email, password)
 }
 

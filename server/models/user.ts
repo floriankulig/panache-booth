@@ -1,6 +1,5 @@
 import { database } from "./databases";
 import { IUser } from "./IUser";
-import { userById } from "../services/user";
 
 export function getUserById(id: string) {
   try {
@@ -84,4 +83,15 @@ export function updateUserById(userChanges: Map<string, string>, id: string) {
 
 export function deleteUserById(id: string) {
   return database.prepare("delete from user where userid = ?").run(id);
+}
+
+export function loggedInUser(email: string, password: string){
+  try {
+    return database.prepare(`select userId from user where (email = '${email}') and (password = '${password}');`).get()
+  }
+  catch (e: unknown) {
+    console.log(e)
+    return e;
+  }
+
 }

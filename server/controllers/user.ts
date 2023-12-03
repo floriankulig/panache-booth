@@ -3,6 +3,7 @@ import {
   addUser,
   allUsers,
   deleteUser,
+  loginUser,
   updateUser,
   userById,
 } from "../services/user";
@@ -27,6 +28,24 @@ router.get("/getUserById/:userId([0-9]+)", async (req, res) => {
 router.get("/allUsers", async (req, res) => {
   try {
     res.status(200).json(await allUsers());
+  } catch (e: unknown) {
+    res.status(404).send("Error: Something went wrong!");
+  }
+});
+
+router.get("/login", async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  try {
+    const user = await loginUser(email, password)
+    if (user === undefined) {
+      res.status(404).send("Email or password incorrect!")
+    }
+    else {
+      res.status(200).json(user);
+    }
+
   } catch (e: unknown) {
     res.status(404).send("Error: Something went wrong!");
   }
