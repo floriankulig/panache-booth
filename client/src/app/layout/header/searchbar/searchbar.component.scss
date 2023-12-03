@@ -3,7 +3,7 @@
 :host {
   display: flex;
   align-items: center;
-  border: 1px solid $textSecondary;
+  border: 1px solid rgba($textSecondary, 0.5);
   border-radius: $grid * 1.5;
   overflow: hidden;
   color: $textPrimary;

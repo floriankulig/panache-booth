@@ -10,10 +10,6 @@
     display: flex;
     flex-direction: column;
     background: $bgPrimary;
-
-    &.sidebarOpen {
-      filter: blur(3px);
-    }
   }
 
   .content {
@@ -21,5 +17,18 @@
     padding: $grid * 4;
     overflow-y: auto;
     height: 300vh;
+  }
+
+  .blur-bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba($bgPrimaryDark, 0.15);
+    z-index: 998;
+    backdrop-filter: blur(3px);
+
+    @media screen and (min-width: 1080px) {
+      display: none;
+    }
   }
 }
