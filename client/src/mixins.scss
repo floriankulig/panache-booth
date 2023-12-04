@@ -71,7 +71,7 @@
 
           &:nth-child(2) {
             font-weight: 400;
-            color: rgba($warning, 0.9);
+            color: rgba($error, 0.9);
           }
         }
       }
@@ -105,8 +105,8 @@
       gap: $grid;
       border-radius: $grid;
       padding: $grid * 1.5;
-      color: $warning;
-      background: rgba($warning, 0.1);
+      color: $error;
+      background: rgba($error, 0.1);
       max-height: $grid * 14;
       font-size: 0.875rem;
       font-weight: 500;
