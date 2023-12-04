@@ -1,7 +1,11 @@
 @use "variables.scss" as *;
 
 :host {
+  width: clamp(300px, 100%, 500px);
+  max-width: 95vw;
+  box-sizing: border-box;
   .notification {
+    box-shadow: 1px 3px 12px rgba($textPrimary, 0.05);
     &.info {
       background: rgba($info, 0.1);
       color: $info;
@@ -54,8 +58,7 @@
         background: $error;
       }
     }
-    width: clamp(300px, 100%, 500px);
-    max-width: 95vw;
+    width: 100%;
     overflow: hidden;
     display: flex;
     padding: $grid * 1 $grid * 1.5;

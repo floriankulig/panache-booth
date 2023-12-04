@@ -91,7 +91,7 @@ export class AuthService {
     localStorage.removeItem("uid");
     this.notificationService.addNotification({
       message: `Successfully logged out!`,
-      duration: 6000,
+      duration: 5000,
     });
   }
 

@@ -10,10 +10,13 @@
   -moz-osx-font-smoothing: grayscale;
 
   ul.notifications {
+    // box-sizing: border-box;
     position: fixed;
     bottom: $grid * 4;
     right: $grid * 4;
+    // width: fit-content;
     display: flex;
+    align-items: flex-end;
     flex-direction: column-reverse;
     gap: $grid * 1.5;
     z-index: 100;
