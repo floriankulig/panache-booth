@@ -13,7 +13,7 @@ import {
 import { PositiveNumberDirective } from "../../directives/positive-number.directive";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { Address } from "../../../ts";
-import { AuthService, RegisterUser } from "../../services/auth.service";
+import { AuthService, RegisterUser } from "../../services";
 
 @Component({
   selector: "app-register",

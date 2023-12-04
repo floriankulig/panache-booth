@@ -1,0 +1,10 @@
+@if (!!notification) {
+<div [class]="classes">
+  <i-feather [name]="iconName"></i-feather>
+  <p>{{ notification.message }}</p>
+  <div class="notification-close" role="button" (click)="removeNotification()">
+    <i-feather name="x"></i-feather>
+  </div>
+  <div class="progress" #progress></div>
+</div>
+}

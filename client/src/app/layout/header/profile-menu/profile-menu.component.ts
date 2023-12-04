@@ -1,7 +1,7 @@
 import { signal, Component, ElementRef, computed } from "@angular/core";
 import { IconsModule } from "../../../icons/icons.module";
 import { RouterLink } from "@angular/router";
-import { AuthService } from "../../../services/auth.service";
+import { AuthService } from "../../../services/auth/auth.service";
 import { getDistanceToDate } from "../../../../helpers";
 import { isToday } from "date-fns";
 import { User } from "../../../../ts";
