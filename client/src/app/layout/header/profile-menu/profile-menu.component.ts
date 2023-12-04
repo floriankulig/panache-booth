@@ -21,11 +21,14 @@ export class ProfileMenuComponent {
       ? new Date((this.authService.user() as User).createdAt)
       : new Date(),
   );
-  userJoin = `Joined ${
-    isToday(this.userJoinDate())
-      ? "today"
-      : getDistanceToDate(this.userJoinDate())
-  }`;
+  userJoin = computed(
+    () =>
+      `Joined ${
+        isToday(this.userJoinDate())
+          ? "today"
+          : getDistanceToDate(this.userJoinDate())
+      }`,
+  );
 
   constructor(
     private elementRef: ElementRef,

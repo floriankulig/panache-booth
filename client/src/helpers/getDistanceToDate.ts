@@ -9,5 +9,5 @@ export const getDistanceToDate = (date: Date, refDate?: Date): string => {
     locale: enGB,
   });
 
-  return distance;
+  return distance.replace("about ", "");
 };

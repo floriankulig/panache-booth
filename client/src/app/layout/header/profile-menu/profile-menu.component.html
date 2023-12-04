@@ -7,11 +7,20 @@
     @if (!!user()) {
     <div class="user-info">
       <span class="name">{{ "@" + user()?.userName }}</span>
-      <span class="role">{{ user()?.isVendor ? "Vendor" : userJoin }}</span>
+      <span class="role">{{ user()?.isVendor ? "Vendor" : userJoin() }}</span>
     </div>
     <div class="divider"></div>
     }
     <ul class="profile-menu__actions">
+      <li class="profile-menu__actions-item">
+        <i-feather name="shopping-cart"></i-feather> Cart
+      </li>
+      @if (user()) {
+      <li class="profile-menu__actions-item">
+        <i-feather name="shopping-bag"></i-feather> Orders
+      </li>
+      }
+      <div class="divider"></div>
       @if (!user()) {
       <li class="profile-menu__actions-item" routerLink="/login">
         <i-feather name="user-check"></i-feather> Log in
@@ -20,6 +29,9 @@
         <i-feather name="user-plus"></i-feather> Sign up
       </li>
       } @else {
+      <li class="profile-menu__actions-item" routerLink="/profile">
+        <i-feather name="smile"></i-feather> My Profile
+      </li>
       <li class="profile-menu__actions-item" (click)="logout()">
         <i-feather name="log-out"></i-feather> Log out
       </li>
