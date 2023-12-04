@@ -1,6 +1,7 @@
 import { WritableSignal, Injectable, signal, effect } from "@angular/core";
 import axios, { AxiosError } from "axios";
-import { API_URL, User } from "../../ts";
+import { API_URL, User } from "../../../ts";
+import { NotificationService } from "../notification/notification.service";
 
 export interface RegisterUser
   extends Omit<User, "id" | "createdAt" | "updatedAt" | "address"> {
@@ -17,7 +18,9 @@ export interface RegisterUser
 export class AuthService {
   user: WritableSignal<User | null> = signal(null);
 
-  constructor() {}
+  constructor(private notificationService: NotificationService) {
+    this.getUserFromLocalStorage();
+  }
 
   async login(email: string, password: string): Promise<User> | never {
     try {
@@ -29,6 +32,10 @@ export class AuthService {
       console.log(user);
       this.user.set(user);
       this.saveUidToLocalStorage(user.id);
+      this.notificationService.addNotification({
+        message: `Logged in as @${user.userName}!`,
+        duration: 6000,
+      });
       return user;
     } catch (error) {
       throw error as AxiosError;
@@ -45,15 +52,47 @@ export class AuthService {
       console.log(user);
       this.user.set(user);
       this.saveUidToLocalStorage(user.id);
+      this.notificationService.addNotification({
+        message: `Welcome, @${user.userName}!`,
+        duration: 6000,
+      });
       return user;
     } catch (error) {
       throw error as AxiosError;
     }
   }
 
+  async getUserFromLocalStorage(): Promise<User | null> {
+    const uid = JSON.parse(localStorage.getItem("uid") || "");
+    if (!uid) {
+      return null;
+    }
+    try {
+      const res = await axios.get(`${API_URL}/user/${uid}`);
+      const user = res.data;
+      this.user.set(user);
+      this.notificationService.addNotification({
+        message: `Welcome back, @${user.userName}!`,
+        icon: "smile",
+        duration: 6000,
+      });
+      return user;
+    } catch (error) {
+      throw error as AxiosError;
+    }
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem("uid");
+  }
+
   logout(): void {
     this.user.set(null);
     localStorage.removeItem("uid");
+    this.notificationService.addNotification({
+      message: `Successfully logged out!`,
+      duration: 6000,
+    });
   }
 
   private saveUidToLocalStorage(uid: string): void {

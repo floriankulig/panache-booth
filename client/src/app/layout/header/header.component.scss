@@ -57,7 +57,7 @@
           width: $grid * 1.25;
           aspect-ratio: 1;
           border-radius: 50%;
-          background: $warning;
+          background: $error;
         }
         .count {
           position: absolute;
@@ -71,7 +71,7 @@
           top: -3px;
           right: -3px;
           border-radius: 50%;
-          background: $warning;
+          background: $error;
 
           &.big {
             width: $grid * 2.25;

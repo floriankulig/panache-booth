@@ -1,6 +1,6 @@
 import { Location } from "@angular/common";
 import { AxiosError } from "axios";
-import { Input, Component, Output } from "@angular/core";
+import { Input, Component, OnInit } from "@angular/core";
 import { IconsModule } from "../../icons/icons.module";
 import {
   FormsModule,
@@ -13,7 +13,7 @@ import {
 import { PositiveNumberDirective } from "../../directives/positive-number.directive";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { Address } from "../../../ts";
-import { AuthService, RegisterUser } from "../../services/auth.service";
+import { AuthService, RegisterUser } from "../../services";
 
 @Component({
   selector: "app-register",
@@ -28,7 +28,7 @@ import { AuthService, RegisterUser } from "../../services/auth.service";
   templateUrl: "./register.component.html",
   styleUrl: "./register.component.scss",
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   @Input() formType: "vendor" | "customer" = "customer";
   submitting = false;
   errorMessage = "";
@@ -63,6 +63,12 @@ export class RegisterComponent {
     private authService: AuthService,
   ) {
     this.formGroup = this.steps[this.formStep - 1];
+  }
+
+  ngOnInit() {
+    if (!!this.authService.isLoggedIn()) {
+      this.router.navigate(["/"]);
+    }
   }
 
   get primaryText() {

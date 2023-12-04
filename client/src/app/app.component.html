@@ -1,2 +1,12 @@
 @if (showLayout) {<app-layout></app-layout>} @else {<app-auth-layout
 ></app-auth-layout>}
+
+<ul class="notifications">
+  @for (notification of activeNotifications(); track $index) {
+  <app-notification
+    class="notifications__item"
+    [notification]="notification"
+    [index]="$index"
+  ></app-notification>
+  }
+</ul>
