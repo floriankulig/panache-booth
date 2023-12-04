@@ -1,5 +1,3 @@
-import { IPostalCode } from "./IPostalCode";
-
 export interface IUser {
   userId?: string;
   userName: string;
@@ -9,7 +7,6 @@ export interface IUser {
   houseNumber: string;
   postcode: string;
   isVendor: boolean;
-  //address: IPostalCode;
   city: string;
   iban?: string;
   bic?: string;

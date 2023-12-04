@@ -17,22 +17,24 @@ const createUserTable =
   "bic varchar(11), " +
   "shippingCost decimal(10,2), " +
   "shippingFreeFrom decimal(10,2), " +
-  "createdAt timestamp not null, " +
-  "updatedAt timestamp not null " +
+  "createdAt varchar(255) not null, " +
+  "updatedAt varchar(255) not null " +
   ");";
 
 const createArticleTable =
   "create table if not exists article (" +
-  "articleId integer not null primary key autoincrement, " +
-  "articleName varchar(255), " +
-  "articleDescription varchar(255), " +
-  "articleCategory varchar(255), " +
-  "coupon varchar(255), " +
-  "articlePrice decimal(10,2), " +
-  "vendorId integer, " +
+  "id varchar(36) not null primary key, " +
+  "name varchar(255) not null, " +
+  "description varchar(200), " +
+  "category varchar(36), " +
+  "coupon varchar(12), " +
+  "price decimal(10,2), " +
+  "vendorId varchar(36) not null, " +
   "purchases integer, " +
-  "inventory integer, " +
-  "isVisible integer " +
+  "inventory integer not null, " +
+  "isVisible integer not null, " +
+  "createdAt varchar(255) not null, " +
+  "updatedAt varchar(255) not null" +
   ");";
 
 
