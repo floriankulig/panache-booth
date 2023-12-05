@@ -8,7 +8,6 @@ import {
   userById,
 } from "../services/user";
 import { IUser } from "../models/IUser";
-import { deleteUserById, getUserById } from "../models/user";
 
 const router = express.Router();
 
@@ -87,9 +86,9 @@ router.put("/:userId", async (req, res) => {
 router.delete("/:userId", async (req, res) => {
   const userId = req.params.userId;
   try {
-    if (getUserById(userId) !== undefined) {
+    if (userById(userId) !== undefined) {
       const user = await  deleteUser(userId);
-      res.status(200).send(200);
+      res.sendStatus(200);
     } else {
       res.status(400).send("User not existing");
     }
@@ -101,7 +100,7 @@ router.delete("/:userId", async (req, res) => {
 router.get("/:userId", async (req, res) => {
   const userId = req.params.userId;
   try {
-    if (getUserById(userId) !== undefined) {
+    if (userById(userId) !== undefined) {
       res.status(200).json(await userById(userId));
     } else {
       res.status(400).send("User does not exist");

@@ -1,7 +1,6 @@
 import { database } from "./databases";
 import { IUser } from "./IUser";
 import { v4 as uuidv4 } from "uuid";
-import { userById } from "../services/user";
 
 export function getUserById(id: string) {
   try {
@@ -13,23 +12,22 @@ export function getUserById(id: string) {
       return user;
     }
     else {
-      return undefined
+      return undefined;
     }
   } catch (e: unknown) {
-    console.log(e)
     return e;
   }
 }
 
 export function getAllUsers() {
-  let user = database.prepare("select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
+  let users = database.prepare("select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
     "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user").all();
 
-  user.forEach((key) => {
+  users.forEach((key) => {
     // @ts-ignore
     key["isVendor"] = key["isVendor"] !== 0;
   });
-  return user;
+  return users;
 }
 
 export function createUser(user: IUser) {
@@ -54,20 +52,9 @@ export function createUser(user: IUser) {
       "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
   );
   const info = stmt.run(
-    user.userId,
-    user.userName,
-    user.email,
-    user.password,
-    isVendorNumeric,
-    user.postcode,
-    user.city,
-    user.street,
-    user.houseNumber,
-    user.iban,
-    user.bic,
-    user.shippingCost,
-    user.shippingFreeFrom,
-    user.createdAt,
+    user.userId, user.userName, user.email, user.password, isVendorNumeric,
+    user.postcode, user.city, user.street, user.houseNumber, user.iban,
+    user.bic, user.shippingCost, user.shippingFreeFrom, user.createdAt,
     user.updatedAt,
   );
   return getUserById(user.userId);
