@@ -78,12 +78,20 @@ export class AuthService {
       });
       return user;
     } catch (error) {
+      if (
+        ((error as AxiosError).response?.data as string).includes(
+          "User does not exist",
+        )
+      ) {
+        localStorage.removeItem("uid");
+        return null;
+      }
       throw error as AxiosError;
     }
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem("uid");
+    return !!localStorage.getItem("uid") && !!this.user();
   }
 
   logout(): void {
