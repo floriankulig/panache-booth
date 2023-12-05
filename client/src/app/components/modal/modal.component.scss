@@ -64,6 +64,15 @@
         font-size: clamp(2.5rem, 8vw, 3rem);
         margin-bottom: $grid * 3;
       }
+
+      @media screen and (max-width: 768px) {
+        width: 100vw;
+        padding-top: $grid * 4;
+
+        & .close {
+          top: $grid * 4;
+        }
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
-@if (showLayout) {<app-layout (click)="modalOpen.set(true)"></app-layout>} @else
-{<app-auth-layout></app-auth-layout>}
+@if (showLayout) {<app-layout></app-layout>} @else {<app-auth-layout
+></app-auth-layout>}
 
 <ul class="notifications">
   @for (notification of activeNotifications(); track $index) {
@@ -11,8 +11,11 @@
   }
 </ul>
 
-@if (modalOpen()){
-<app-modal title="Cart" (close)="modalOpen.set(false)">
-  <h1>Cart</h1>
+@if (cartService.cartOpen()){
+<app-modal title="Cart" (close)="cartService.cartOpen.set(false)">
+  <app-cart></app-cart>
+</app-modal>
+} @if (orderService.ordersOpen()){
+<app-modal title="Your Orders" (close)="orderService.ordersOpen.set(false)">
 </app-modal>
 }

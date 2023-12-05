@@ -3,7 +3,6 @@ import {
   EventEmitter,
   Input,
   Output,
-  ElementRef,
   HostBinding,
 } from "@angular/core";
 import {
@@ -26,7 +25,7 @@ import { CommonModule } from "@angular/common";
   animations: [
     trigger("modal", [
       transition("* <=> *", [
-        query("@modalAnimation", animateChild(), {
+        query("@modalAnimation, @backdrop", animateChild(), {
           optional: true,
         }),
       ]),
@@ -47,6 +46,16 @@ import { CommonModule } from "@angular/common";
         ),
       ]),
     ]),
+    trigger("backdrop", [
+      transition(":enter", [
+        style({ opacity: 0 }),
+        animate("200ms", style({ opacity: 1 })),
+      ]),
+      transition(":leave", [
+        style({ opacity: 1 }),
+        animate("300ms", style({ opacity: 0 })),
+      ]),
+    ]),
   ],
 })
 export class ModalComponent {
@@ -56,10 +65,6 @@ export class ModalComponent {
 
   @HostBinding("@modal") get animation() {
     return true;
-  }
-
-  constructor(public elem: ElementRef) {
-    console.log(this.elem.nativeElement);
   }
 
   onClose() {
