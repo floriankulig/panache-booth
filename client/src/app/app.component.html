@@ -11,6 +11,8 @@
   }
 </ul>
 
-<app-modal title="Cart" [open]="modalOpen()" (close)="modalOpen.set(false)">
+@if (modalOpen()){
+<app-modal title="Cart" (close)="modalOpen.set(false)">
   <h1>Cart</h1>
 </app-modal>
+}

@@ -4,6 +4,7 @@ import {
   Input,
   Output,
   ElementRef,
+  HostBinding,
 } from "@angular/core";
 import {
   trigger,
@@ -52,6 +53,10 @@ export class ModalComponent {
   @Input() title = "";
   @Input() open?: boolean;
   @Output() close = new EventEmitter<void>();
+
+  @HostBinding("@modal") get animation() {
+    return true;
+  }
 
   constructor(public elem: ElementRef) {
     console.log(this.elem.nativeElement);
