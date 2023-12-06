@@ -40,9 +40,6 @@ export class NotificationComponent {
   }
 
   get shouldAnimate() {
-    console.log(this.notification.duration);
-    console.log(this.notification.duration || 0);
-    console.log((this.notification.duration || 0) > 1000);
     return (this.notification.duration || 0) > 1000;
   }
 
