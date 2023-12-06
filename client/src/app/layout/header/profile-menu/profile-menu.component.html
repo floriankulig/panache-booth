@@ -12,11 +12,11 @@
     <div class="divider"></div>
     }
     <ul class="profile-menu__actions">
-      <li class="profile-menu__actions-item">
+      <li class="profile-menu__actions-item" (click)="openCart()">
         <i-feather name="shopping-cart"></i-feather> Cart
       </li>
       @if (user()) {
-      <li class="profile-menu__actions-item">
+      <li class="profile-menu__actions-item" (click)="openOrders()">
         <i-feather name="shopping-bag"></i-feather> Orders
       </li>
       }

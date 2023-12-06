@@ -40,7 +40,7 @@ export class NotificationComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.notification.duration || 0 >= 1000) {
+    if ((this.notification.duration || 0) >= 1000) {
       this.progressBar.nativeElement.style.animationDuration = `${this.notification.duration}ms`;
     } else {
       this.progressBar.nativeElement.style.animation = "none";
