@@ -1,12 +1,7 @@
-import {
-  AfterViewInit,
-  ViewChild,
-  Component,
-  Input,
-  ElementRef,
-} from "@angular/core";
+import { ViewChild, Component, Input, ElementRef } from "@angular/core";
 import { Notification, NotificationService } from "../../services";
 import { IconsModule } from "../../icons/icons.module";
+import { animate, style, transition, trigger } from "@angular/animations";
 
 @Component({
   selector: "app-notification",
@@ -14,8 +9,16 @@ import { IconsModule } from "../../icons/icons.module";
   imports: [IconsModule],
   templateUrl: "./notification.component.html",
   styleUrl: "./notification.component.scss",
+  animations: [
+    trigger("progress", [
+      transition(":enter", [
+        style({ transform: "scaleX(0)", transformOrigin: "left" }),
+        animate(`{{ animationDuration }}ms`, style({ transform: "scaleX(1)" })),
+      ]),
+    ]),
+  ],
 })
-export class NotificationComponent implements AfterViewInit {
+export class NotificationComponent {
   @Input() notification!: Notification;
   @Input() index!: number;
   @ViewChild("progress") progressBar!: ElementRef<HTMLDivElement>;
@@ -36,14 +39,6 @@ export class NotificationComponent implements AfterViewInit {
         return "alert-triangle";
       default:
         return "info";
-    }
-  }
-
-  ngAfterViewInit() {
-    if ((this.notification.duration || 0) >= 1000) {
-      this.progressBar.nativeElement.style.animationDuration = `${this.notification.duration}ms`;
-    } else {
-      this.progressBar.nativeElement.style.animation = "none";
     }
   }
 
