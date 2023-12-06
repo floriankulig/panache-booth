@@ -1,7 +1,20 @@
-import { ViewChild, Component, Input, ElementRef } from "@angular/core";
+import {
+  ViewChild,
+  Component,
+  Input,
+  ElementRef,
+  HostBinding,
+} from "@angular/core";
 import { Notification, NotificationService } from "../../services";
 import { IconsModule } from "../../icons/icons.module";
-import { animate, style, transition, trigger } from "@angular/animations";
+import {
+  animate,
+  animateChild,
+  query,
+  style,
+  transition,
+  trigger,
+} from "@angular/animations";
 
 @Component({
   selector: "app-notification",
@@ -10,6 +23,19 @@ import { animate, style, transition, trigger } from "@angular/animations";
   templateUrl: "./notification.component.html",
   styleUrl: "./notification.component.scss",
   animations: [
+    trigger("notification", [
+      transition(":enter", [
+        style({ transform: "scale(0)", transformOrigin: "right" }),
+        animate(`200ms ease-in-out`, style({ transform: "scale(1)" })),
+        query("@progress", animateChild(), {
+          optional: true,
+        }),
+      ]),
+      transition(":leave", [
+        style({ transform: "scale(1)", transformOrigin: "right" }),
+        animate(`200ms 50ms ease-in-out`, style({ transform: "scale(0)" })),
+      ]),
+    ]),
     trigger("progress", [
       transition(":enter", [
         style({ transform: "scaleX(0)", transformOrigin: "left" }),
@@ -22,6 +48,10 @@ export class NotificationComponent {
   @Input() notification!: Notification;
   @Input() index!: number;
   @ViewChild("progress") progressBar!: ElementRef<HTMLDivElement>;
+
+  @HostBinding("@notification") get notificationAnimation() {
+    return true;
+  }
 
   constructor(private notificationService: NotificationService) {}
 
