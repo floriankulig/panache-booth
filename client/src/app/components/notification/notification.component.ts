@@ -23,10 +23,7 @@ export class NotificationComponent {
   @Input() index!: number;
   @ViewChild("progress") progressBar!: ElementRef<HTMLDivElement>;
 
-  constructor(
-    private notificationService: NotificationService,
-    private elementRef: ElementRef,
-  ) {}
+  constructor(private notificationService: NotificationService) {}
 
   get iconName() {
     if (this.notification.icon) return this.notification.icon;
@@ -40,6 +37,13 @@ export class NotificationComponent {
       default:
         return "info";
     }
+  }
+
+  get shouldAnimate() {
+    console.log(this.notification.duration);
+    console.log(this.notification.duration || 0);
+    console.log((this.notification.duration || 0) > 1000);
+    return (this.notification.duration || 0) > 1000;
   }
 
   get classes() {

@@ -9,9 +9,9 @@
     class="progress"
     #progress
     [@progress]="{
-      value: !!notification.duration,
+      value: shouldAnimate,
       params: {
-        animationDuration: notification.duration
+        animationDuration: shouldAnimate ? notification.duration : 0
       }
     }"
   ></div>
