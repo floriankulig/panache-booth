@@ -1,5 +1,17 @@
 <div class="left">
-  <h1>Register ({{ formStep }}/2)</h1>
+  <div>
+    <h1>Register ({{ formStep }}/{{ maxSteps }})</h1>
+    <span [class]="{ asRole: true, visible: formType === 'vendor' }"
+      >as a vendor</span
+    >
+  </div>
+  <button class="transparent" (click)="toggleFormType()">
+    @if (formType==="customer") {
+    <i-feather name="user"></i-feather> Register as Vendor } @else {<i-feather
+      name="truck"
+    ></i-feather>
+    Register as Customer}
+  </button>
   <p>
     Already have an account?
     <span routerLink="/login">Log in here</span>
@@ -14,8 +26,9 @@
         @if (formGroup.get("username")?.errors &&
         formGroup.get("username")?.touched) {
         <span class="input-error"
-          >@if (formGroup.get("username")?.errors?.["required"]) {Required}@else
-          {Must be within 4-32 characters}</span
+          >@if (formGroup.get("username")?.errors?.["required"]) {Required}
+          @else if (formGroup.get("username")?.errors?.["pattern"]) {No special
+          characters} @else {Must be within 4-32 characters}</span
         >
         }
       </div>
@@ -176,6 +189,61 @@
           formControlName="city"
         />
       </div>
+    </div>
+    }@else if (formStep === 3) {
+    <h2>Payment Information</h2>
+    <div class="input">
+      <div>
+        <span>BIC</span>
+        @if (formGroup.get("bic")?.errors?.["required"] &&
+        formGroup.get("bic")?.touched) {
+        <span class="input-error">Required</span>
+        }
+      </div>
+      <input
+        required
+        type="text"
+        formControlName="bic"
+        placeholder="Your BIC"
+      />
+    </div>
+    <div class="input">
+      <div>
+        <span>IBAN</span>
+        @if (formGroup.get("iban")?.errors?.["required"] &&
+        formGroup.get("iban")?.touched) {
+        <span class="input-error">Required</span>
+        }
+      </div>
+      <input
+        required
+        type="text"
+        formControlName="iban"
+        placeholder="DExx xxxx xxxx xxxx xxxx xx "
+      />
+    </div>
+    <h2>Shipping Conditions</h2>
+    <div class="input">
+      <div>
+        <span>Shipping Cost (€)</span>
+      </div>
+      <input
+        type="number"
+        positiveNumber
+        formControlName="shippingCost"
+        placeholder="How much do you charge for shipping?"
+      />
+    </div>
+    <div class="input">
+      <div>
+        <span>Shipping free from (€)</span>
+      </div>
+      <input
+        type="number"
+        positiveNumber
+        formControlName="shippingFreeFrom"
+        placeholder="Minimum amount for free shipping"
+      />
     </div>
     }
   </div>

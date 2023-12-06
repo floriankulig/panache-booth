@@ -34,3 +34,4 @@ Web Engineering 2 Online Shop.
 ### Funktional
 
 - Lagern des Application-State per URL-Query-Parameter für bestmögliche Datenpersistenz auch nach Neuladen der Seite (z.B. Suche)
+- Selbstgehostete Schriftarten für bessere Performance

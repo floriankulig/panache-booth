@@ -15,6 +15,7 @@ import {
   Menu,
   Info,
   Smile,
+  Truck,
   LogOut,
 } from "angular-feather/icons";
 
@@ -33,6 +34,7 @@ const icons = {
   Info,
   CheckCircle,
   AlertCircle,
+  Truck,
   AlertTriangle,
 };
 

@@ -27,8 +27,8 @@ interface User {
   iban?: string;
   bic?: string;
   address: Address;
-  shippingCost?: number;
-  shippingFreeFrom?: number;
+  shippingCost?: string;
+  shippingFreeFrom?: string;
 }
 
 interface Address {
