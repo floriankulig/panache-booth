@@ -81,7 +81,7 @@ export class RegisterComponent implements OnInit {
     return this.formStep < this.maxSteps
       ? "Next Step"
       : this.submitting
-      ? "lädt..."
+      ? "loading..."
       : "Sign Up";
   }
 

@@ -2,8 +2,8 @@
   <div class="close" role="button" aria-label="Close Modal" (click)="onClose()">
     <i-feather name="x"></i-feather>
   </div>
-  @if (!!title) {
-  <h1>{{ title }}</h1>
+  @if (!!heading) {
+  <h1>{{ heading }}</h1>
   }
   <ng-content></ng-content>
 </div>

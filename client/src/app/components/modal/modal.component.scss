@@ -24,10 +24,11 @@
     }
 
     &-container {
+      $br: clamp($grid * 3.5, 5vw, $grid * 6);
       min-height: calc(100dvh - $grid * 6);
       width: 95vw;
       position: relative;
-      border-radius: $grid * 6 $grid * 6 0 0;
+      border-radius: $br $br 0 0;
       padding: $grid * 6 clamp($grid * 4, 5vw, $grid * 8);
       background: rgba($bgSecondary, 0.9);
       backdrop-filter: blur(32px) saturate(180%);

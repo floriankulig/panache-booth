@@ -12,10 +12,10 @@
 </ul>
 
 @if (cartService.cartOpen()){
-<app-modal title="Cart" (close)="cartService.cartOpen.set(false)">
+<app-modal heading="Cart" (close)="cartService.cartOpen.set(false)">
   <app-cart></app-cart>
 </app-modal>
 } @if (orderService.ordersOpen()){
-<app-modal title="Your Orders" (close)="orderService.ordersOpen.set(false)">
+<app-modal heading="Your Orders" (close)="orderService.ordersOpen.set(false)">
 </app-modal>
 }

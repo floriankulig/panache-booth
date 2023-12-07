@@ -32,17 +32,29 @@ import { CommonModule } from "@angular/common";
     ]),
     trigger("modalAnimation", [
       transition(":enter", [
-        style({ opacity: 0, scale: 0.94, transform: "translateY(50%)" }),
+        style({
+          opacity: 0.3,
+          scale: 0.95,
+          transform: "translateY(100%) rotateX(3deg)",
+        }),
         animate(
-          "150ms cubic-bezier(0.645, 0.045, 0.355, 1)",
-          style({ opacity: 1, scale: 1, transform: "translateY(0)" }),
+          "400ms cubic-bezier(0.645, 0.045, 0.355, 1)",
+          style({
+            opacity: 1,
+            scale: 1,
+            transform: "translateY(0) rotateX(0deg)",
+          }),
         ),
       ]),
       transition(":leave", [
         style({ opacity: 1, scale: 1, transform: "translateY(0)" }),
         animate(
-          "150ms cubic-bezier(0.645, 0.045, 0.355, 1)",
-          style({ opacity: 0, scale: 0.95, transform: "translateY(20%)" }),
+          "200ms cubic-bezier(0.645, 0.045, 0.355, 1)",
+          style({
+            opacity: 0,
+            scale: 0.95,
+            transform: "translateY(20%) rotateX(2deg)",
+          }),
         ),
       ]),
     ]),
@@ -59,7 +71,7 @@ import { CommonModule } from "@angular/common";
   ],
 })
 export class ModalComponent {
-  @Input() title = "";
+  @Input() heading = "";
   @Input() open?: boolean;
   @Output() close = new EventEmitter<void>();
 
