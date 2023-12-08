@@ -25,14 +25,14 @@ import {
   animations: [
     trigger("notification", [
       transition(":enter", [
-        style({ transform: "scale(0)", transformOrigin: "right" }),
+        style({ transform: "scale(0)", transformOrigin: "bottom right" }),
         animate(`200ms ease-in-out`, style({ transform: "scale(1)" })),
         query("@progress", animateChild(), {
           optional: true,
         }),
       ]),
       transition(":leave", [
-        style({ transform: "scale(1)", transformOrigin: "right" }),
+        style({ transform: "scale(1)", transformOrigin: " bottom right" }),
         animate(`200ms 50ms ease-in-out`, style({ transform: "scale(0)" })),
       ]),
     ]),

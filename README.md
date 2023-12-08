@@ -35,3 +35,4 @@ Web Engineering 2 Online Shop.
 
 - Lagern des Application-State per URL-Query-Parameter für bestmögliche Datenpersistenz auch nach Neuladen der Seite (z.B. Suche)
 - Selbstgehostete Schriftarten für bessere Performance
+- Micro user interaktionen für besserere User Experience (Nutzer sieht visuell wie er mit der App interagiert)
