@@ -13,7 +13,7 @@ import {
 import { AuthService } from "../../services";
 
 @Component({
-  selector: "app-login",
+  selector: "pb-login",
   standalone: true,
   imports: [RouterModule, IconsModule, FormsModule, ReactiveFormsModule],
   templateUrl: "./login.component.html",

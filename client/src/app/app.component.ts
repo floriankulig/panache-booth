@@ -10,7 +10,7 @@ import { ModalComponent } from "./components/modal/modal.component";
 import { CartComponent } from "./components/cart/cart.component";
 
 @Component({
-  selector: "app-root",
+  selector: "pb-root",
   standalone: true,
   imports: [
     CommonModule,

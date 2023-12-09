@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { IconsModule } from "../../../icons/icons.module";
 
 @Component({
-  selector: "app-searchbar",
+  selector: "pb-searchbar",
   standalone: true,
   imports: [IconsModule],
   templateUrl: "./searchbar.component.html",

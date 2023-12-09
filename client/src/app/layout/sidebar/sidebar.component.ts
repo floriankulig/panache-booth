@@ -2,7 +2,7 @@ import { EventEmitter, Component, Output } from "@angular/core";
 import { IconsModule } from "../../icons/icons.module";
 
 @Component({
-  selector: "app-sidebar",
+  selector: "pb-sidebar",
   standalone: true,
   imports: [IconsModule],
   templateUrl: "./sidebar.component.html",

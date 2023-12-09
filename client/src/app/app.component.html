@@ -1,21 +1,21 @@
-@if (showLayout) {<app-layout></app-layout>} @else {<app-auth-layout
-></app-auth-layout>}
+@if (showLayout) {<pb-layout></pb-layout>} @else {<pb-auth-layout
+></pb-auth-layout>}
 
 <ul class="notifications">
   @for (notification of activeNotifications(); track $index) {
-  <app-notification
+  <pb-notification
     class="notifications__item"
     [notification]="notification"
     [index]="$index"
-  ></app-notification>
+  ></pb-notification>
   }
 </ul>
 
 @if (cartService.cartOpen()){
-<app-modal heading="Cart" (close)="cartService.cartOpen.set(false)">
-  <app-cart></app-cart>
-</app-modal>
+<pb-modal heading="Cart" (close)="cartService.cartOpen.set(false)">
+  <pb-cart></pb-cart>
+</pb-modal>
 } @if (orderService.ordersOpen()){
-<app-modal heading="Your Orders" (close)="orderService.ordersOpen.set(false)">
-</app-modal>
+<pb-modal heading="Your Orders" (close)="orderService.ordersOpen.set(false)">
+</pb-modal>
 }

@@ -16,7 +16,7 @@ import {
 } from "../../services";
 
 @Component({
-  selector: "app-header",
+  selector: "pb-header",
   standalone: true,
   imports: [SearchbarComponent, IconsModule, ProfileMenuComponent],
   templateUrl: "./header.component.html",

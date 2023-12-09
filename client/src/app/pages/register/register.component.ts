@@ -16,7 +16,7 @@ import { AuthService } from "../../services";
 import { buildUserFromFormValues } from "../../../helpers";
 
 @Component({
-  selector: "app-register",
+  selector: "pb-register",
   standalone: true,
   imports: [
     IconsModule,

@@ -8,7 +8,7 @@ import { User } from "../../../../ts";
 import { CartService, OrderService } from "../../../services";
 
 @Component({
-  selector: "app-profile-menu",
+  selector: "pb-profile-menu",
   standalone: true,
   imports: [IconsModule, RouterLink],
   templateUrl: "./profile-menu.component.html",

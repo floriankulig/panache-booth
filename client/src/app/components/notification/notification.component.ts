@@ -17,7 +17,7 @@ import {
 } from "@angular/animations";
 
 @Component({
-  selector: "app-notification",
+  selector: "pb-notification",
   standalone: true,
   imports: [IconsModule],
   templateUrl: "./notification.component.html",

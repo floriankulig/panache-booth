@@ -17,7 +17,7 @@ import { IconsModule } from "../../icons/icons.module";
 import { CommonModule } from "@angular/common";
 
 @Component({
-  selector: "app-modal",
+  selector: "pb-modal",
   standalone: true,
   imports: [IconsModule, CommonModule],
   templateUrl: "./modal.component.html",
