@@ -52,7 +52,7 @@
       .div {
         width: 1px;
         height: grid(4);
-        background: rgba($textSecondary, 0.5);
+        background: rgba($textSecondary, 0.3);
       }
 
       .orders,
@@ -96,7 +96,7 @@
   .divider {
     height: 1px;
     width: calc(100% - (grid(8)));
-    background: $textSecondary;
+    background: rgba($textSecondary, 0.4);
   }
 
   @media screen and (max-width: 768px) {
