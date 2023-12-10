@@ -36,7 +36,7 @@ export class HeaderComponent {
   }
 
   private getTabText(url: string) {
-    const urlParts = url.split("/");
+    const urlParts = url.split("?")[0].split("/");
     const firstPart = urlParts[1];
     switch (firstPart) {
       case "orders":
