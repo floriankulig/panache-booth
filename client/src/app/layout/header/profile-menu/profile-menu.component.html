@@ -29,7 +29,11 @@
         <i-feather name="user-plus"></i-feather> Sign up
       </li>
       } @else {
-      <li class="profile-menu__actions-item" routerLink="/profile">
+      <li
+        class="profile-menu__actions-item"
+        routerLink="/profile"
+        (click)="open.set(false)"
+      >
         <i-feather name="smile"></i-feather> My Profile
       </li>
       <li class="profile-menu__actions-item" (click)="logout()">

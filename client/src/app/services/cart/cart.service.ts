@@ -42,6 +42,7 @@ export class CartService {
         [this._urlStateName]: newValue ? this._urlStateTruthy : undefined,
       },
       queryParamsHandling: "merge",
+      replaceUrl: true,
     });
   }
 }

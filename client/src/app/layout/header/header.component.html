@@ -1,6 +1,9 @@
 <nav class="inner">
-  <div class="burger" role="button" (click)="toggleSidebar()">
-    <i-feather name="menu"></i-feather>
+  <div>
+    <div class="burger" role="button" (click)="toggleSidebar()">
+      <i-feather name="menu"></i-feather>
+    </div>
+    <h3>{{ tabText }}</h3>
   </div>
   <pb-searchbar></pb-searchbar>
   <div class="actions">
@@ -13,7 +16,7 @@
       <i-feather name="shopping-cart"></i-feather>
       @if (productsInCart()) {
       <div [class]="{ count: true, big: productsInCart() > 100 }">
-        {{ productsInCart() > 100 ? "99+" : productsInCart() }}
+        {{ productsInCart() >= 100 ? "99+" : productsInCart() }}
       </div>
       }
     </div>

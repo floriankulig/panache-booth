@@ -16,21 +16,31 @@
     align-items: center;
     padding: 0 $grid * 4;
 
-    .burger {
-      cursor: pointer;
-      display: none;
-      width: $grid * 6;
-      aspect-ratio: 1;
-      border-radius: $grid * 1.5;
-      place-items: center;
-      transition: background 0.3s ease-in-out;
+    & > div:first-child {
+      .burger {
+        cursor: pointer;
+        display: none;
+        width: $grid * 6;
+        aspect-ratio: 1;
+        border-radius: $grid * 1.5;
+        place-items: center;
+        transition: background 0.3s ease-in-out;
 
-      &:hover {
-        background: rgba($bgSecondary, 0.8);
+        &:hover {
+          background: rgba($bgSecondary, 0.8);
+        }
+      }
+      h3 {
+        font-weight: 600;
       }
 
       @media screen and (max-width: 1080px) {
-        display: grid;
+        .burger {
+          display: grid;
+        }
+        h3 {
+          display: none;
+        }
       }
     }
 

@@ -1,4 +1,2 @@
 export const isAuthUrl = (route: string) =>
-  ["/login", "/register", "registerVendor"].some((url) =>
-    route.startsWith(url),
-  );
+  ["/login", "/register"].some((url) => route.startsWith(url));
