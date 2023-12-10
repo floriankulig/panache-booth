@@ -32,8 +32,11 @@ import {
         }),
       ]),
       transition(":leave", [
-        style({ transform: "scale(1)", transformOrigin: " bottom right" }),
-        animate(`200ms 50ms ease-in-out`, style({ transform: "scale(0)" })),
+        style({ transform: "scale(1)", transformOrigin: "bottom right" }),
+        animate(
+          `200ms 50ms ease-in-out`,
+          style({ transform: "scale(0) translateX(50px)" }),
+        ),
       ]),
     ]),
     trigger("progress", [
