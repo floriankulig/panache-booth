@@ -50,7 +50,7 @@ export class ProfileMenuComponent {
   }
 
   openCart() {
-    this.cartService.cartOpen.set(true);
+    this.cartService.setCart(true);
     this.open.set(false);
   }
 

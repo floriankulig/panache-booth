@@ -35,7 +35,7 @@ export class HeaderComponent {
   ) {}
 
   openCart() {
-    this.cartService.cartOpen.set(true);
+    this.cartService.setCart(true);
   }
   openOrders() {
     this.orderService.ordersOpen.set(true);
