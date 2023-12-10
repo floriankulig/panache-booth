@@ -11,19 +11,13 @@ Web Engineering 2 Online Shop.
 
 ## How to run
 
-### FrontEnd
-
-1. Stellen Sie sicher, dass Sie [Node.js](https://nodejs.org/en) auf Ihrem Rechner installiert haben.
+1. Stellen Sie sicher, dass Sie [Node.js](https://nodejs.org/en) inkl. npm auf Ihrem Rechner installiert haben.
 2. Öffnen Sie ein Terminal oder eine Eingabeaufforderung.
-3. Führen Sie folgende Commands nacheinander aus:
+3. Führen Sie folgenden Command aus:
 
 ```bash
-3.1 cd client
-3.2 npm i
-3.3 npm run start
+npm run web-engineering
 ```
-
-4. Öffnen Sie Ihren Webbrowser und navigieren Sie zu [http://localhost:4200](http://localhost:4200), um die Anwendung zu sehen.
 
 ## Features
 
