@@ -13,7 +13,7 @@ Web Engineering 2 Online Shop.
 
 1. Stellen Sie sicher, dass Sie [Node.js](https://nodejs.org/en) inkl. npm auf Ihrem Rechner installiert haben.
 2. Öffnen Sie ein Terminal oder eine Eingabeaufforderung.
-3. Führen Sie folgenden Command aus:
+3. Führen Sie folgenden All-In-One-Command aus:
 
 ```bash
 npm run web-engineering
@@ -30,6 +30,7 @@ npm run web-engineering
 
 - Lagern des Application-State per URL-Query-Parameter für bestmögliche Datenpersistenz auch nach Neuladen der Seite (z.B. Suche)
 - Selbstgehostete Schriftarten für bessere Performance
-- Micro Interaktionen für bessere User Experience (Nutzer sieht visuell wie er mit der App interagiert)
+- Micro Interaktionen für bessere User Experience: Nutzer sieht visuell wie er mit der App interagiert
+  - Optimieren von Animationen für WebKit Browser Engine: Keine _transform_-regeln auf **flex**-/**grid**-Elementen.
 - Schutz von Nutzerdaten: nur das jeweils eigene und Verkäuferprofile können eingesehen werden
 - Verkäufer können selbst zu Käufern werden.
