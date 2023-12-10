@@ -1,1 +1,11 @@
-<p>profile works!</p>
+@if (!!profile) {
+<section class="meta-info">
+  <span class="role-chip"
+    ><i-feather [name]="profile.isVendor ? 'truck' : 'user'"></i-feather
+    >{{ profile.isVendor ? "Vendor" : "Customer" }}</span
+  >
+  <div>&bull;</div>
+  <p>Joined on {{ joinDate }}</p>
+</section>
+<h1>{{ "@" + profile.userName }}</h1>
+}
