@@ -62,7 +62,7 @@
     overflow: hidden;
     display: flex;
     position: relative;
-    padding: $grid * 1 $grid * 1.5;
+    padding: $grid * 1 grid(1.5);
     border-radius: $grid;
     backdrop-filter: blur($grid * 0.5);
     gap: $grid;
@@ -73,7 +73,7 @@
 
     p {
       font-weight: 500;
-      line-height: $grid * 3;
+      line-height: grid(3);
       margin-right: $grid * 0.5;
       flex: 1;
     }
@@ -88,8 +88,8 @@
       transition: all 0.15s ease-in-out;
 
       i-feather {
-        width: $grid * 2.5;
-        height: $grid * 2.5;
+        width: grid(2) 0.5;
+        height: grid(2) 0.5;
         stroke-width: 1.5;
       }
 

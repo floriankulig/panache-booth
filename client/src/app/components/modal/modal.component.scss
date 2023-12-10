@@ -3,7 +3,7 @@
   width: 100dvw;
   height: 100dvh;
   position: fixed;
-  padding-top: $grid * 6;
+  padding-top: grid(6);
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -24,21 +24,21 @@
     }
 
     &-container {
-      $br: clamp($grid * 3.5, 5vw, $grid * 6);
-      min-height: calc(100dvh - $grid * 6);
+      $br: clamp(grid(3.5), 5vw, grid(6));
+      min-height: calc(100dvh - grid(6));
       width: 95vw;
       position: relative;
       border-radius: $br $br 0 0;
-      padding: $grid * 6 clamp($grid * 4, 5vw, $grid * 8);
+      padding: grid(6) clamp(grid(4), 5vw, grid(8));
       background: rgba($bgSecondary, 0.9);
       backdrop-filter: blur(32px) saturate(180%);
       box-shadow: 0 0 64px rgba($bgPrimaryDark, 0.1);
 
       & .close {
         aspect-ratio: 1;
-        width: $grid * 8;
-        top: $grid * 6;
-        right: clamp($grid * 3, 5vw, $grid * 8);
+        width: grid(8);
+        top: grid(6);
+        right: clamp(grid(3), 5vw, grid(8));
         position: absolute;
         display: grid;
         cursor: pointer;
@@ -48,8 +48,8 @@
         background: rgba($bgPrimary, 0.7);
 
         i-feather {
-          width: $grid * 3.5;
-          height: $grid * 3.5;
+          width: grid(3.5);
+          height: grid(3.5);
           transition: scale 0.1s ease-in-out;
         }
 
@@ -61,17 +61,17 @@
       }
 
       h1 {
-        line-height: $grid * 8;
+        line-height: grid(8);
         font-size: clamp(2.5rem, 8vw, 3rem);
-        margin-bottom: $grid * 3;
+        margin-bottom: grid(3);
       }
 
       @media screen and (max-width: 768px) {
         width: 100vw;
-        padding-top: $grid * 4;
+        padding-top: grid(4);
 
         & .close {
-          top: $grid * 4;
+          top: grid(4);
         }
       }
     }

@@ -21,3 +21,7 @@ $bgSecondaryDark: #2f2f2f;
 
 $sidebarWidth: 300px;
 $headerHeight: 80px;
+
+@function grid($amount: 1) {
+  @return $grid * $amount;
+}

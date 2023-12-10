@@ -18,23 +18,23 @@
   }
 
   & > * {
-    padding: $grid * 3;
+    padding: grid(3);
   }
 
   .header-logo {
     height: $headerHeight;
     display: flex;
     align-items: center;
-    gap: $grid * 2;
+    gap: grid(2);
     background: $bgPrimaryDark;
 
     .burger {
       cursor: pointer;
       display: none;
       place-items: center;
-      width: $grid * 6;
+      width: grid(6);
       aspect-ratio: 1;
-      border-radius: $grid * 1.5;
+      border-radius: grid(1.5);
       transition: background 0.3s ease-in-out;
 
       &:hover {
@@ -43,7 +43,7 @@
     }
 
     @media screen and (max-width: 1080px) {
-      padding-left: $grid * 1.5;
+      padding-left: grid(1.5);
       .burger {
         display: grid;
       }

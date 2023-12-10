@@ -14,7 +14,7 @@
 
   .content {
     flex: 1;
-    padding: $grid * 4;
+    padding: grid(4);
     overflow-y: auto;
     height: 300vh;
   }
