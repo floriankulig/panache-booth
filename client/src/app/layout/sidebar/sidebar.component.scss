@@ -28,23 +28,6 @@
     gap: $grid * 2;
     background: $bgPrimaryDark;
 
-    .logo {
-      padding-top: $grid * 0.25;
-      position: relative;
-      z-index: 0;
-
-      .circle {
-        background: rgba($textSecondaryDark, 0.2);
-        border-radius: 50%;
-        aspect-ratio: 1;
-        width: 2.5rem;
-        position: absolute;
-        bottom: -0.6rem;
-        left: $grid * 16;
-        z-index: -1;
-      }
-    }
-
     .burger {
       cursor: pointer;
       display: none;
@@ -64,11 +47,6 @@
       .burger {
         display: grid;
       }
-    }
-
-    span {
-      font-size: 1.5rem;
-      font-weight: 700;
     }
   }
 
