@@ -30,9 +30,12 @@ Web Engineering 2 Online Shop.
 ### Non-Funktional
 
 - Etablierter Code Style Guide für bestmögliche Code-Qualität
+- Implementieren von brandguide-konformen Komponenten-Selektoren per config-default.
 
 ### Funktional
 
 - Lagern des Application-State per URL-Query-Parameter für bestmögliche Datenpersistenz auch nach Neuladen der Seite (z.B. Suche)
 - Selbstgehostete Schriftarten für bessere Performance
-- Micro user interaktionen für besserere User Experience (Nutzer sieht visuell wie er mit der App interagiert)
+- Micro Interaktionen für bessere User Experience (Nutzer sieht visuell wie er mit der App interagiert)
+- Schutz von Nutzerdaten: nur das jeweils eigene und Verkäuferprofile können eingesehen werden
+- Verkäufer können selbst zu Käufern werden.
