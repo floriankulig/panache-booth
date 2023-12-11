@@ -1,14 +1,14 @@
 import { database } from "./databases";
-import { IArticle } from "./IArticle";
-import {v4 as uuidv4 } from "uuid";
+import { IProduct } from "./IProduct";
+import { v4 as uuidv4 } from "uuid";
 
 export function getArticleById(id: string) {
   try {
-    let article = database.prepare("select * from article where id = ?").get(id);
-    if (article != undefined) {
+    let product = database.prepare("select * from article where id = ?").get(id);
+    if (product != undefined) {
       // @ts-ignore
-      article["isVisible"] = article["isVisible"] !== 0;
-      return article;
+      product["isVisible"] = product["isVisible"] !== 0;
+      return product;
     }
     else {
       return undefined;
@@ -19,23 +19,23 @@ export function getArticleById(id: string) {
 }
 
 export function getAllArticles()  {
-  let articles = database.prepare("select * from article;").all();
+  let products = database.prepare("select * from article;").all();
 
-  articles.forEach((key) => {
+  products.forEach((key) => {
     // @ts-ignore
     key["isVisible"] = key["isVisible"] !== 0;
   });
-  return articles;
+  return products;
 }
 
-export function createArticle(article: IArticle) {
-  article.id = uuidv4();
+export function createArticle(product: IProduct) {
+  product.id = uuidv4();
   const currentTimestamp = new Date().toISOString();
-  article.createdAt = currentTimestamp;
-  article.updatedAt = currentTimestamp;
+  product.createdAt = currentTimestamp;
+  product.updatedAt = currentTimestamp;
 
   let isArticleVisble = null;
-  if (article.isVisible) {
+  if (product.isVisible) {
     isArticleVisble = 1;
   } else {
     isArticleVisble = 0;
@@ -50,11 +50,11 @@ export function createArticle(article: IArticle) {
   )
 
   const info = stmt.run(
-    article.id, article.name, article.description, article.category, article.coupon,
-    article.price, article.vendorId, article.purchases, article.inventory,
-    isArticleVisble, article.createdAt, article.updatedAt
+    product.id, product.name, product.description, product.category, product.coupon,
+    product.price, product.vendorId, product.purchases, product.inventory,
+    isArticleVisble, product.createdAt, product.updatedAt
   )
-  return getArticleById(article.id);
+  return getArticleById(product.id);
 }
 
 export function updateArticleById(articleChanges: Map<string, string>, id: string) {
@@ -79,5 +79,5 @@ export function updateArticleById(articleChanges: Map<string, string>, id: strin
 }
 
 export function deleteArticleById(id: string) {
-  return database.prepare("delete from article where id = ?").run(id);
+  return database.prepare("delete from article where id = ?;").run(id);
 }

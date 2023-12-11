@@ -1,9 +1,6 @@
 import express from "express";
-import { IArticle } from "../models/IArticle";
-import { addUser, allUsers, deleteUser, updateUser, userById } from "../services/user";
-import { addArticle, allArticles, articleById, deleteArticle, updateArticle } from "../services/article";
-import { IUser } from "../models/IUser";
-
+import { IProduct } from "../models/IProduct";
+import { addArticle, allArticles, articleById, deleteArticle, updateArticle } from "../services/product";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -16,7 +13,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const article: IArticle = {
+    const article: IProduct = {
       name: req.body.name,
       description: req.body.description,
       category: req.body.category,

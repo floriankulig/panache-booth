@@ -37,6 +37,19 @@ const createArticleTable =
   "updatedAt varchar(255) not null" +
   ");";
 
+const createOrderTable =
+  "create table if not exists orders (" +
+  "id varchar(36) not null primary key, " +
+  "userId varchar(36), " +
+  "vendorId varchar(36), " +
+  "productId varchar(36), " +
+  "price decimal(10,2), " +
+  "numberOfPurchases integer, " +
+  "delivered integer, " +
+  "createdAt varchar(255) not null, " +
+  "updatedAt varchar(255) not null" +
+  ");";
 
 database.exec(createUserTable);
 database.exec(createArticleTable);
+database.exec(createOrderTable);
