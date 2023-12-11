@@ -35,10 +35,10 @@ import { CommonModule } from "@angular/common";
         style({
           opacity: 0.3,
           scale: 0.95,
-          transform: "translateY(100%) rotateX(3deg)",
+          transform: "translateY(100%) rotateX(10deg)",
         }),
         animate(
-          "400ms cubic-bezier(0.645, 0.045, 0.355, 1)",
+          "250ms cubic-bezier(0.645, 0.045, 0.355, 1)",
           style({
             opacity: 1,
             scale: 1,
@@ -49,11 +49,11 @@ import { CommonModule } from "@angular/common";
       transition(":leave", [
         style({ opacity: 1, scale: 1, transform: "translateY(0)" }),
         animate(
-          "200ms cubic-bezier(0.645, 0.045, 0.355, 1)",
+          "150ms cubic-bezier(0.645, 0.045, 0.355, 1)",
           style({
             opacity: 0,
             scale: 0.95,
-            transform: "translateY(20%) rotateX(2deg)",
+            transform: "translateY(30%) rotateX(2deg)",
           }),
         ),
       ]),
