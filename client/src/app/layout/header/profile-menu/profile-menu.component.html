@@ -12,11 +12,11 @@
     <div class="divider"></div>
     }
     <ul class="profile-menu__actions">
-      <li class="profile-menu__actions-item">
+      <li class="profile-menu__actions-item" (click)="openCart()">
         <i-feather name="shopping-cart"></i-feather> Cart
       </li>
       @if (user()) {
-      <li class="profile-menu__actions-item">
+      <li class="profile-menu__actions-item" (click)="openOrders()">
         <i-feather name="shopping-bag"></i-feather> Orders
       </li>
       }
@@ -29,7 +29,11 @@
         <i-feather name="user-plus"></i-feather> Sign up
       </li>
       } @else {
-      <li class="profile-menu__actions-item" routerLink="/profile">
+      <li
+        class="profile-menu__actions-item"
+        routerLink="/profile"
+        (click)="open.set(false)"
+      >
         <i-feather name="smile"></i-feather> My Profile
       </li>
       <li class="profile-menu__actions-item" (click)="logout()">

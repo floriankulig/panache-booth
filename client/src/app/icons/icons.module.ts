@@ -15,6 +15,11 @@ import {
   Menu,
   Info,
   Smile,
+  Trash,
+  Edit3,
+  Home,
+  CreditCard,
+  Truck,
   LogOut,
 } from "angular-feather/icons";
 
@@ -29,10 +34,15 @@ const icons = {
   UserCheck,
   UserPlus,
   Smile,
+  Trash,
+  Edit3,
   Menu,
   Info,
+  Home,
+  CreditCard,
   CheckCircle,
   AlertCircle,
+  Truck,
   AlertTriangle,
 };
 

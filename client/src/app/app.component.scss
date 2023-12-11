@@ -11,15 +11,16 @@
 
   ul.notifications {
     position: fixed;
-    bottom: $grid * 4;
-    right: $grid * 4;
+    bottom: grid(4);
+    right: grid(4);
     display: flex;
+    align-items: flex-end;
     flex-direction: column-reverse;
-    gap: $grid * 1.5;
-    z-index: 100;
+    gap: grid(1.5);
+    z-index: 10000;
 
     @media screen and (max-width: 600px) {
-      bottom: $grid * 2;
+      bottom: grid(2);
       left: 0;
       right: 0;
       width: 95vw;

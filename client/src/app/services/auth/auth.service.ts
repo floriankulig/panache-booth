@@ -29,7 +29,6 @@ export class AuthService {
         password,
       });
       const user = res.data;
-      console.log(user);
       this.user.set(user);
       this.saveUidToLocalStorage(user.id);
       this.notificationService.addNotification({
@@ -43,13 +42,11 @@ export class AuthService {
   }
 
   async register(formUser: RegisterUser): Promise<User> | never {
-    console.log(formUser);
     try {
       const res = await axios.post(`${API_URL}/user`, {
         ...formUser,
       });
       const user = res.data;
-      console.log(user);
       this.user.set(user);
       this.saveUidToLocalStorage(user.id);
       this.notificationService.addNotification({
@@ -62,14 +59,23 @@ export class AuthService {
     }
   }
 
+  async getUser(id: string): Promise<User> | never {
+    try {
+      const res = await axios.get<User>(`${API_URL}/user/${id}`);
+      return res.data;
+    } catch (error) {
+      throw error as AxiosError;
+    }
+  }
+
   async getUserFromLocalStorage(): Promise<User | null> {
-    const uid = JSON.parse(localStorage.getItem("uid") || "");
+    let uid = localStorage.getItem("uid") || "";
     if (!uid) {
       return null;
     }
+    uid = JSON.parse(uid);
     try {
-      const res = await axios.get(`${API_URL}/user/${uid}`);
-      const user = res.data;
+      const user = await this.getUser(uid);
       this.user.set(user);
       this.notificationService.addNotification({
         message: `Welcome back, @${user.userName}!`,
@@ -78,12 +84,28 @@ export class AuthService {
       });
       return user;
     } catch (error) {
+      if (
+        ((error as AxiosError).response?.data as string).includes(
+          "User does not exist",
+        )
+      ) {
+        localStorage.removeItem("uid");
+        return null;
+      }
       throw error as AxiosError;
     }
   }
 
+  uidFromLocalStorage(): string | null {
+    try {
+      return JSON.parse(localStorage.getItem("uid") || "");
+    } catch (error) {
+      return null;
+    }
+  }
+
   isLoggedIn(): boolean {
-    return !!localStorage.getItem("uid");
+    return !!localStorage.getItem("uid") && !!this.user();
   }
 
   logout(): void {
@@ -91,7 +113,7 @@ export class AuthService {
     localStorage.removeItem("uid");
     this.notificationService.addNotification({
       message: `Successfully logged out!`,
-      duration: 6000,
+      duration: 5000,
     });
   }
 

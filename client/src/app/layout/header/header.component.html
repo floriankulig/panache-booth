@@ -1,22 +1,27 @@
-<nav class="inner">
-  <div class="burger" role="button" (click)="toggleSidebar()">
-    <i-feather name="menu"></i-feather>
+<nav class="inner content-inner">
+  <div>
+    <div class="burger" role="button" (click)="toggleSidebar()">
+      <i-feather name="menu"></i-feather>
+    </div>
+    <h3>{{ tabText }}</h3>
   </div>
-  <app-searchbar></app-searchbar>
+  <pb-searchbar></pb-searchbar>
   <div class="actions">
-    <div class="orders">
+    <div class="orders" (click)="openOrders()">
       <i-feather name="shopping-bag"></i-feather>
       <div class="indicator"></div>
     </div>
     <span class="div"></span>
-    <div class="cart">
+    <div class="cart" (click)="openCart()">
       <i-feather name="shopping-cart"></i-feather>
+      @if (productsInCart()) {
       <div [class]="{ count: true, big: productsInCart() > 100 }">
-        {{ productsInCart() > 100 ? "99+" : productsInCart() }}
+        {{ productsInCart() >= 100 ? "99+" : productsInCart() }}
       </div>
+      }
     </div>
     <span class="div"></span>
-    <app-profile-menu></app-profile-menu>
+    <pb-profile-menu></pb-profile-menu>
   </div>
 </nav>
 <div class="divider"></div>

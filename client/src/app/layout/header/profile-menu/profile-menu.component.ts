@@ -5,9 +5,10 @@ import { AuthService } from "../../../services/auth/auth.service";
 import { getDistanceToDate } from "../../../../helpers";
 import { isToday } from "date-fns";
 import { User } from "../../../../ts";
+import { CartService, OrderService } from "../../../services";
 
 @Component({
-  selector: "app-profile-menu",
+  selector: "pb-profile-menu",
   standalone: true,
   imports: [IconsModule, RouterLink],
   templateUrl: "./profile-menu.component.html",
@@ -33,6 +34,8 @@ export class ProfileMenuComponent {
   constructor(
     private elementRef: ElementRef,
     private authService: AuthService,
+    private cartService: CartService,
+    private orderService: OrderService,
   ) {}
 
   ngOnInit() {
@@ -44,6 +47,16 @@ export class ProfileMenuComponent {
         this.open.set(false);
       }
     });
+  }
+
+  openCart() {
+    this.cartService.setCart(true);
+    this.open.set(false);
+  }
+
+  openOrders() {
+    this.orderService.ordersOpen.set(true);
+    this.open.set(false);
   }
 
   toggleMenu() {

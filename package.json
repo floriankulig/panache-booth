@@ -1,0 +1,14 @@
+{
+  "name": "panache-booth",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"cd client && npm run start\" \"cd server && npm run start\"",
+    "prod": "concurrently \"cd client && npm run prod\" \"cd server && npm run start\"",
+    "install-app": "npm install && cd client && npm install && cd ../server && npm install",
+    "web-engineering": "npm run install-app && npm run prod"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

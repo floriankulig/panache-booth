@@ -1,0 +1,150 @@
+@use "variables.scss" as *;
+:host {
+  // display: block;
+  container: vendor / inline-size;
+
+  @container vendor (width < 960px) {
+    .vendor-info {
+      flex-direction: column;
+    }
+  }
+
+  .vendor-info {
+    $grid-space: clamp(grid(1.5), 2vw, grid(3));
+    display: flex;
+    gap: $grid-space;
+    background: $bgPrimary;
+    margin-bottom: grid(5);
+
+    i-feather {
+      stroke-width: 1.5;
+      width: grid(2.5);
+      height: grid(2.5);
+    }
+
+    section {
+      background: $bgSecondaryDark;
+      border-radius: clamp(grid(2.75), 2vw, grid(3.5));
+      padding: clamp(grid(3), 2.5vw, grid(4));
+      padding-right: clamp(grid(4), 3vw, grid(5));
+      color: $textPrimaryDark;
+      box-shadow: 2px 4px 12px rgba($bgPrimaryDark, 0.15);
+
+      &.intro {
+        padding: clamp(grid(3.5), 2.5vw, grid(4));
+        flex: 1;
+
+        .actions {
+          margin-top: grid(3.5);
+          display: flex;
+          justify-content: space-between;
+          gap: grid(1.5);
+
+          button {
+            flex: 1;
+            background: $bgPrimaryDark;
+
+            &:hover {
+              background: rgba($primary, 0.2);
+            }
+            &.delete:hover {
+              background: rgba($error, 0.2);
+              color: rgba($error, 1);
+            }
+          }
+        }
+      }
+    }
+
+    & > div {
+      display: flex;
+      flex-wrap: wrap;
+      gap: $grid-space;
+
+      section {
+        min-width: 250px;
+        width: 25%;
+        flex-wrap: wrap;
+        flex: 1;
+        h4 {
+          font-weight: 600;
+          color: $textSecondaryDark;
+          margin-bottom: clamp(grid(1.75), 1.5vw, grid(2.5));
+          display: flex;
+          align-items: center;
+          gap: grid();
+          span {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+          i-feather {
+            flex-shrink: 0;
+            width: grid(2.25);
+            height: grid(2.25);
+            stroke-width: 2.5;
+          }
+        }
+
+        p {
+          font-size: clamp(1.175rem, 2vw, 1.25rem);
+          display: flex;
+          flex-direction: column-reverse;
+          gap: grid(0.5);
+          &:not(:last-child) {
+            margin-bottom: clamp(grid(1.5), 1vw, grid(2));
+          }
+
+          .field-desc {
+            color: $textSecondaryDark;
+            font-size: 0.75rem;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+
+  .meta-info {
+    display: flex;
+    align-items: center;
+    gap: grid(1.5);
+    color: $textSecondaryDark;
+
+    span.role-chip {
+      display: flex;
+      opacity: 0.8;
+      align-items: center;
+      gap: grid();
+      width: fit-content;
+      padding: $grid grid(2);
+      background: $primary;
+      color: $textPrimaryDark;
+      border-radius: grid(3);
+      font-weight: 500;
+
+      i-feather {
+        stroke-width: 1.5;
+        width: grid(2.5);
+        height: grid(2.5);
+      }
+    }
+
+    div {
+      transform: scale(1.75) translateY(-1px);
+    }
+  }
+  h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    margin: grid(3) 0 clamp(grid(1), 2vw, grid(3));
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  h2 {
+    letter-spacing: -0.5px;
+    font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+    font-weight: 700;
+    margin-top: grid(3);
+  }
+}

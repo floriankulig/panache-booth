@@ -5,6 +5,15 @@
   <div class="notification-close" role="button" (click)="removeNotification()">
     <i-feather name="x"></i-feather>
   </div>
-  <div class="progress" #progress></div>
+  <div
+    class="progress"
+    #progress
+    [@progress]="{
+      value: shouldAnimate,
+      params: {
+        animationDuration: shouldAnimate ? notification.duration : 0
+      }
+    }"
+  ></div>
 </div>
 }

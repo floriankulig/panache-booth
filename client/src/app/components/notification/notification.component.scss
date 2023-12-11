@@ -1,9 +1,13 @@
 @use "variables.scss" as *;
 
 :host {
+  width: clamp(300px, 100%, 500px);
+  max-width: 95vw;
+  box-sizing: border-box;
   .notification {
+    box-shadow: 1px 3px 12px rgba($textPrimary, 0.05);
     &.info {
-      background: rgba($info, 0.1);
+      background: rgba($info, 0.15);
       color: $info;
       & .notification-close {
         color: darken($info, 15%);
@@ -16,7 +20,7 @@
       }
     }
     &.warning {
-      background: rgba($warning, 0.1);
+      background: rgba($warning, 0.15);
       color: $warning;
       & .notification-close {
         color: darken($warning, 15%);
@@ -29,7 +33,7 @@
       }
     }
     &.success {
-      background: rgba($success, 0.1);
+      background: rgba($success, 0.15);
       color: $success;
       & .notification-close {
         color: darken($success, 15%);
@@ -42,7 +46,7 @@
       }
     }
     &.error {
-      background: rgba($error, 0.1);
+      background: rgba($error, 0.15);
       color: $error;
       & .notification-close {
         color: darken($error, 15%);
@@ -54,13 +58,13 @@
         background: $error;
       }
     }
-    width: clamp(300px, 100%, 500px);
-    max-width: 95vw;
+    width: 100%;
     overflow: hidden;
     display: flex;
-    padding: $grid * 1 $grid * 1.5;
+    position: relative;
+    padding: $grid * 1 grid(1.5);
     border-radius: $grid;
-    backdrop-filter: blur($grid * 0.5);
+    backdrop-filter: blur(grid(2));
     gap: $grid;
 
     & > :is(i-feather, p) {
@@ -69,7 +73,7 @@
 
     p {
       font-weight: 500;
-      line-height: $grid * 3;
+      line-height: grid(3);
       margin-right: $grid * 0.5;
       flex: 1;
     }
@@ -84,8 +88,8 @@
       transition: all 0.15s ease-in-out;
 
       i-feather {
-        width: $grid * 2.5;
-        height: $grid * 2.5;
+        width: grid(2) 0.5;
+        height: grid(2) 0.5;
         stroke-width: 1.5;
       }
 
@@ -103,16 +107,6 @@
       height: 100%;
       transform-origin: left;
       z-index: -1;
-      animation: progress 5s linear forwards;
     }
-  }
-}
-
-@keyframes progress {
-  0% {
-    transform: scaleX(0);
-  }
-  100% {
-    transform: scaleX(100%);
   }
 }

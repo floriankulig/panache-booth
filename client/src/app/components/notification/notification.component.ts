@@ -1,29 +1,62 @@
 import {
-  AfterViewInit,
   ViewChild,
   Component,
   Input,
   ElementRef,
+  HostBinding,
 } from "@angular/core";
 import { Notification, NotificationService } from "../../services";
 import { IconsModule } from "../../icons/icons.module";
+import {
+  animate,
+  animateChild,
+  query,
+  style,
+  transition,
+  trigger,
+} from "@angular/animations";
 
 @Component({
-  selector: "app-notification",
+  selector: "pb-notification",
   standalone: true,
   imports: [IconsModule],
   templateUrl: "./notification.component.html",
   styleUrl: "./notification.component.scss",
+  animations: [
+    trigger("notification", [
+      transition(":enter", [
+        style({ transform: "scale(0)", transformOrigin: "bottom right" }),
+        animate(`200ms ease-in-out`, style({ transform: "scale(1)" })),
+        query("@progress", animateChild(), {
+          optional: true,
+        }),
+      ]),
+      transition(":leave", [
+        style({ transform: "scale(1)", transformOrigin: "bottom right" }),
+        animate(
+          `200ms 50ms ease-in-out`,
+          style({ transform: "scale(0) translateX(50px)" }),
+        ),
+      ]),
+    ]),
+    trigger("progress", [
+      transition(":enter", [
+        style({ transform: "scaleX(0)", transformOrigin: "left" }),
+        animate(`{{ animationDuration }}ms`, style({ transform: "scaleX(1)" })),
+      ]),
+    ]),
+  ],
 })
-export class NotificationComponent implements AfterViewInit {
+export class NotificationComponent {
   @Input() notification!: Notification;
   @Input() index!: number;
   @ViewChild("progress") progressBar!: ElementRef<HTMLDivElement>;
 
-  constructor(
-    private notificationService: NotificationService,
-    private elementRef: ElementRef,
-  ) {}
+  @HostBinding("@notification") get notificationAnimation() {
+    return true;
+  }
+
+  constructor(private notificationService: NotificationService) {}
 
   get iconName() {
     if (this.notification.icon) return this.notification.icon;
@@ -39,12 +72,8 @@ export class NotificationComponent implements AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
-    if (this.notification.duration || 0 >= 1000) {
-      this.progressBar.nativeElement.style.animationDuration = `${this.notification.duration}ms`;
-    } else {
-      this.progressBar.nativeElement.style.animation = "none";
-    }
+  get shouldAnimate() {
+    return (this.notification.duration || 0) > 1000;
   }
 
   get classes() {

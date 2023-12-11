@@ -13,7 +13,7 @@ import {
 import { AuthService } from "../../services";
 
 @Component({
-  selector: "app-login",
+  selector: "pb-login",
   standalone: true,
   imports: [RouterModule, IconsModule, FormsModule, ReactiveFormsModule],
   templateUrl: "./login.component.html",
@@ -57,7 +57,6 @@ export class LoginComponent implements OnInit {
   async login(e: SubmitEvent) {
     e.preventDefault();
     if (this.submitting || !this.formGroup.valid) return;
-    console.log(this.formGroup.value);
 
     this.submitting = true;
     const { email, password } = this.formGroup.value;

@@ -26,16 +26,12 @@ interface User {
   isVendor: boolean;
   iban?: string;
   bic?: string;
-  address: Address;
-  shippingCost?: number;
-  shippingFreeFrom?: number;
-}
-
-interface Address {
   street: string;
   houseNumber: string;
   postcode: string;
   city: string;
+  shippingCost?: string;
+  shippingFreeFrom?: string;
 }
 
-export { Product, User, Address };
+export { Product, User };

@@ -1,6 +1,6 @@
 import { Location } from "@angular/common";
 import { AxiosError } from "axios";
-import { Input, Component, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { IconsModule } from "../../icons/icons.module";
 import {
   FormsModule,
@@ -12,11 +12,11 @@ import {
 } from "@angular/forms";
 import { PositiveNumberDirective } from "../../directives/positive-number.directive";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
-import { Address } from "../../../ts";
-import { AuthService, RegisterUser } from "../../services";
+import { AuthService } from "../../services";
+import { buildUserFromFormValues } from "../../../helpers";
 
 @Component({
-  selector: "app-register",
+  selector: "pb-register",
   standalone: true,
   imports: [
     IconsModule,
@@ -29,7 +29,7 @@ import { AuthService, RegisterUser } from "../../services";
   styleUrl: "./register.component.scss",
 })
 export class RegisterComponent implements OnInit {
-  @Input() formType: "vendor" | "customer" = "customer";
+  formType: "vendor" | "customer" = "customer";
   submitting = false;
   errorMessage = "";
   formStep = 1;
@@ -53,6 +53,12 @@ export class RegisterComponent implements OnInit {
       postcode: ["", Validators.required],
       city: ["", Validators.required],
     }),
+    this.formBuilder.group({
+      iban: ["", Validators.required],
+      bic: ["", Validators.required],
+      shippingCost: [""],
+      shippingFreeFrom: [""],
+    }),
   ];
 
   constructor(
@@ -72,10 +78,10 @@ export class RegisterComponent implements OnInit {
   }
 
   get primaryText() {
-    return this.formStep < 2
+    return this.formStep < this.maxSteps
       ? "Next Step"
       : this.submitting
-      ? "lädt..."
+      ? "loading..."
       : "Sign Up";
   }
 
@@ -107,7 +113,7 @@ export class RegisterComponent implements OnInit {
     if (!this.formGroup.valid) {
       return;
     }
-    if (this.formStep < 2) {
+    if (this.formStep < this.maxSteps) {
       this.formStep++;
       this.formGroup = this.steps[this.formStep - 1];
     } else {
@@ -115,22 +121,21 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  async submit() {
+  toggleFormType() {
+    this.formType = this.formType === "vendor" ? "customer" : "vendor";
+    if (this.formStep === 3) {
+      this.formStep = 2;
+      this.formGroup = this.steps[this.formStep - 1];
+    }
+  }
+
+  get maxSteps() {
+    return this.formType === "vendor" ? 3 : 2;
+  }
+
+  private async submit() {
     this.submitting = true;
-    const { username, email, password } = this.steps[0].value as {
-      [key: string]: string;
-    };
-    const { postcode, houseNumber, ...address } = this.steps[1]
-      .value as Address;
-    const user: RegisterUser = {
-      userName: username,
-      email,
-      password,
-      houseNumber: houseNumber.toString(),
-      postcode: postcode.toString(),
-      ...address,
-      isVendor: this.formType === "vendor",
-    };
+    const user = buildUserFromFormValues(this.steps, this.formType);
     try {
       await this.authService.register(user);
       this.locationBack();
@@ -141,7 +146,7 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  customValidators(formGroup: FormGroup) {
+  private customValidators(formGroup: FormGroup) {
     const password = formGroup.get("password")?.value;
     const confirmPassword = formGroup.get("confirmPassword")?.value;
     if (password !== confirmPassword) {

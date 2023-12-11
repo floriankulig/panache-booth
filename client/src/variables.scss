@@ -1,4 +1,4 @@
-$easing: cubic-bezier(0.6, 0.1, -0.05, 0.95);
+$easing: cubic-bezier(0.645, 0.045, 0.355, 1);
 $grid: 8px;
 
 $info: #3c7ef7;
@@ -6,16 +6,28 @@ $success: #35dd26;
 $warning: #e8a827;
 $error: #f73c71;
 
-$primary: #d1a97b;
+$primary: #d8aa78;
 $textPrimary: #161616;
-$textSecondary: #b5b5b5;
+$textSecondary: #a4a1a1;
 $textPrimaryDark: #fefefe;
 $textSecondaryDark: #7d7c7c;
 
 $bgPrimary: #ffffff;
-$bgSecondary: #f3f5f7;
-$bgPrimaryDark: #221c1c;
-$bgSecondaryDark: #303030;
+// $bgSecondary: #f3f5f7;
+$bgSecondary: #f6f6f6;
+// $bgPrimaryDark: #221c1c;
+$bgPrimaryDark: #231d1d;
+$bgSecondaryDark: #2f2f2f;
 
 $sidebarWidth: 300px;
 $headerHeight: 80px;
+
+@function grid($amount: 1) {
+  @return $grid * $amount;
+}
+
+@mixin mq($breakpoint) {
+  @media screen and (max-width: $breakpoint) {
+    @content;
+  }
+}

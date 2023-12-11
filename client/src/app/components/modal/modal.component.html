@@ -1,0 +1,16 @@
+<div class="modal-container" @modalAnimation>
+  <div class="close" role="button" aria-label="Close Modal" (click)="onClose()">
+    <i-feather name="x"></i-feather>
+  </div>
+  @if (!!heading) {
+  <h1>{{ heading }}</h1>
+  }
+  <ng-content></ng-content>
+</div>
+<div
+  @backdrop
+  class="modal-backdrop"
+  (click)="onClose()"
+  role="button"
+  aria-label="Close Modal"
+></div>
