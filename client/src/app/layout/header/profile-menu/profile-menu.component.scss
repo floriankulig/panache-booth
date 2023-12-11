@@ -24,11 +24,11 @@
   backdrop-filter: blur(grid(3));
   background: linear-gradient(
     to right bottom,
-    rgba($bgPrimary, 0.8),
-    rgba($bgPrimary, 0.7)
+    rgba($bgPrimary, 0.98),
+    rgba($bgPrimary, 0.9)
   );
   //   background-color: #423c5a80;
-  border: 2px solid rgba($bgSecondary, 0.9);
+  border: 1px solid rgba($bgSecondary, 0.8);
   background-blend-mode: overlay;
   box-shadow: 3px 8px 16px rgba($textPrimary, 0.03);
   border-radius: grid(2);

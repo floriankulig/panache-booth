@@ -1,11 +1,33 @@
 @if (!!profile) {
-<section class="meta-info">
-  <span class="role-chip"
-    ><i-feather [name]="profile.isVendor ? 'truck' : 'user'"></i-feather
-    >{{ profile.isVendor ? "Vendor" : "Customer" }}</span
-  >
-  <div>&bull;</div>
-  <p>Joined on {{ joinDate }}</p>
-</section>
-<h1>{{ "@" + profile.userName }}</h1>
+<div class="vendor-info">
+  <section class="intro">
+    <div class="meta-info">
+      <span class="role-chip"
+        ><i-feather [name]="profile.isVendor ? 'truck' : 'user'"></i-feather
+        >{{ profile.isVendor ? "Vendor" : "Customer" }}</span
+      >
+      <div>&bull;</div>
+      <p>Joined on {{ joinDate }}</p>
+    </div>
+    <h1>{{ "@" + profile.userName }}</h1>
+  </section>
+  <div>
+    @if (profile.isVendor) {
+    <section class="payment">
+      <h4 title="Payment Information">
+        <i-feather name="credit-card"></i-feather
+        ><span> Payment Information</span>
+      </h4>
+      <p><span class="field-desc">IBAN</span>{{ profile.iban }}</p>
+      <p><span class="field-desc">BIC</span>{{ profile.bic }}</p>
+    </section>
+    }
+    <section class="address" title="Address Information">
+      <h4><i-feather name="home"></i-feather><span> Address</span></h4>
+      <p>{{ profile.street }} {{ profile.houseNumber }}</p>
+      <p>{{ profile.postcode }} {{ profile.city }}</p>
+    </section>
+  </div>
+</div>
+
 }

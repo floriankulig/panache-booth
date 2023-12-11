@@ -10,13 +10,19 @@
     display: flex;
     flex-direction: column;
     background: $bgPrimary;
+    max-width: 100%;
   }
 
   .content {
     flex: 1;
     padding: grid(4);
     overflow-y: auto;
+    overflow-x: hidden;
     height: 300vh;
+
+    @media screen and (max-width: 768px) {
+      padding: grid(2) grid(1.5);
+    }
   }
 
   .blur-bg {
