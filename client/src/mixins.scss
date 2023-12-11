@@ -199,7 +199,7 @@
   justify-content: center;
   gap: grid(2);
   transition: 0.15s linear;
-  transition-property: background, scale;
+  transition-property: color, background, scale;
 
   & > i-feather {
     width: $grid;

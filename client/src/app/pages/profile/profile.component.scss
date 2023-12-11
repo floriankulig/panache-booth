@@ -1,6 +1,6 @@
 @use "variables.scss" as *;
 :host {
-  display: block;
+  // display: block;
   container: vendor / inline-size;
 
   @container vendor (width < 960px) {
@@ -33,6 +33,26 @@
       &.intro {
         padding: clamp(grid(3.5), 2.5vw, grid(4));
         flex: 1;
+
+        .actions {
+          margin-top: grid(3.5);
+          display: flex;
+          justify-content: space-between;
+          gap: grid(1.5);
+
+          button {
+            flex: 1;
+            background: $bgPrimaryDark;
+
+            &:hover {
+              background: rgba($primary, 0.2);
+            }
+            &.delete:hover {
+              background: rgba($error, 0.2);
+              color: rgba($error, 1);
+            }
+          }
+        }
       }
     }
 

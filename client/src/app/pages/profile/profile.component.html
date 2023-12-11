@@ -10,6 +10,14 @@
       <p>Joined on {{ joinDate }}</p>
     </div>
     <h1>{{ "@" + profile.userName }}</h1>
+    @if (isOwnProfile) {
+    <div class="actions">
+      <button><i-feather name="edit-3"></i-feather> <span>Edit</span></button>
+      <button class="delete" (click)="deleteModalOpen.set(true)">
+        <i-feather name="trash"></i-feather> <span>Delete</span>
+      </button>
+    </div>
+    }
   </section>
   <div>
     @if (profile.isVendor) {
@@ -24,8 +32,14 @@
     }
     <section class="address" title="Address Information">
       <h4><i-feather name="home"></i-feather><span> Address</span></h4>
-      <p>{{ profile.street }} {{ profile.houseNumber }}</p>
-      <p>{{ profile.postcode }} {{ profile.city }}</p>
+      <p>
+        <span class="field-desc">Street, Nr.</span>{{ profile.street }}
+        {{ profile.houseNumber }}
+      </p>
+      <p>
+        <span class="field-desc">ZIP, City</span>{{ profile.postcode }}
+        {{ profile.city }}
+      </p>
     </section>
   </div>
 </div>
@@ -33,4 +47,7 @@
 <div class="content-inner">
   <h2>Products</h2>
 </div>
+} @if (deleteModalOpen()) {
+<pb-modal heading="Delete account?" (close)="deleteModalOpen.set(false)">
+</pb-modal>
 }
