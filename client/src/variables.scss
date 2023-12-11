@@ -25,3 +25,9 @@ $headerHeight: 80px;
 @function grid($amount: 1) {
   @return $grid * $amount;
 }
+
+@mixin mq($breakpoint) {
+  @media screen and (max-width: $breakpoint) {
+    @content;
+  }
+}

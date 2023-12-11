@@ -46,6 +46,13 @@ button {
   @include button;
 }
 
+.content-inner {
+  padding: 0 grid(4);
+  @media screen and (max-width: 768px) {
+    padding: 0 grid(1.5);
+  }
+}
+
 @font-face {
   font-family: "Urbanist";
   src: url("assets/Urbanist-VariableFont_wght.ttf");

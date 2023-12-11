@@ -1,7 +1,6 @@
 @use "variables.scss" as *;
 :host {
   display: block;
-  padding-top: grid(2);
   container: vendor / inline-size;
 
   @container vendor (width < 960px) {
@@ -14,6 +13,8 @@
     $grid-space: clamp(grid(1.5), 2vw, grid(3));
     display: flex;
     gap: $grid-space;
+    background: $bgPrimary;
+    margin-bottom: grid(5);
 
     i-feather {
       stroke-width: 1.5;
@@ -38,7 +39,6 @@
     & > div {
       display: flex;
       flex-wrap: wrap;
-      overflow-x: hidden;
       gap: $grid-space;
 
       section {
@@ -114,11 +114,17 @@
       transform: scale(1.75) translateY(-1px);
     }
   }
-
   h1 {
     font-size: clamp(2.5rem, 5vw, 4rem);
     margin: grid(3) 0 clamp(grid(1), 2vw, grid(3));
     text-overflow: ellipsis;
     overflow: hidden;
+  }
+
+  h2 {
+    letter-spacing: -0.5px;
+    font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+    font-weight: 700;
+    margin-top: grid(3);
   }
 }
