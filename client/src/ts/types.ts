@@ -34,4 +34,12 @@ interface User {
   shippingFreeFrom?: string;
 }
 
-export { Product, User };
+interface Order {
+  createdAt: string;
+  updatedAt: string;
+  amount: number;
+  id: string;
+  products: Product[];
+}
+
+export { Product, User, Order };
