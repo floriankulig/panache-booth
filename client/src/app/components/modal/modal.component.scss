@@ -1,9 +1,10 @@
 @use "variables.scss" as *;
 :host {
+  $distanceTop: grid(4);
   width: 100dvw;
   height: 100dvh;
   position: fixed;
-  padding-top: grid(6);
+  padding-top: $distanceTop;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -25,7 +26,7 @@
 
     &-container {
       $br: clamp(grid(3.5), 5vw, grid(6));
-      min-height: calc(100dvh - grid(6));
+      min-height: calc(100dvh - $distanceTop);
       width: 95vw;
       position: relative;
       border-radius: $br $br 0 0;
