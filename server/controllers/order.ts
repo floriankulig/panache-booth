@@ -46,6 +46,7 @@ router.get("/:id", async (req, res) => {
       res.status(200).json(await allVendorOrdersById(id));
     }
   } catch (e: unknown) {
+    console.log(e)
     res.status(404).send("Error: Something went wrong!");
   }
 });
@@ -56,6 +57,7 @@ router.delete("/:id", async (req, res) => {
     await deleteOrder(id);
     res.sendStatus(200);
   } catch (e: unknown) {
+    console.log(e)
     res.status(404).send("Error: Something went wrong!");
   }
 });
