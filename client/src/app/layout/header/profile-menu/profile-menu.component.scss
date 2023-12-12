@@ -1,7 +1,8 @@
 @use "variables.scss" as *;
 
-:host {
+.menu-wrapper {
   position: relative;
+  z-index: 999;
 }
 
 .icon-wrapper {
@@ -33,7 +34,7 @@
   box-shadow: 3px 8px 16px rgba($textPrimary, 0.03);
   border-radius: grid(2);
   display: flex;
-  z-index: 1;
+  z-index: 999;
   flex-direction: column;
   align-items: center;
   overflow: hidden;

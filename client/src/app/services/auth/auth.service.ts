@@ -117,6 +117,15 @@ export class AuthService {
     });
   }
 
+  async deleteUser(id: string): Promise<void> | never {
+    try {
+      await axios.delete(`${API_URL}/user/${id}`);
+      this.logout();
+    } catch (error) {
+      throw error as AxiosError;
+    }
+  }
+
   private saveUidToLocalStorage(uid: string): void {
     localStorage.setItem("uid", JSON.stringify(uid));
   }

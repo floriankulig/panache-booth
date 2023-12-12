@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, signal } from "@angular/core";
+import { Component, OnInit, computed, effect, signal } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { AuthService, NotificationService } from "../../services";
 import { User } from "../../../ts";
@@ -7,18 +7,21 @@ import { Location } from "@angular/common";
 import { format } from "date-fns";
 import { IconsModule } from "../../icons/icons.module";
 import { ModalComponent } from "../../components/modal/modal.component";
+import { DeleteConfirmComponent } from "../../components/delete-confirm/delete-confirm.component";
 
 @Component({
   selector: "pb-profile",
   standalone: true,
-  imports: [IconsModule, ModalComponent],
+  imports: [IconsModule, ModalComponent, DeleteConfirmComponent],
   templateUrl: "./profile.component.html",
   styleUrl: "./profile.component.scss",
 })
 export class ProfileComponent implements OnInit {
-  profile: User | null = null;
+  profile?: User;
   joinDate?: string;
-  isOwnProfile = true;
+  isOwnProfile = computed(
+    () => this.profile?.id === this.authService.user()?.id,
+  );
 
   deleteModalOpen = signal(false);
 
@@ -32,9 +35,9 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.route.queryParamMap.subscribe(async (params: ParamMap) => {
       const id = params.get("id") || this.authService.uidFromLocalStorage();
-      this.isOwnProfile = id === this.authService.user()?.id;
+      const isOwnProfile = id === this.authService.user()?.id;
 
-      if (id && !this.isOwnProfile) {
+      if (id && !isOwnProfile) {
         try {
           this.profile = await this.authService.getUser(id);
         } catch (error) {
@@ -52,7 +55,10 @@ export class ProfileComponent implements OnInit {
           this.router.navigate(["/"]);
         }
       } else {
-        this.profile = this.authService.user();
+        if (!this.authService.user()) {
+          this.router.navigate(["/"]);
+        }
+        this.profile = this.authService.user() || undefined;
       }
 
       this.joinDate =
@@ -68,8 +74,6 @@ export class ProfileComponent implements OnInit {
       //     duration: 0,
       //   });
       // }
-
-      console.log(this.profile);
     });
   }
 }

@@ -1,0 +1,14 @@
+@if (data) {
+<div class="confirm">
+  <div class="icon-wrapper">
+    <i-feather [name]="data.type === 'user' ? 'user-x' : 'trash-2'"></i-feather>
+  </div>
+  <h3>Delete {{ data.name }}?</h3>
+  @for (text of confirmationText.split("\n"); track $index) {
+  <p>{{ text }}</p>
+  }
+  <button class="danger" (click)="onConfirm()">
+    <i-feather name="trash"></i-feather>Delete
+  </button>
+</div>
+}

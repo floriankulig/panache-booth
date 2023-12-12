@@ -1,0 +1,74 @@
+@use "variables.scss" as *;
+
+:host {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  .confirm {
+    margin-top: grid(8);
+    width: clamp(200px, 100%, 400px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: grid(2.5);
+
+    .icon-wrapper {
+      aspect-ratio: 1;
+      min-width: 100px;
+      width: 100%;
+      max-width: 150px;
+      display: grid;
+      place-items: center;
+      background: rgba($error, 0.25);
+      color: rgba($error, 0.9);
+      box-shadow: 0 0 32px rgba(darken($error, 0.1), 0.3),
+        inset -3px -3px 10px rgba(darken($error, 0.1), 0.05);
+      animation: shape 30s linear infinite;
+
+      i-feather {
+        width: 40%;
+        height: 40%;
+      }
+    }
+
+    h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: grid(2) 0;
+      text-align: center;
+    }
+
+    p {
+      width: 100%;
+      line-height: 1.4;
+    }
+    button {
+      width: 100%;
+      margin-top: grid(2);
+    }
+  }
+}
+
+@keyframes shape {
+  0% {
+    border-radius: 47% 53% 42% 58% / 58% 46% 54% 42%;
+    box-shadow: 0 0 32px rgba(darken($error, 0.1), 0.3),
+      inset -3px -3px 10px rgba(darken($error, 0.1), 0.05);
+  }
+  33% {
+    border-radius: 61% 39% 42% 58% / 63% 46% 54% 37%;
+    box-shadow: 0 0 32px rgba(darken($error, 0.1), 0.25),
+      inset -3px -3px 10px rgba(darken($error, 0.1), 0.05);
+  }
+  66% {
+    border-radius: 37% 63% 56% 44% / 45% 59% 41% 55%;
+    box-shadow: 0 0 32px rgba(darken($error, 0.1), 0.2),
+      inset -3px -3px 10px rgba(darken($error, 0.1), 0.05);
+  }
+  100% {
+    border-radius: 47% 53% 42% 58% / 58% 46% 54% 42%;
+    box-shadow: 0 0 32px rgba(darken($error, 0.1), 0.3),
+      inset -3px -3px 10px rgba(darken($error, 0.1), 0.05);
+  }
+}

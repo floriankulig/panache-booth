@@ -1,6 +1,5 @@
 @use "variables.scss" as *;
-:host {
-  // display: block;
+.profile {
   container: vendor / inline-size;
 
   @container vendor (width < 960px) {
