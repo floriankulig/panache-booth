@@ -4,6 +4,7 @@ import {
   deleteOrderById,
   getAllOrders,
   getAllOrdersByUserId,
+  getAllOrdersByVendorId,
   getOrderById,
   updateOrderById,
 } from "../models/order";
@@ -12,8 +13,12 @@ export function orderById(id: string) {
   return getOrderById(id);
 }
 
-export function allOrdersById(id: string) {
+export function allUserOrdersById(id: string) {
   return getAllOrdersByUserId(id);
+}
+
+export function allVendorOrdersById(id: string) {
+  return getAllOrdersByVendorId(id);
 }
 
 export function allOrders() {
@@ -31,4 +36,3 @@ export function updateOrder(orderChanges: Map<string, string>, id: string) {
 export function deleteOrder(id: string) {
   return deleteOrderById(id);
 }
-

@@ -31,7 +31,7 @@ router.post("/login", async (req, res) => {
       res.status(200).json(user);
     }
   } catch (e: unknown) {
-    console.log(e)
+    console.log(e);
     res.status(404).send("Error: Something went wrong!");
   }
 });
@@ -87,7 +87,7 @@ router.delete("/:userId", async (req, res) => {
   const userId = req.params.userId;
   try {
     if (userById(userId) !== undefined) {
-      const user = await  deleteUser(userId);
+      const user = await deleteUser(userId);
       res.sendStatus(200);
     } else {
       res.status(400).send("User not existing");

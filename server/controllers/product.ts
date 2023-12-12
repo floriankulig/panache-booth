@@ -1,6 +1,12 @@
 import express from "express";
 import { IProduct } from "../models/IProduct";
-import { addArticle, allArticles, articleById, deleteArticle, updateArticle } from "../services/product";
+import {
+  addArticle,
+  allArticles,
+  articleById,
+  deleteArticle,
+  updateArticle,
+} from "../services/product";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -22,11 +28,11 @@ router.post("/", async (req, res) => {
       vendorId: req.body.vendorId,
       purchases: req.body.purchases,
       inventory: req.body.inventory,
-      isVisible: req.body.isVisible
+      isVisible: req.body.isVisible,
     };
     res.status(200).json(await addArticle(article));
   } catch (e: unknown) {
-    console.log(e)
+    console.log(e);
     res.status(404).send("Error: Something went wrong!");
   }
 });

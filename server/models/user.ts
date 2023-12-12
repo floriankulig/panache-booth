@@ -4,14 +4,17 @@ import { v4 as uuidv4 } from "uuid";
 
 export function getUserById(id: string) {
   try {
-    let user = database.prepare("select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
-      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where id = ?").get(id);
+    let user = database
+      .prepare(
+        "select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
+          "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where id = ?",
+      )
+      .get(id);
     if (user != undefined) {
       // @ts-ignore
       user["isVendor"] = user["isVendor"] !== 0;
       return user;
-    }
-    else {
+    } else {
       return undefined;
     }
   } catch (e: unknown) {
@@ -20,8 +23,12 @@ export function getUserById(id: string) {
 }
 
 export function getAllUsers() {
-  let users = database.prepare("select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
-    "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user").all();
+  let users = database
+    .prepare(
+      "select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
+        "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user",
+    )
+    .all();
 
   users.forEach((key) => {
     // @ts-ignore
@@ -52,9 +59,20 @@ export function createUser(user: IUser) {
       "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
   );
   const info = stmt.run(
-    user.userId, user.userName, user.email, user.password, isVendorNumeric,
-    user.postcode, user.city, user.street, user.houseNumber, user.iban,
-    user.bic, user.shippingCost, user.shippingFreeFrom, user.createdAt,
+    user.userId,
+    user.userName,
+    user.email,
+    user.password,
+    isVendorNumeric,
+    user.postcode,
+    user.city,
+    user.street,
+    user.houseNumber,
+    user.iban,
+    user.bic,
+    user.shippingCost,
+    user.shippingFreeFrom,
+    user.createdAt,
     user.updatedAt,
   );
   return getUserById(user.userId);
@@ -78,36 +96,33 @@ export function updateUserById(userChanges: Map<string, string>, id: string) {
   const currentTimestamp = new Date().toISOString();
   sqlString += `updatedAt = '${currentTimestamp}' where id = '${id}';`;
   database.prepare(sqlString).run();
-  return getUserById(id)
+  return getUserById(id);
 }
 
 export function deleteUserById(id: string) {
   return database.prepare("delete from user where id = ?").run(id);
 }
 
-export function loggedInUser(email: string, password: string){
+export function loggedInUser(email: string, password: string) {
   try {
-    let sql = "select id, userName, email, password, " +
+    let sql =
+      "select id, userName, email, password, " +
       "isVendor" +
       ", postcode, city, street, houseNumber, " +
       "iban, bic, shippingCost, shippingFreeFrom, " +
-      "createdAt, updatedAt from user "
-    sql += `where (email = '${email}') and (password = '${password}');`
-    console.log(sql)
-    let user = database.prepare(sql).get()
+      "createdAt, updatedAt from user ";
+    sql += `where (email = '${email}') and (password = '${password}');`;
+    console.log(sql);
+    let user = database.prepare(sql).get();
     if (user != undefined) {
       // @ts-ignore
       user["isVendor"] = user["isVendor"] !== 0;
       return user;
+    } else {
+      return undefined;
     }
-    else {
-      return undefined
-    }
-  }
-  catch (e: unknown) {
-    console.log(e)
+  } catch (e: unknown) {
+    console.log(e);
     return e;
   }
 }
-
-

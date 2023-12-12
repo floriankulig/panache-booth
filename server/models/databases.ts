@@ -21,8 +21,8 @@ const createUserTable =
   "updatedAt varchar(255) not null " +
   ");";
 
-const createArticleTable =
-  "create table if not exists article (" +
+const createProductTable =
+  "create table if not exists product (" +
   "id varchar(36) not null primary key, " +
   "name varchar(255) not null, " +
   "description varchar(200), " +
@@ -47,9 +47,9 @@ const createOrderTable =
   "numberOfPurchases integer, " +
   "delivered integer, " +
   "createdAt varchar(255) not null, " +
-  "updatedAt varchar(255) not null" +
-  ");";
+  "updatedAt varchar(255) not null, " +
+  "foreign key(productId) references product(id));";
 
 database.exec(createUserTable);
-database.exec(createArticleTable);
+database.exec(createProductTable);
 database.exec(createOrderTable);

@@ -4,13 +4,14 @@ import { v4 as uuidv4 } from "uuid";
 
 export function getArticleById(id: string) {
   try {
-    let product = database.prepare("select * from article where id = ?").get(id);
+    let product = database
+      .prepare("select * from product where id = ?")
+      .get(id);
     if (product != undefined) {
       // @ts-ignore
       product["isVisible"] = product["isVisible"] !== 0;
       return product;
-    }
-    else {
+    } else {
       return undefined;
     }
   } catch (e: unknown) {
@@ -18,8 +19,8 @@ export function getArticleById(id: string) {
   }
 }
 
-export function getAllArticles()  {
-  let products = database.prepare("select * from article;").all();
+export function getAllArticles() {
+  let products = database.prepare("select * from product;").all();
 
   products.forEach((key) => {
     // @ts-ignore
@@ -42,23 +43,35 @@ export function createArticle(product: IProduct) {
   }
 
   const stmt = database.prepare(
-    "insert into article " +
-    "(id, name, description, category, coupon, price, vendorId, purchases, " +
-    "inventory, isVisible, createdAt, updatedAt) " +
-    "values " +
-    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-  )
+    "insert into product " +
+      "(id, name, description, category, coupon, price, vendorId, purchases, " +
+      "inventory, isVisible, createdAt, updatedAt) " +
+      "values " +
+      "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+  );
 
   const info = stmt.run(
-    product.id, product.name, product.description, product.category, product.coupon,
-    product.price, product.vendorId, product.purchases, product.inventory,
-    isArticleVisble, product.createdAt, product.updatedAt
-  )
+    product.id,
+    product.name,
+    product.description,
+    product.category,
+    product.coupon,
+    product.price,
+    product.vendorId,
+    product.purchases,
+    product.inventory,
+    isArticleVisble,
+    product.createdAt,
+    product.updatedAt,
+  );
   return getArticleById(product.id);
 }
 
-export function updateArticleById(articleChanges: Map<string, string>, id: string) {
-  let sqlString = "update article set";
+export function updateArticleById(
+  articleChanges: Map<string, string>,
+  id: string,
+) {
+  let sqlString = "update product set";
 
   articleChanges.forEach((value: string, key: string) => {
     if (key === "isVisible") {
@@ -75,9 +88,9 @@ export function updateArticleById(articleChanges: Map<string, string>, id: strin
   const currentTimestamp = new Date().toISOString();
   sqlString += `updatedAt = '${currentTimestamp}' where id = '${id}';`;
   database.prepare(sqlString).run();
-  return getArticleById(id)
+  return getArticleById(id);
 }
 
 export function deleteArticleById(id: string) {
-  return database.prepare("delete from article where id = ?;").run(id);
+  return database.prepare("delete from product where id = ?;").run(id);
 }
