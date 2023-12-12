@@ -18,7 +18,7 @@
     align-items: stretch;
     width: 50%;
     padding: grid(10) grid(6);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px) saturate(130%);
   }
 
   .left {
@@ -67,7 +67,7 @@
   }
   .right {
     flex: 1;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px) saturate(130%);
     padding: grid(10) grid(8);
     background: rgba($bgSecondary, 0.75);
     justify-content: space-between;
@@ -229,6 +229,14 @@
     color: rgba($textPrimary, 0.8);
     &:hover {
       background-color: rgba($bgSecondary, 0.4);
+    }
+  }
+
+  &.danger {
+    background: $error;
+    color: $textPrimaryDark;
+    &:hover {
+      background-color: darken($error, 5);
     }
   }
 }
