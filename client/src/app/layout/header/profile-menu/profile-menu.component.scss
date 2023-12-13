@@ -22,15 +22,13 @@
   min-width: 200px;
   width: 100%;
   max-width: 400px;
-  backdrop-filter: blur(grid(3));
+  backdrop-filter: blur(20px) saturate(150%);
   background: linear-gradient(
     to right bottom,
-    rgba($bgPrimary, 0.98),
-    rgba($bgPrimary, 0.9)
+    rgba($bgPrimary, 0.85),
+    rgba($bgPrimary, 0.8)
   );
-  //   background-color: #423c5a80;
-  border: 1px solid rgba($bgSecondary, 0.8);
-  background-blend-mode: overlay;
+  background-blend-mode: saturation;
   box-shadow: 3px 8px 16px rgba($textPrimary, 0.03);
   border-radius: grid(2);
   display: flex;
