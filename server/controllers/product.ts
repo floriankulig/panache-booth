@@ -5,7 +5,7 @@ import {
   allArticles,
   articleById,
   deleteArticle,
-  updateArticle,
+  updateArticle
 } from "../services/product";
 const router = express.Router();
 
@@ -23,12 +23,12 @@ router.post("/", async (req, res) => {
       name: req.body.name,
       description: req.body.description,
       category: req.body.category,
-      coupon: req.body.coupon,
+      sale: req.body.sale,
       price: req.body.price,
       vendorId: req.body.vendorId,
       purchases: req.body.purchases,
       inventory: req.body.inventory,
-      isVisible: req.body.isVisible,
+      isVisible: req.body.isVisible
     };
     res.status(200).json(await addArticle(article));
   } catch (e: unknown) {

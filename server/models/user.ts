@@ -1,13 +1,12 @@
 import { database } from "./databases";
 import { IUser } from "./IUser";
-import { v4 as uuidv4 } from "uuid";
 
 export function getUserById(id: string) {
   try {
     let user = database
       .prepare(
         "select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
-          "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where id = ?",
+          "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where id = ?"
       )
       .get(id);
     if (user != undefined) {
@@ -23,26 +22,15 @@ export function getUserById(id: string) {
 }
 
 export function getAllUsers() {
-  let users = database
+  return database
     .prepare(
       "select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
-        "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user",
+      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user"
     )
     .all();
-
-  users.forEach((key) => {
-    // @ts-ignore
-    key["isVendor"] = key["isVendor"] !== 0;
-  });
-  return users;
 }
 
 export function createUser(user: IUser) {
-  user.userId = uuidv4();
-  const currentTimestamp = new Date().toISOString();
-  user.createdAt = currentTimestamp;
-  user.updatedAt = currentTimestamp;
-
   let isVendorNumeric = null;
   if (user.isVendor) {
     isVendorNumeric = 1;
@@ -56,7 +44,7 @@ export function createUser(user: IUser) {
       "iban, bic, shippingCost, shippingFreeFrom, " +
       "createdAt, updatedAt) " +
       "values " +
-      "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
   );
   const info = stmt.run(
     user.userId,
@@ -73,7 +61,7 @@ export function createUser(user: IUser) {
     user.shippingCost,
     user.shippingFreeFrom,
     user.createdAt,
-    user.updatedAt,
+    user.updatedAt
   );
   return getUserById(user.userId);
 }
@@ -104,25 +92,11 @@ export function deleteUserById(id: string) {
 }
 
 export function loggedInUser(email: string, password: string) {
-  try {
-    let sql =
-      "select id, userName, email, password, " +
-      "isVendor" +
-      ", postcode, city, street, houseNumber, " +
-      "iban, bic, shippingCost, shippingFreeFrom, " +
-      "createdAt, updatedAt from user ";
-    sql += `where (email = '${email}') and (password = '${password}');`;
-    console.log(sql);
-    let user = database.prepare(sql).get();
-    if (user != undefined) {
-      // @ts-ignore
-      user["isVendor"] = user["isVendor"] !== 0;
-      return user;
-    } else {
-      return undefined;
-    }
-  } catch (e: unknown) {
-    console.log(e);
-    return e;
-  }
+  let sql =
+    "select id, userName, email, " +
+    "isVendor, postcode, city, street, houseNumber, " +
+    "iban, bic, shippingCost, shippingFreeFrom, " +
+    "createdAt, updatedAt from user ";
+  sql += `where (email = '${email}') and (password = '${password}');`;
+  return database.prepare(sql).get();
 }

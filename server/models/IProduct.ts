@@ -3,7 +3,7 @@ export interface IProduct {
   name: string;
   description: string;
   category: string;
-  coupon: string;
+  sale: number;
   price: number;
   vendorId: string;
   purchases: number;

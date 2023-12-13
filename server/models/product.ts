@@ -44,10 +44,10 @@ export function createArticle(product: IProduct) {
 
   const stmt = database.prepare(
     "insert into product " +
-      "(id, name, description, category, coupon, price, vendorId, purchases, " +
+      "(id, name, description, category, sale, price, vendorId, purchases, " +
       "inventory, isVisible, createdAt, updatedAt) " +
       "values " +
-      "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
   );
 
   const info = stmt.run(
@@ -55,21 +55,21 @@ export function createArticle(product: IProduct) {
     product.name,
     product.description,
     product.category,
-    product.coupon,
+    product.sale,
     product.price,
     product.vendorId,
     product.purchases,
     product.inventory,
     isArticleVisble,
     product.createdAt,
-    product.updatedAt,
+    product.updatedAt
   );
   return getArticleById(product.id);
 }
 
 export function updateArticleById(
   articleChanges: Map<string, string>,
-  id: string,
+  id: string
 ) {
   let sqlString = "update product set";
 

@@ -5,7 +5,7 @@ import {
   allOrders,
   allUserOrdersById,
   allVendorOrdersById,
-  deleteOrder,
+  deleteOrder
 } from "../services/order";
 import { deleteOrderById } from "../models/order";
 const router = express.Router();
@@ -20,15 +20,11 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const order: IOrder = {
+    const order: Omit<IOrder, "id" | "createdAt" | "updatedAt" | "price"> = {
       userId: req.body.userId,
-      vendorId: req.body.vendorId,
-      productId: req.body.productId,
-      price: req.body.price,
-      numberOfPurchases: req.body.numberOfPurchases,
-      delivered: req.body.delivered,
+      delivered: req.body.delivered
     };
-    res.status(200).json(await addOrder(order));
+    res.status(200).json(await addOrder(order, req.body.products));
   } catch (e: unknown) {
     console.log(e);
     res.status(404).send("Error: Something went wrong!");
@@ -46,7 +42,7 @@ router.get("/:id", async (req, res) => {
       res.status(200).json(await allVendorOrdersById(id));
     }
   } catch (e: unknown) {
-    console.log(e)
+    console.log(e);
     res.status(404).send("Error: Something went wrong!");
   }
 });
@@ -57,7 +53,7 @@ router.delete("/:id", async (req, res) => {
     await deleteOrder(id);
     res.sendStatus(200);
   } catch (e: unknown) {
-    console.log(e)
+    console.log(e);
     res.status(404).send("Error: Something went wrong!");
   }
 });

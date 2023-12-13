@@ -1,5 +1,5 @@
 export interface IUser {
-  userId?: string;
+  userId: string;
   userName: string;
   email: string;
   password: string;
@@ -8,10 +8,10 @@ export interface IUser {
   postcode: string;
   isVendor: boolean;
   city: string;
-  iban?: string;
-  bic?: string;
-  shippingCost?: number;
-  shippingFreeFrom?: number;
-  createdAt?: string;
-  updatedAt?: string;
+  iban: string;
+  bic: string;
+  shippingCost: number;
+  shippingFreeFrom: number;
+  createdAt: string;
+  updatedAt: string;
 }

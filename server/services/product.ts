@@ -4,7 +4,7 @@ import {
   deleteArticleById,
   getAllArticles,
   getArticleById,
-  updateArticleById,
+  updateArticleById
 } from "../models/product";
 
 export function articleById(id: string) {
