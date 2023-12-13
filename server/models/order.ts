@@ -18,7 +18,7 @@ export function getAllOrders() {
 export function createOrder(order: IOrder) {
   const stmt = database.prepare(
     "insert into orders " +
-      "(id, createdAt, updatedAt, userId, price, amount, " +
+      "(id, createdAt, updatedAt, userId, price, " +
       "delivered) " +
       "values " +
       "(?, ?, ?, ?, ?, ?)"
@@ -84,7 +84,7 @@ export function createOrderProductEntity(
 export function getProductsOfOrder(orderId: string) {
   let products = database
     .prepare(
-      "select product.* " +
+      "select product.*, orderProduct.amount " +
         "from orders " +
         "join orderProduct on orders.id = orderProduct.OrderId " +
         "join product on orderProduct.productId = product.id " +

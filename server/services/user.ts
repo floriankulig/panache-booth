@@ -15,7 +15,12 @@ export function userById(id: string) {
 }
 
 export function allUsers() {
-  return getAllUsers();
+  let users = getAllUsers();
+  users.forEach((key) => {
+    // @ts-ignore
+    key["isVendor"] = key["isVendor"] !== 0;
+  });
+  return users;
 }
 
 export function addUser(userBody: any) {

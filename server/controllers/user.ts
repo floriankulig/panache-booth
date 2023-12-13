@@ -7,8 +7,6 @@ import {
   updateUser,
   userById
 } from "../services/user";
-import { IUser } from "../models/IUser";
-import { error } from "console";
 import { InvalidLogin } from "../util/customErrors";
 
 const router = express.Router();

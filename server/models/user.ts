@@ -22,18 +22,12 @@ export function getUserById(id: string) {
 }
 
 export function getAllUsers() {
-  let users = database
+  return database
     .prepare(
       "select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
-        "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user"
+      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user"
     )
     .all();
-
-  users.forEach((key) => {
-    // @ts-ignore
-    key["isVendor"] = key["isVendor"] !== 0;
-  });
-  return users;
 }
 
 export function createUser(user: IUser) {

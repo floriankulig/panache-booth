@@ -44,7 +44,7 @@ export function createArticle(product: IProduct) {
 
   const stmt = database.prepare(
     "insert into product " +
-      "(id, name, description, category, coupon, price, vendorId, purchases, " +
+      "(id, name, description, category, sale, price, vendorId, purchases, " +
       "inventory, isVisible, createdAt, updatedAt) " +
       "values " +
       "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"

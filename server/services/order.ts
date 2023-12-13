@@ -28,7 +28,6 @@ export function allUserOrdersById(id: string) {
     };
     newArray.push(combinedObject);
   }
-
   return newArray;
 }
 
