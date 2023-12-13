@@ -8,7 +8,8 @@
   <p>{{ text }}</p>
   }
   <button class="danger" (click)="onConfirm()">
-    <i-feather name="trash"></i-feather>Delete
+    @if (submitting) { deleting... } @else {
+    <i-feather name="trash"></i-feather>Delete }
   </button>
 </div>
 }
