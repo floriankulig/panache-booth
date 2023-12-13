@@ -5,17 +5,19 @@ import {
   deleteUser,
   loginUser,
   updateUser,
-  userById,
+  userById
 } from "../services/user";
 import { IUser } from "../models/IUser";
+import { error } from "console";
+import { InvalidLogin } from "../util/customErrors";
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
     res.status(200).json(await allUsers());
-  } catch (e: unknown) {
-    res.status(404).send("Error: Something went wrong!");
+  } catch (error) {
+    res.status(500).send("Internal server error!");
   }
 });
 
@@ -24,37 +26,24 @@ router.post("/login", async (req, res) => {
   const password = req.body.password;
 
   try {
-    const user = await loginUser(email, password);
-    if (user === undefined) {
-      res.status(404).send("Email or password incorrect!");
+    res.status(200).json(await loginUser(email, password));
+  } catch (error) {
+    if (error instanceof InvalidLogin) {
+      res.status(400).send(error.message);
     } else {
-      res.status(200).json(user);
+      res.status(500).send("Error: Something went wrong!");
     }
-  } catch (e: unknown) {
-    console.log(e);
-    res.status(404).send("Error: Something went wrong!");
   }
 });
 
 router.post("/", async (req, res) => {
+  console.log(req.body);
   try {
-    const user: IUser = {
-      userName: req.body.userName,
-      email: req.body.email,
-      street: req.body.street,
-      houseNumber: req.body.houseNumber,
-      postcode: req.body.postcode,
-      city: req.body.city,
-      password: req.body.password,
-      isVendor: req.body.isVendor,
-      bic: req.body.bic,
-      iban: req.body.iban,
-      shippingCost: req.body.shippingCost,
-      shippingFreeFrom: req.body.shippingFreeFrom,
-    };
-    res.status(200).json(await addUser(user));
+    console.log(typeof req.body);
+    res.status(200).json(await addUser(req.body));
   } catch (e: unknown) {
-    res.status(404).send("Error: Something went wrong!");
+    console.log(e);
+    res.status(500).send("Error: Something went wrong!");
   }
 });
 

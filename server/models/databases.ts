@@ -27,7 +27,7 @@ const createProductTable =
   "name varchar(255) not null, " +
   "description varchar(200), " +
   "category varchar(36), " +
-  "coupon varchar(12), " +
+  "sale decimal(4,3), " +
   "price decimal(10,2), " +
   "vendorId varchar(36) not null, " +
   "purchases integer, " +
@@ -41,15 +41,21 @@ const createOrderTable =
   "create table if not exists orders (" +
   "id varchar(36) not null primary key, " +
   "userId varchar(36), " +
-  "vendorId varchar(36), " +
-  "productId varchar(36), " +
   "price decimal(10,2), " +
-  "numberOfPurchases integer, " +
   "delivered integer, " +
   "createdAt varchar(255) not null, " +
-  "updatedAt varchar(255) not null, " +
+  "updatedAt varchar(255) not null);";
+
+const createOrderProductTable =
+  "create table if not exists orderProduct (" +
+  "orderId varchar(36) not null, " +
+  "productId varchar(36) not null, " +
+  "amount integer not null, " +
+  "primary key(orderId, productId), " +
+  "foreign key(orderId) references orders(id), " +
   "foreign key(productId) references product(id));";
 
 database.exec(createUserTable);
 database.exec(createProductTable);
 database.exec(createOrderTable);
+database.exec(createOrderProductTable);
