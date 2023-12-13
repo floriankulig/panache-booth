@@ -1,8 +1,6 @@
 @use "variables.scss" as *;
 .profile {
-  container: vendor / inline-size;
-
-  @container vendor (width < 960px) {
+  @media screen and (( width < 960px) or (1080px < width < 1300px)) {
     .vendor-info {
       flex-direction: column;
     }
@@ -58,13 +56,14 @@
     & > div {
       display: flex;
       flex-wrap: wrap;
+      min-width: 35%;
       gap: $grid-space;
 
       section {
         min-width: 250px;
-        width: 25%;
         flex-wrap: wrap;
         flex: 1;
+
         h4 {
           font-weight: 600;
           color: $textSecondaryDark;
