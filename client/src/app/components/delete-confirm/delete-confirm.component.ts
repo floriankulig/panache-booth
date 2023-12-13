@@ -42,6 +42,12 @@ export class DeleteConfirmComponent implements OnInit {
       this.submitting = true;
       if (this.data?.type === "user") {
         await this.authService.deleteUser(this.data?.id);
+        this.notificationService.addNotification({
+          message: "User was deleted deleted.",
+          duration: 5000,
+          type: "success",
+          icon: "user-x",
+        });
       } else {
         // TODO: delete product
       }
