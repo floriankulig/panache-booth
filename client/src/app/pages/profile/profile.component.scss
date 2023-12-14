@@ -137,6 +137,11 @@
     margin: grid(3) 0 clamp(grid(1), 2vw, grid(3));
     text-overflow: ellipsis;
     overflow: hidden;
+
+    span {
+      color: $textSecondaryDark;
+      color: rgba(lighten($primary, 20), 0.2);
+    }
   }
 
   h2 {

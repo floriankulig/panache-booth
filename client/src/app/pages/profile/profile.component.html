@@ -10,7 +10,10 @@
         <div>&bull;</div>
         <p>Joined on {{ joinDate }}</p>
       </div>
-      <h1>{{ "@" + profile.userName }}</h1>
+      <h1>
+        <span>{{ "@" }}</span
+        >{{ profile.userName }}
+      </h1>
       @if (isOwnProfile()) {
       <div class="actions">
         <button (click)="onEdit()">

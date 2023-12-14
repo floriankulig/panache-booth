@@ -22,15 +22,25 @@ export class SidebarComponent {
           url: "/",
           icon: "home",
         },
-        // {
-        //   name: "Categories",
-        //   url: "/categories",
-        //   icon: "grid",
-        // },
+        {
+          name: "Categories",
+          url: "/categories",
+          icon: "grid",
+        },
+      ],
+    },
+    {
+      name: "Your Profile",
+      links: [
         {
           name: "Profile",
           url: "/profile",
           icon: "user",
+        },
+        {
+          name: "Purchases",
+          url: "/profile/orders",
+          icon: "shopping-bag",
         },
       ],
     },
