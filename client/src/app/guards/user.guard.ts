@@ -19,11 +19,18 @@ export class UserGuard implements CanActivate {
     private location: Location,
   ) {}
 
-  canActivate(
+  async canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
-  ): Observable<boolean> | Promise<boolean> | boolean {
-    if (!this.authService.uidFromLocalStorage()) {
+  ): Promise<boolean> {
+    const uid = this.authService.uidFromLocalStorage();
+    if (!uid) {
+      this.router.navigate(["/login?redirect=" + state.url]);
+      return false;
+    }
+    const user =
+      this.authService.user() || (await this.authService.getUser(uid));
+    if (!user) {
       // If there's a redirect query parameter, use it
       if (next.queryParams["redirect"]) {
         this.router.navigate([next.queryParams["redirect"]]);
