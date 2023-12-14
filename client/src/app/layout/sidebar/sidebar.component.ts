@@ -1,7 +1,12 @@
 import { EventEmitter, Component, Output } from "@angular/core";
 import { IconsModule } from "../../icons/icons.module";
 import { LogoComponent } from "../../components/logo/logo.component";
-import { RouterModule } from "@angular/router";
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterModule,
+} from "@angular/router";
 
 @Component({
   selector: "pb-sidebar",
@@ -12,6 +17,53 @@ import { RouterModule } from "@angular/router";
 })
 export class SidebarComponent {
   @Output() close = new EventEmitter();
+  currentUrl: string = "/";
+  tabs = [
+    {
+      name: "",
+      links: [
+        {
+          name: "Home",
+          url: "/",
+          icon: "home",
+        },
+        // {
+        //   name: "Categories",
+        //   url: "/categories",
+        //   icon: "grid",
+        // },
+        {
+          name: "Profile",
+          url: "/profile",
+          icon: "user",
+        },
+      ],
+    },
+    {
+      name: "Vendor",
+      links: [
+        {
+          name: "Stock",
+          url: "/profile/stock",
+          icon: "truck",
+        },
+        {
+          name: "Orders",
+          url: "/profile/orders",
+          icon: "package",
+        },
+      ],
+    },
+  ];
+
+  constructor(private router: Router) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.currentUrl = event.url;
+        console.log(this.currentUrl);
+      }
+    });
+  }
 
   closeSidebar() {
     this.close.emit();

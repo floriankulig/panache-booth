@@ -2,6 +2,24 @@
   <div class="burger" role="button" (click)="closeSidebar()">
     <i-feather name="x"></i-feather>
   </div>
-  <pb-logo [routerLink]=""></pb-logo>
+  <pb-logo routerLink="/"></pb-logo>
 </div>
-<div class="content"></div>
+<div class="content">
+  <ul class="menu">
+    @for (group of tabs; track $index) { @if (!!group.name) {
+    <span class="menu-group"
+      >{{ group.name }}
+      <div class="div"></div
+    ></span>
+    } @for (link of group.links; track $index) {
+
+    <li
+      [class]="{ 'menu-item': true, active: currentUrl === link.url }"
+      [routerLink]="link.url"
+    >
+      <i-feather [name]="link.icon"></i-feather>
+      <span class="label">{{ link.name }}</span>
+    </li>
+    } }
+  </ul>
+</div>

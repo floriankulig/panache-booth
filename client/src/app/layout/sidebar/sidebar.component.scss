@@ -17,16 +17,17 @@
     }
   }
 
-  & > * {
-    padding: grid(3);
-  }
-
   .header-logo {
+    padding: grid(3);
     height: $headerHeight;
     display: flex;
     align-items: center;
     gap: grid(2);
     background: $bgPrimaryDark;
+
+    pb-logo {
+      cursor: pointer;
+    }
 
     .burger {
       cursor: pointer;
@@ -53,5 +54,53 @@
   .content {
     background: $bgSecondaryDark;
     flex: 1;
+    padding: grid(3) grid(1.5);
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+
+      &-group {
+        display: flex;
+        align-items: center;
+        gap: grid(1.5);
+        padding-inline: grid(2.5);
+        margin-block: grid(3.5) grid(1);
+        color: $textSecondaryDark;
+
+        .div {
+          flex: 1;
+          // display: none;
+          height: 1px;
+          background: rgba($textSecondaryDark, 0.3);
+        }
+      }
+
+      &-item {
+        cursor: pointer;
+        display: grid;
+        grid-template-columns: grid(3) 1fr;
+        gap: grid(1.5);
+        padding: grid(1.75) grid(2.5);
+        color: rgba($textPrimaryDark, 0.7);
+        border-radius: grid(1);
+        font-weight: 400;
+        transition: 0.2s ;
+        transition-property: background, color, font-weight;
+
+        &:hover,
+        &.active {
+          background: rgba($bgPrimaryDark, 0.5);
+          color: $textPrimaryDark;
+          font-weight: 500;
+        }
+
+        .label {
+          display: flex;
+          align-items: center;
+          font-size: 1.125rem;
+        }
+      }
+    }
   }
 }
