@@ -4,6 +4,8 @@ import { RegisterComponent } from "./pages/register/register.component";
 import { ProfileComponent } from "./pages/profile/profile.component";
 import { AuthGuard } from "./guards/auth-pages.guard";
 import { UserGuard } from "./guards/user.guard";
+import { WarehouseComponent } from "./pages/warehouse/warehouse.component";
+import { VendorGuard } from "./guards/vendor.guard";
 
 export const routes: Routes = [
   { path: "login", component: LoginComponent, canActivate: [AuthGuard] },
@@ -14,4 +16,9 @@ export const routes: Routes = [
     canActivate: [UserGuard],
   },
   { path: "profile", component: ProfileComponent },
+  {
+    path: "profile/warehouse",
+    component: WarehouseComponent,
+    canActivate: [VendorGuard],
+  },
 ];
