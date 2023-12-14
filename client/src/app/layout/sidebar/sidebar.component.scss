@@ -65,12 +65,12 @@
         align-items: center;
         gap: grid(1.5);
         padding-inline: grid(2.5);
-        margin-block: grid(3.5) grid(1);
+        margin-block: grid(2.5) grid(0.5);
         color: $textSecondaryDark;
 
         .div {
+          display: none;
           flex: 1;
-          // display: none;
           height: 1px;
           background: rgba($textSecondaryDark, 0.3);
         }
@@ -78,14 +78,14 @@
 
       &-item {
         cursor: pointer;
-        display: grid;
-        grid-template-columns: grid(3) 1fr;
+        display: flex;
+        align-items: center;
         gap: grid(1.5);
         padding: grid(1.75) grid(2.5);
         color: rgba($textPrimaryDark, 0.7);
         border-radius: grid(1);
         font-weight: 400;
-        transition: 0.2s ;
+        transition: 0.2s;
         transition-property: background, color, font-weight;
 
         &:hover,
@@ -95,9 +95,18 @@
           font-weight: 500;
         }
 
+        &.active {
+          color: $primary;
+        }
+
+        i-feather {
+          width: grid(2.5);
+          height: grid(2.5);
+          margin-bottom: grid(0.5);
+        }
         .label {
-          display: flex;
-          align-items: center;
+          // display: flex;
+          // align-items: center;
           font-size: 1.125rem;
         }
       }

@@ -1,12 +1,7 @@
 import { EventEmitter, Component, Output } from "@angular/core";
 import { IconsModule } from "../../icons/icons.module";
 import { LogoComponent } from "../../components/logo/logo.component";
-import {
-  ActivatedRoute,
-  NavigationEnd,
-  Router,
-  RouterModule,
-} from "@angular/router";
+import { NavigationEnd, Router, RouterModule } from "@angular/router";
 
 @Component({
   selector: "pb-sidebar",
@@ -40,11 +35,11 @@ export class SidebarComponent {
       ],
     },
     {
-      name: "Vendor",
+      name: "Your Shop",
       links: [
         {
-          name: "Stock",
-          url: "/profile/stock",
+          name: "Warehouse",
+          url: "/profile/warehouse",
           icon: "truck",
         },
         {

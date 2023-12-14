@@ -1,7 +1,12 @@
 <div class="left">
   <div>
     <h1>
-      {{ isUserUpdate ? "Update" : "Register" }} ({{ formStep }}/{{ maxSteps }})
+      {{ isUserUpdate ? "Edit Profile" : "Register" }}
+      @if (minStep !== maxSteps) {
+      <span
+        >({{ formStep - (minStep - 1) }}/{{ maxSteps - (minStep - 1) }})</span
+      >
+      }
     </h1>
     <span [class]="{ asRole: true, visible: formType === 'vendor' }">{{
       isUserUpdate ? "your vendor profile" : "as a vendor"
@@ -19,6 +24,11 @@
     Already have an account?
     <span routerLink="/login">Log in here</span>
   </p>
+  } @else if (minStep !== maxSteps){
+  <button class="transparent" (click)="locationBack()">
+    <i-feather name="arrow-left"></i-feather>
+    Back to Profile
+  </button>
   }
 </div>
 <form [formGroup]="formGroup" (submit)="confirm($event)" class="right">
@@ -262,7 +272,7 @@
   </div>
   <div class="form-actions">
     <button class="secondary" type="button" (click)="back()">
-      @if (formStep === 1) {Cancel} @else {Back}
+      @if (formStep === minStep) {Cancel} @else {Back}
     </button>
     <button type="submit">{{ primaryText }}</button>
   </div>

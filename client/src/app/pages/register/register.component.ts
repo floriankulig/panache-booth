@@ -111,7 +111,7 @@ export class RegisterComponent {
   }
 
   back() {
-    if (this.formStep > 1) {
+    if (this.formStep > this.minStep) {
       this.formStep--;
       this.errorMessage = "";
       this.formGroup = this.steps[this.formStep - 1];
@@ -161,6 +161,10 @@ export class RegisterComponent {
 
   get maxSteps() {
     return this.formType === "vendor" ? 3 : 2;
+  }
+
+  get minStep() {
+    return this.isUserUpdate ? 2 : 1;
   }
 
   private async submit() {
