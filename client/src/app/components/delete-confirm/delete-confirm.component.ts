@@ -29,7 +29,6 @@ export class DeleteConfirmComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.user);
     this.data = {
       name: this.user?.userName || "",
       id: this.user?.id || "",

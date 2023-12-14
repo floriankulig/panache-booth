@@ -2,7 +2,12 @@ import { Component, OnInit } from "@angular/core";
 import { Location } from "@angular/common";
 import { AxiosError } from "axios";
 import { IconsModule } from "../../icons/icons.module";
-import { ActivatedRoute, Router, RouterModule } from "@angular/router";
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  Router,
+  RouterModule,
+} from "@angular/router";
 import {
   FormBuilder,
   FormGroup,
@@ -19,7 +24,7 @@ import { AuthService } from "../../services";
   templateUrl: "./login.component.html",
   styleUrl: "./login.component.scss",
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   submitting = false;
   errorMessage = "";
   formGroup: FormGroup;
@@ -37,20 +42,18 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    if (!!this.authService.isLoggedIn()) {
-      this.router.navigate(["/"]);
-    }
-  }
-
   goBack() {
-    if (
-      window.history.length > 1 ||
-      this.activatedRoute.snapshot.queryParams["redirect"]
-    ) {
-      this.location.back();
+    if (this.activatedRoute.snapshot.queryParams["redirect"]) {
+      this.router.navigate([
+        this.activatedRoute.snapshot.queryParams["redirect"],
+      ]);
     } else {
-      this.router.navigate(["/"]);
+      if (this.router.navigated) {
+        this.location.back();
+      } else {
+        // If the last visited page is not within the app, redirect to "/"
+        this.router.navigate(["/"]);
+      }
     }
   }
 

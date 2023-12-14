@@ -1,14 +1,17 @@
 <div class="left">
   <div>
-    <h1>Register ({{ formStep }}/{{ maxSteps }})</h1>
-    <span [class]="{ asRole: true, visible: formType === 'vendor' }"
-      >as a vendor</span
-    >
+    <h1>
+      {{ isUserUpdate ? "Update" : "Register" }} ({{ formStep }}/{{ maxSteps }})
+    </h1>
+    <span [class]="{ asRole: true, visible: formType === 'vendor' }">{{
+      isUserUpdate ? "your vendor profile" : "as a vendor"
+    }}</span>
   </div>
+  @if (!isUserUpdate) {
   <button class="transparent" (click)="toggleFormType()">
     @if (formType==="customer") {
-    <i-feather name="user"></i-feather> Register as Vendor } @else {<i-feather
-      name="truck"
+    <i-feather name="truck"></i-feather> Register as Vendor } @else {<i-feather
+      name="user"
     ></i-feather>
     Register as Customer}
   </button>
@@ -16,11 +19,12 @@
     Already have an account?
     <span routerLink="/login">Log in here</span>
   </p>
+  }
 </div>
 <form [formGroup]="formGroup" (submit)="confirm($event)" class="right">
   <div class="form-controls">
     @if (formStep === 1) {
-    <div class="input">
+    <div [class]="{ input: true, disabled: isUserUpdate }">
       <div>
         <span>Username</span>
         @if (formGroup.get("username")?.errors &&
@@ -42,7 +46,7 @@
         formControlName="username"
       />
     </div>
-    <div class="input">
+    <div [class]="{ input: true, disabled: isUserUpdate }">
       <div>
         <span>Email</span>
         @if (formGroup.get("email")?.errors && formGroup.get("email")?.touched)
@@ -60,6 +64,11 @@
         placeholder="example@company.com"
       />
     </div>
+    @if (isUserUpdate) {
+    <p class="hint">
+      <i-feather name="info"></i-feather> This information can't be updated.
+    </p>
+    } @else {
     <div class="input">
       <div>
         <span>Password</span>
@@ -111,7 +120,7 @@
         placeholder="Confirm Password"
       />
     </div>
-    } @else if (formStep === 2) {
+    } } @else if (formStep === 2) {
     <h2>Where should your packages be delivered?</h2>
     <div style="display: flex; gap: 16px; width: 100%">
       <div class="input">

@@ -1,5 +1,15 @@
 @use "mixins.scss" as *;
+@use "variables.scss" as *;
 
 :host {
   @include auth;
+
+  .hint {
+    display: flex;
+    margin-top: grid(2);
+    font-weight: 500;
+    align-items: center;
+    color: rgba($textPrimary, 0.7);
+    gap: grid();
+  }
 }

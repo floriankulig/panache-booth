@@ -1,6 +1,6 @@
 import { Location } from "@angular/common";
 import { AxiosError } from "axios";
-import { Component, OnInit } from "@angular/core";
+import { Component, effect } from "@angular/core";
 import { IconsModule } from "../../icons/icons.module";
 import {
   FormsModule,
@@ -11,9 +11,15 @@ import {
   AbstractControlOptions,
 } from "@angular/forms";
 import { PositiveNumberDirective } from "../../directives/positive-number.directive";
-import { ActivatedRoute, Router, RouterModule } from "@angular/router";
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  Router,
+  RouterModule,
+} from "@angular/router";
 import { AuthService } from "../../services";
 import { buildUserFromFormValues } from "../../../helpers";
+import { User } from "../../../ts";
 
 @Component({
   selector: "pb-register",
@@ -28,38 +34,15 @@ import { buildUserFromFormValues } from "../../../helpers";
   templateUrl: "./register.component.html",
   styleUrl: "./register.component.scss",
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   formType: "vendor" | "customer" = "customer";
+  isUserUpdate = false;
   submitting = false;
   errorMessage = "";
   formStep = 1;
-  formGroup: FormGroup;
 
-  steps = [
-    this.formBuilder.group(
-      {
-        username: ["", Validators.required],
-        email: ["", [Validators.required, Validators.email]],
-        password: ["", Validators.required],
-        confirmPassword: ["", Validators.required],
-      },
-      {
-        validator: this.customValidators,
-      } as AbstractControlOptions,
-    ),
-    this.formBuilder.group({
-      street: ["", Validators.required],
-      houseNumber: ["", Validators.required],
-      postcode: ["", Validators.required],
-      city: ["", Validators.required],
-    }),
-    this.formBuilder.group({
-      iban: ["", Validators.required],
-      bic: ["", Validators.required],
-      shippingCost: [""],
-      shippingFreeFrom: [""],
-    }),
-  ];
+  steps: FormGroup[];
+  formGroup: FormGroup;
 
   constructor(
     private location: Location,
@@ -68,13 +51,53 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
   ) {
-    this.formGroup = this.steps[this.formStep - 1];
-  }
+    this.activatedRoute.url.subscribe((url) => {
+      this.isUserUpdate = url[0]?.path === "update-profile";
+    });
 
-  ngOnInit() {
-    if (!!this.authService.isLoggedIn()) {
-      this.router.navigate(["/"]);
+    const initialState = this.isUserUpdate
+      ? this.authService.user()
+      : undefined;
+
+    if (initialState) {
+      this.isUserUpdate = true;
+      this.formType = initialState?.isVendor ? "vendor" : "customer";
+      this.formStep = 2;
     }
+
+    this.steps = [
+      this.formBuilder.group(
+        {
+          username: [initialState?.userName || "", Validators.required],
+          email: [
+            initialState?.email || "",
+            [Validators.required, Validators.email],
+          ],
+          password: ["", this.isUserUpdate ? undefined : Validators.required],
+          confirmPassword: [
+            "",
+            this.isUserUpdate ? undefined : Validators.required,
+          ],
+        },
+        {
+          validator: this.customValidators,
+        } as AbstractControlOptions,
+      ),
+      this.formBuilder.group({
+        street: [initialState?.street || "", Validators.required],
+        houseNumber: [initialState?.houseNumber || "", Validators.required],
+        postcode: [initialState?.postcode || "", Validators.required],
+        city: [initialState?.city || "", Validators.required],
+      }),
+      this.formBuilder.group({
+        iban: [initialState?.iban || "", Validators.required],
+        bic: [initialState?.bic || "", Validators.required],
+        shippingCost: [initialState?.shippingCost || 0],
+        shippingFreeFrom: [initialState?.shippingFreeFrom || 0],
+      }),
+    ];
+
+    this.formGroup = this.steps[this.formStep - 1];
   }
 
   get primaryText() {
@@ -82,12 +105,15 @@ export class RegisterComponent implements OnInit {
       ? "Next Step"
       : this.submitting
       ? "loading..."
+      : this.isUserUpdate
+      ? "Update"
       : "Sign Up";
   }
 
   back() {
     if (this.formStep > 1) {
       this.formStep--;
+      this.errorMessage = "";
       this.formGroup = this.steps[this.formStep - 1];
     } else {
       this.locationBack();
@@ -95,13 +121,17 @@ export class RegisterComponent implements OnInit {
   }
 
   locationBack() {
-    if (
-      window.history.length > 1 ||
-      this.activatedRoute.snapshot.queryParams["redirect"]
-    ) {
-      this.location.back();
+    if (this.activatedRoute.snapshot.queryParams["redirect"]) {
+      this.router.navigate([
+        this.activatedRoute.snapshot.queryParams["redirect"],
+      ]);
     } else {
-      this.router.navigate(["/"]);
+      if (this.router.navigated) {
+        this.location.back();
+      } else {
+        // If the last visited page is not within the app, redirect to "/"
+        this.router.navigate(["/"]);
+      }
     }
   }
 
@@ -135,9 +165,21 @@ export class RegisterComponent implements OnInit {
 
   private async submit() {
     this.submitting = true;
-    const user = buildUserFromFormValues(this.steps, this.formType);
+    const { password, ...user } = buildUserFromFormValues(
+      this.steps,
+      this.formType,
+    );
     try {
-      await this.authService.register(user);
+      if (this.isUserUpdate) {
+        await this.authService.updateUser(
+          {
+            ...user,
+          },
+          this.authService.user()!.id,
+        );
+      } else {
+        await this.authService.register({ password, ...user });
+      }
       this.locationBack();
     } catch (e) {
       this.errorMessage = (e as AxiosError).response?.data as string;

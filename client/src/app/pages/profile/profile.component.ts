@@ -76,4 +76,8 @@ export class ProfileComponent implements OnInit {
       // }
     });
   }
+
+  onEdit() {
+    this.router.navigate(["update-profile"]);
+  }
 }

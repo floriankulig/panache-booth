@@ -21,8 +21,8 @@ export const buildUserFromFormValues = (
     ...address,
     isVendor: formType === "vendor",
     ...paymentInformation,
-    shippingCost: shippingCost ? shippingCost.toString() : 0,
-    shippingFreeFrom: shippingFreeFrom ? shippingFreeFrom.toString() : 0,
+    shippingCost: shippingCost ? shippingCost.toString() : "0",
+    shippingFreeFrom: shippingFreeFrom ? shippingFreeFrom.toString() : "0",
   };
 
   return user;

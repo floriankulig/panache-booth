@@ -6,7 +6,7 @@
   justify-content: center;
   min-height: 650px;
   overflow: hidden;
-  box-shadow: 4 8 30px rgba(#000, 0.2);
+  box-shadow: 4 8 30px rgba(#000, 0.2), inset -2px -2px 4px rgba(#000, 0.9);
   border-radius: grid(2.5);
   box-sizing: border-box;
   width: clamp(200px, 95%, 1200px);
@@ -105,6 +105,11 @@
         font-size: 1rem;
         font-weight: 500;
         appearance: textfield;
+      }
+
+      &.disabled {
+        opacity: 0.6;
+        pointer-events: none;
       }
     }
 

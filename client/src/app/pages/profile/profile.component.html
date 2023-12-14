@@ -13,7 +13,9 @@
       <h1>{{ "@" + profile.userName }}</h1>
       @if (isOwnProfile()) {
       <div class="actions">
-        <button><i-feather name="edit-3"></i-feather> <span>Edit</span></button>
+        <button (click)="onEdit()">
+          <i-feather name="edit-3"></i-feather> <span>Edit</span>
+        </button>
         <button class="delete" (click)="deleteModalOpen.set(true)">
           <i-feather name="trash"></i-feather> <span>Delete</span>
         </button>

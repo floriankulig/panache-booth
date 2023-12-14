@@ -59,6 +59,28 @@ export class AuthService {
     }
   }
 
+  async updateUser(
+    formUser: Omit<RegisterUser, "password">,
+    userId: string,
+  ): Promise<User> | never {
+    try {
+      const res = await axios.put(`${API_URL}/user/${userId}`, {
+        ...formUser,
+      });
+      const user = res.data;
+      this.user.set(user);
+      this.saveUidToLocalStorage(user.id);
+      this.notificationService.addNotification({
+        message: `Updated Profile!`,
+        type: "success",
+        duration: 5000,
+      });
+      return user;
+    } catch (error) {
+      throw error as AxiosError;
+    }
+  }
+
   async getUser(id: string): Promise<User> | never {
     try {
       const res = await axios.get<User>(`${API_URL}/user/${id}`);
