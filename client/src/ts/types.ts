@@ -11,7 +11,7 @@ interface Product {
   description: string;
   categories: Category[];
   vendorId: string;
-  salesVolume: number;
+  purchases: number;
   stock: number;
   isVisible: boolean;
   discount: number; // 0.0 - 1.0
