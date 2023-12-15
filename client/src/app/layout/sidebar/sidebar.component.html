@@ -6,7 +6,7 @@
 </div>
 <div class="content">
   <ul class="menu">
-    @for (group of tabs; track $index) { @if (!!group.name) {
+    @for (group of visibleTabs(); track $index) { @if (!!group?.name) {
     <span class="menu-group"
       >{{ group.name }}
       <div class="div"></div

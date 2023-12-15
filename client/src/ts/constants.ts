@@ -66,6 +66,11 @@ export const SIDEBAR_TABS = [
     name: "Your Shop",
     links: [
       {
+        name: "Profile",
+        url: "/profile",
+        icon: "user",
+      },
+      {
         name: "Warehouse",
         url: "/profile/warehouse",
         icon: "truck",
