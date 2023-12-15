@@ -53,6 +53,12 @@ button {
   }
 }
 
+.page-title {
+  letter-spacing: -0.5px;
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+  font-weight: 700;
+}
+
 @font-face {
   font-family: "Urbanist";
   src: url("assets/Urbanist-VariableFont_wght.ttf");

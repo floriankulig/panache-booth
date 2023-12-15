@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
+import { IconsModule } from "../../icons/icons.module";
 
 @Component({
-  selector: 'pb-warehouse',
+  selector: "pb-warehouse",
   standalone: true,
-  imports: [],
-  templateUrl: './warehouse.component.html',
-  styleUrl: './warehouse.component.scss'
+  imports: [IconsModule],
+  templateUrl: "./warehouse.component.html",
+  styleUrl: "./warehouse.component.scss",
 })
-export class WarehouseComponent {
-
-}
+export class WarehouseComponent {}

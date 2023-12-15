@@ -50,9 +50,11 @@
     </div>
   </div>
 
+  @if (profile.isVendor) {
   <div class="content-inner">
-    <h2>Products</h2>
+    <h2 class="page-title">Products</h2>
   </div>
+  }
 </div>
 } @if (deleteModalOpen()) {
 <pb-modal (close)="deleteModalOpen.set(false)">
