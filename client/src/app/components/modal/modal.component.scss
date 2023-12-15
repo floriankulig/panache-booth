@@ -34,13 +34,14 @@
       background: rgba($bgSecondary, 0.9);
       backdrop-filter: blur(32px) saturate(180%);
       box-shadow: 0 0 64px rgba($bgPrimaryDark, 0.1);
+      overflow-y: auto;
 
       & .close {
         aspect-ratio: 1;
-        width: grid(8);
+        width: clamp(grid(6), 10vw, grid(8));
         top: grid(6);
         right: clamp(grid(3), 5vw, grid(8));
-        position: absolute;
+        position: fixed;
         display: grid;
         cursor: pointer;
         place-items: center;
@@ -62,9 +63,11 @@
       }
 
       h1 {
-        line-height: grid(8);
-        font-size: clamp(2.5rem, 8vw, 3rem);
-        margin-bottom: grid(3);
+        line-height: grid(5);
+        font-size: clamp(2rem, 8vw, 3rem);
+        padding-right: grid(10);
+        letter-spacing: -1px;
+        margin-block: grid() grid(3);
       }
 
       @media screen and (max-width: 768px) {
@@ -72,7 +75,11 @@
         padding-top: grid(4);
 
         & .close {
-          top: grid(4);
+          top: grid(5);
+        }
+
+        h1 {
+          padding-right: grid(7);
         }
       }
     }

@@ -2,9 +2,21 @@
   <div class="heading">
     <h1 class="page-title">Your Products</h1>
     <section class="actions">
-      <button class="mobile-main icon">
+      <button
+        class="mobile-main icon"
+        title="Add new Product"
+        aria-label="Add new Product"
+        (click)="openAddProductModal()"
+      >
         <i-feather name="plus"></i-feather> <span>Add Product</span>
       </button>
     </section>
   </div>
 </div>
+
+@if (addProductModalOpen()) {
+<pb-modal
+  (close)="addProductModalOpen.set(false)"
+  heading="Add New Product"
+></pb-modal>
+}
