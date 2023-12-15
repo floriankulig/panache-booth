@@ -1,0 +1,22 @@
+@use "variables.scss" as *;
+@use "mixins.scss" as *;
+
+form {
+  padding-top: grid(2);
+  @include form;
+  .input {
+    @include input;
+
+    &-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: grid(4);
+
+      @media screen and (width < 768px) {
+        gap: 0;
+        flex-direction: column;
+      }
+    }
+  }
+}

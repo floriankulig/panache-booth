@@ -126,8 +126,13 @@ export class AuthService {
     }
   }
 
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem("uid") && !!this.user();
+  async isLoggedIn(): Promise<boolean> {
+    const uid = this.uidFromLocalStorage();
+    if (!uid) {
+      return false;
+    }
+    const user = this.user() || (await this.getUser(uid));
+    return !!user;
   }
 
   logout(): void {

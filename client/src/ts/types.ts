@@ -1,6 +1,7 @@
 import { CATEGORIES } from "./constants";
 
-type Category = (typeof CATEGORIES)[number];
+type Category = (typeof CATEGORIES)[number]["id"];
+type CategoryID = (typeof CATEGORIES)[number]["id"];
 
 interface Product {
   id: string;
@@ -42,4 +43,5 @@ interface Order {
   products: Product[];
 }
 
+export type { Category, CategoryID };
 export { Product, User, Order };

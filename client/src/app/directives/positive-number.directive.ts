@@ -1,4 +1,11 @@
-import { Directive, ElementRef, HostListener, Input } from "@angular/core";
+import {
+  Directive,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+} from "@angular/core";
 
 /** Wahrscheinlich das krasseste was ich jemals gebaut habe */
 @Directive({
@@ -7,6 +14,7 @@ import { Directive, ElementRef, HostListener, Input } from "@angular/core";
 })
 export class PositiveNumberDirective {
   @Input() allowDecimal: boolean = false;
+  @Output() cleanedNumber = new EventEmitter<number>();
   constructor(private el: ElementRef) {}
 
   @HostListener("input", ["$event"]) onInputChange(event: any) {
@@ -39,7 +47,9 @@ export class PositiveNumberDirective {
 
     if (!!initialValue) {
       this.el.nativeElement.value =
-        +initialValue > 0 || initialValue.endsWith(".")
+        +initialValue > 0 ||
+        initialValue.endsWith(".") ||
+        initialValue.endsWith(".0")
           ? initialValue.startsWith(".")
             ? "0" + initialValue
             : initialValue
@@ -47,6 +57,6 @@ export class PositiveNumberDirective {
     } else {
       this.el.nativeElement.value = "";
     }
-    console.log(Number(this.el.nativeElement.value));
+    this.cleanedNumber.emit(Number(this.el.nativeElement.value));
   }
 }

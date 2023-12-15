@@ -5,3 +5,4 @@ export {
 } from "./notification/notification.service";
 export { CartService } from "./cart/cart.service";
 export { OrderService } from "./order/order.service";
+export { ProductService, FormProduct } from "./product/product.service";

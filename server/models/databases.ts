@@ -27,7 +27,7 @@ const createProductTable =
   "name varchar(255) not null, " +
   "description varchar(200), " +
   "category varchar(36), " +
-  "sale decimal(4,3), " +
+  "discount decimal(4,3), " +
   "price decimal(10,2), " +
   "vendorId varchar(36) not null, " +
   "purchases integer, " +

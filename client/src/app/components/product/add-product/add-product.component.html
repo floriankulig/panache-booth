@@ -1,1 +1,101 @@
-<p>add-product works!</p>
+<form [formGroup]="formGroup" (submit)="onSubmit($event)">
+  <div class="input">
+    <div>
+      <span>Name*</span>
+      @if (formGroup.get("name")?.errors && formGroup.get("name")?.touched) {
+      <span class="input-error"
+        >@if (formGroup.get("name")?.errors?.["required"]) {Required} @else
+        {Max. 64 characters}</span
+      >
+      }
+    </div>
+    <input
+      required
+      type="text"
+      maxlength="64"
+      formControlName="name"
+      placeholder="Product Name"
+    />
+  </div>
+  <div class="input">
+    <div>
+      <span>Description*</span>
+      @if (formGroup.get("description")?.errors &&
+      formGroup.get("description")?.touched) {
+      <span class="input-error"
+        >@if (formGroup.get("description")?.errors?.["required"]) {Required}
+        @else {Max. 300 characters}</span
+      >
+      }
+    </div>
+    <textarea
+      required
+      maxlength="300"
+      formControlName="description"
+      placeholder="Product Information / Description"
+    >
+    </textarea>
+    <div class="length">
+      {{ formGroup.get("description")?.value?.length || 0 }}/300
+    </div>
+  </div>
+  <div class="input">
+    <div>
+      <span>Price* (€)</span>
+      @if (formGroup.get("price")?.errors && formGroup.get("price")?.touched) {
+      <span class="input-error">
+        @if (formGroup.get("price")?.errors?.["required"]) { Required } @else if
+        (formGroup.get("price")?.errors?.["negative"]) { Must be a positive
+        value }
+      </span>
+      }
+    </div>
+    <input
+      required
+      positiveNumber
+      [allowDecimal]="true"
+      formControlName="price"
+      placeholder="Product price"
+    />
+  </div>
+  <div class="input-row">
+    <div class="input">
+      <div>
+        <span>Stock/Inventory</span>
+      </div>
+      <input
+        positiveNumber
+        type="number"
+        formControlName="inventory"
+        placeholder="Amount of products you have in stock"
+      />
+    </div>
+    <div class="input">
+      <div>
+        <span>Discount (%)</span>@if (formGroup.get("discount")?.errors &&
+        formGroup.get("discount")?.touched) {
+        <span class="input-error"> Must be between 0 and 99 </span>
+        }
+      </div>
+      <input
+        positiveNumber
+        type="number"
+        min="0"
+        max="99"
+        maxlength="2"
+        formControlName="discount"
+        placeholder="Discount in %"
+      />
+    </div>
+  </div>
+  <div [class]="{ error: true, hidden: !errorMessage }">
+    <i-feather name="alert-circle"></i-feather>
+    <p>Error: {{ errorMessage }}</p>
+  </div>
+  <div class="form-actions">
+    <button class="secondary" type="button" (click)="onCancel()">Cancel</button>
+    <button type="submit">
+      @if(!submitting) {{{primaryText }}}@else {loading...}
+    </button>
+  </div>
+</form>

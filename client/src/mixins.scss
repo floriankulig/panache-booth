@@ -88,48 +88,7 @@
       }
     }
 
-    .error {
-      display: flex;
-      gap: $grid;
-      border-radius: $grid;
-      padding: grid(1.5);
-      color: $error;
-      background: rgba($error, 0.1);
-      max-height: $grid * 14;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: 0.3s ease-in-out;
-      transition-property: scale, opacity;
-
-      i-feather {
-        flex-shrink: 0;
-      }
-      p {
-        line-height: grid(3);
-      }
-
-      &.hidden {
-        opacity: 0;
-        scale: 0.5;
-      }
-    }
-
-    .form-actions {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: grid(4);
-
-      @media screen and (max-width: 500px) {
-        flex-direction: column-reverse;
-        gap: grid(2);
-
-        button {
-          width: 100%;
-        }
-      }
-    }
+    @include form;
   }
 
   @media screen and (max-width: 768px) {
@@ -151,6 +110,7 @@
 }
 
 @mixin input {
+  position: relative;
   margin-bottom: grid(4);
   width: 100%;
   & > div {
@@ -173,7 +133,8 @@
     }
   }
 
-  input {
+  input,
+  textarea {
     width: 100%;
     background: rgba($bgPrimary, 0.5);
     border: none;
@@ -183,11 +144,72 @@
     font-size: 1rem;
     font-weight: 500;
     appearance: textfield;
+    font-family: "Urbanist", sans-serif;
+
+    &:is(textarea) {
+      resize: vertical;
+      min-height: grid(10);
+      max-height: grid(20);
+    }
+
+    & + .length {
+      position: absolute;
+      right: 0;
+      bottom: -1 * grid(3);
+      color: rgba($textPrimary, 0.75);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
   }
 
   &.disabled {
     opacity: 0.6;
     pointer-events: none;
+  }
+}
+
+@mixin form {
+  .error {
+    display: flex;
+    gap: $grid;
+    border-radius: $grid;
+    padding: grid(1.5);
+    color: $error;
+    background: rgba($error, 0.1);
+    max-height: $grid * 14;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: 0.3s ease-in-out;
+    transition-property: scale, opacity;
+
+    i-feather {
+      flex-shrink: 0;
+    }
+    p {
+      line-height: grid(3);
+    }
+
+    &.hidden {
+      opacity: 0;
+      scale: 0.5;
+    }
+  }
+
+  .form-actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: grid(4);
+
+    @media screen and (max-width: 500px) {
+      flex-direction: column-reverse;
+      gap: grid(2);
+
+      button {
+        width: 100%;
+      }
+    }
   }
 }
 
@@ -217,7 +239,7 @@
     flex-shrink: 0;
   }
 
-  &:hover {
+  &:is(:hover, :focus) {
     background-color: darken($primary, 5);
   }
 
@@ -244,7 +266,7 @@
   &.secondary {
     background: $bgSecondary;
     color: $textPrimary;
-    &:hover {
+    &:is(:hover, :focus) {
       background-color: darken($bgSecondary, 5);
     }
   }
@@ -253,7 +275,7 @@
     background: rgba($bgPrimary, 0.2);
     backdrop-filter: blur(2px);
     color: rgba($textPrimary, 0.8);
-    &:hover {
+    &:is(:hover, :focus) {
       background-color: rgba($bgSecondary, 0.4);
     }
   }
@@ -261,7 +283,7 @@
   &.danger {
     background: $error;
     color: $textPrimaryDark;
-    &:hover {
+    &:is(:hover, :focus) {
       background-color: darken($error, 5);
     }
   }
