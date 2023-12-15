@@ -12,7 +12,7 @@ interface Product {
   categories: Category;
   vendorId: string;
   purchases: number;
-  stock: number;
+  inventory: number;
   isVisible: boolean;
   discount: number; // 0.0 - 1.0
 }
