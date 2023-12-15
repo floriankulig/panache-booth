@@ -42,9 +42,9 @@ export class DeleteConfirmComponent implements OnInit {
       if (this.data?.type === "user") {
         await this.authService.deleteUser(this.data?.id);
         this.notificationService.addNotification({
-          message: "User was deleted deleted.",
+          message: "User was deleted.",
           duration: 5000,
-          type: "success",
+          type: "error",
           icon: "user-x",
         });
       } else {
