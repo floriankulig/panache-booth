@@ -9,7 +9,7 @@ interface Product {
   name: string;
   price: number;
   description: string;
-  categories: Category[];
+  categories: Category;
   vendorId: string;
   purchases: number;
   stock: number;

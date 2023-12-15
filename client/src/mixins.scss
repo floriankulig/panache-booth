@@ -41,7 +41,7 @@
       display: block;
       font-size: 1.125rem;
       font-weight: 500;
-      color: rgba($textPrimary, 0.75);
+      color: rgba($textPrimary, 0.85);
       margin-top: grid(1.5);
 
       &.visible {
@@ -74,44 +74,7 @@
     justify-content: space-between;
 
     .input {
-      margin-bottom: grid(4);
-      width: 100%;
-      & > div {
-        display: flex;
-        gap: $grid;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 0 $grid grid(2);
-
-        span {
-          display: block;
-          color: rgba($textPrimary, 0.75);
-          font-size: 0.875rem;
-          font-weight: 600;
-
-          &:nth-child(2) {
-            font-weight: 400;
-            color: rgba($error, 0.9);
-          }
-        }
-      }
-
-      input {
-        width: 100%;
-        background: rgba($bgPrimary, 0.5);
-        border: none;
-        border-radius: $grid;
-        padding: grid(2);
-        color: $textPrimary;
-        font-size: 1rem;
-        font-weight: 500;
-        appearance: textfield;
-      }
-
-      &.disabled {
-        opacity: 0.6;
-        pointer-events: none;
-      }
+      @include input;
     }
 
     .form-controls {
@@ -184,6 +147,47 @@
       flex: 0;
       height: auto;
     }
+  }
+}
+
+@mixin input {
+  margin-bottom: grid(4);
+  width: 100%;
+  & > div {
+    display: flex;
+    gap: $grid;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0 $grid grid(2);
+
+    span {
+      display: block;
+      color: rgba($textPrimary, 0.75);
+      font-size: 0.875rem;
+      font-weight: 600;
+
+      &:nth-child(2) {
+        font-weight: 400;
+        color: rgba($error, 0.9);
+      }
+    }
+  }
+
+  input {
+    width: 100%;
+    background: rgba($bgPrimary, 0.5);
+    border: none;
+    border-radius: $grid;
+    padding: grid(2);
+    color: $textPrimary;
+    font-size: 1rem;
+    font-weight: 500;
+    appearance: textfield;
+  }
+
+  &.disabled {
+    opacity: 0.6;
+    pointer-events: none;
   }
 }
 
