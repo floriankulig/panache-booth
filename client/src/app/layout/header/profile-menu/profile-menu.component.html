@@ -6,7 +6,7 @@
   <div class="profile-menu">
     @if (!!user()) {
     <div class="user-info">
-      <span class="name">{{ "@" + user()?.userName }}</span>
+      <span class="name">{{ user()?.userName }}</span>
       <span class="role">{{ user()?.isVendor ? "Vendor" : userJoin() }}</span>
     </div>
     <div class="divider"></div>
