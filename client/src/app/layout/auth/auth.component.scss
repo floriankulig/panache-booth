@@ -21,14 +21,18 @@
     aspect-ratio: 1;
     z-index: -1;
     width: 60%;
+    min-width: 850px;
     object-fit: contain;
     animation: pulsate 30s ease-in-out infinite alternate both;
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1020px) {
       width: 100%;
     }
+    @media screen and (max-width: 768px) {
+      width: 160%;
+    }
     @media screen and (max-width: 420px) {
-      width: 120%;
+      width: 200%;
     }
   }
 
