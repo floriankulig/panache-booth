@@ -11,7 +11,7 @@ import { AddProductComponent } from "../../components/product";
   styleUrl: "./warehouse.component.scss",
 })
 export class WarehouseComponent {
-  addProductModalOpen = signal(true);
+  addProductModalOpen = signal(false);
 
   openAddProductModal() {
     this.addProductModalOpen.set(true);
