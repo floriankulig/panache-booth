@@ -31,4 +31,52 @@ export const CATEGORIES = [
   { displayValue: "Watches", id: "watches" },
 ] as const;
 
+export const SIDEBAR_TABS = [
+  {
+    name: "",
+    links: [
+      {
+        name: "Home",
+        url: "/",
+        icon: "home",
+      },
+      {
+        name: "Categories",
+        url: "/categories",
+        icon: "grid",
+      },
+    ],
+  },
+  {
+    name: "Your Profile",
+    links: [
+      {
+        name: "Profile",
+        url: "/profile",
+        icon: "user",
+      },
+      {
+        name: "Purchases",
+        url: "/profile/orders",
+        icon: "shopping-bag",
+      },
+    ],
+  },
+  {
+    name: "Your Shop",
+    links: [
+      {
+        name: "Warehouse",
+        url: "/profile/warehouse",
+        icon: "truck",
+      },
+      {
+        name: "Orders",
+        url: "/profile/orders",
+        icon: "package",
+      },
+    ],
+  },
+] as const;
+
 export const API_URL = "http://localhost:3000/api" as const;

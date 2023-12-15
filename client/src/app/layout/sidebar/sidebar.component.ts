@@ -2,6 +2,7 @@ import { EventEmitter, Component, Output } from "@angular/core";
 import { IconsModule } from "../../icons/icons.module";
 import { LogoComponent } from "../../components/logo/logo.component";
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
+import { SIDEBAR_TABS } from "../../../ts";
 
 @Component({
   selector: "pb-sidebar",
@@ -13,53 +14,7 @@ import { NavigationEnd, Router, RouterModule } from "@angular/router";
 export class SidebarComponent {
   @Output() close = new EventEmitter();
   currentUrl: string = "/";
-  tabs = [
-    {
-      name: "",
-      links: [
-        {
-          name: "Home",
-          url: "/",
-          icon: "home",
-        },
-        {
-          name: "Categories",
-          url: "/categories",
-          icon: "grid",
-        },
-      ],
-    },
-    {
-      name: "Your Profile",
-      links: [
-        {
-          name: "Profile",
-          url: "/profile",
-          icon: "user",
-        },
-        {
-          name: "Purchases",
-          url: "/profile/orders",
-          icon: "shopping-bag",
-        },
-      ],
-    },
-    {
-      name: "Your Shop",
-      links: [
-        {
-          name: "Warehouse",
-          url: "/profile/warehouse",
-          icon: "truck",
-        },
-        {
-          name: "Orders",
-          url: "/profile/orders",
-          icon: "package",
-        },
-      ],
-    },
-  ];
+  tabs = SIDEBAR_TABS;
 
   constructor(private router: Router) {
     this.router.events.subscribe((event) => {

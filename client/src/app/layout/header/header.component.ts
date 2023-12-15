@@ -3,12 +3,8 @@ import { SearchbarComponent } from "./searchbar/searchbar.component";
 import { IconsModule } from "../../icons/icons.module";
 import { ProfileMenuComponent } from "./profile-menu/profile-menu.component";
 import { CartService, OrderService } from "../../services";
-import {
-  ActivatedRoute,
-  ActivatedRouteSnapshot,
-  NavigationEnd,
-  Router,
-} from "@angular/router";
+import { NavigationEnd, Router } from "@angular/router";
+import { SIDEBAR_TABS } from "../../../ts";
 
 @Component({
   selector: "pb-header",
@@ -36,16 +32,12 @@ export class HeaderComponent {
   }
 
   private getTabText(url: string) {
-    const urlParts = url.split("?")[0].split("/");
-    const firstPart = urlParts[1];
-    switch (firstPart) {
-      case "orders":
-        return "Orders";
-      case "profile":
-        return "Profile";
-      default:
-        return "Products";
-    }
+    const activeTabGroup = SIDEBAR_TABS.find((tab) =>
+      tab.links.find((link) => link.url === url),
+    );
+    return (
+      activeTabGroup?.links.find((link) => link.url === url)?.name || "Home"
+    );
   }
 
   openCart() {
