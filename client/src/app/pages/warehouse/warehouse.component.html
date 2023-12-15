@@ -15,8 +15,7 @@
 </div>
 
 @if (addProductModalOpen()) {
-<pb-modal
-  (close)="addProductModalOpen.set(false)"
-  heading="Add New Product"
-></pb-modal>
+<pb-modal (close)="addProductModalOpen.set(false)" heading="Add New Product">
+  <pb-add-product></pb-add-product>
+</pb-modal>
 }
