@@ -1,20 +1,52 @@
 import { Directive, ElementRef, HostListener, Input } from "@angular/core";
 
+/** Wahrscheinlich das krasseste was ich jemals gebaut habe */
 @Directive({
   selector: "[positiveNumber]",
   standalone: true,
 })
 export class PositiveNumberDirective {
+  @Input() allowDecimal: boolean = false;
   constructor(private el: ElementRef) {}
 
-  @HostListener("input", ["$event"]) onInputChange(event: InputEvent) {
-    const initalValue = this.el.nativeElement.value;
+  @HostListener("input", ["$event"]) onInputChange(event: any) {
+    let initialValue: string = event.target?.value;
 
-    this.el.nativeElement.value = initalValue.replace(/[^0-9]*/g, "");
-    // if (this.el.nativeElement.value != "") {
-    //   this.el.nativeElement.value = Math.abs(
-    //     parseInt(this.el.nativeElement.value),
-    //   );
-    // }
+    if (+initialValue < 0) {
+      this.el.nativeElement.value = 0;
+      return;
+    }
+
+    // If decimal values are allowed, keep the first decimal point and remove all non-numeric characters
+    if (this.allowDecimal) {
+      initialValue = initialValue.replace(/[^0-9\.\,]*/g, "");
+
+      initialValue = initialValue.replace(/,/g, ".");
+      const decimalPointIndex = initialValue.indexOf(".");
+
+      if (decimalPointIndex !== -1) {
+        initialValue =
+          initialValue.substring(0, decimalPointIndex + 1) +
+          initialValue
+            .substring(decimalPointIndex + 1)
+            .replace(".", "")
+            .substring(0, 2);
+      }
+    } else {
+      initialValue = initialValue.replace(/[^0-9]*/g, "");
+      // If only integers are allowed, remove all non-numeric characters
+    }
+
+    if (!!initialValue) {
+      this.el.nativeElement.value =
+        +initialValue > 0 || initialValue.endsWith(".")
+          ? initialValue.startsWith(".")
+            ? "0" + initialValue
+            : initialValue
+          : 0;
+    } else {
+      this.el.nativeElement.value = "";
+    }
+    console.log(Number(this.el.nativeElement.value));
   }
 }

@@ -52,7 +52,9 @@
         maxlength="32"
         pattern="[a-zA-Z0-9]*"
         type="text"
-        placeholder="username123"
+        [placeholder]="
+          formType === 'vendor' ? 'Your Company Name' : 'Display Name'
+        "
         formControlName="username"
       />
     </div>
@@ -247,7 +249,7 @@
         <span>Shipping Cost (€)</span>
       </div>
       <input
-        type="number"
+        [allowDecimal]="true"
         positiveNumber
         formControlName="shippingCost"
         placeholder="How much do you charge for shipping?"
@@ -258,7 +260,7 @@
         <span>Shipping free from (€)</span>
       </div>
       <input
-        type="number"
+        [allowDecimal]="true"
         positiveNumber
         formControlName="shippingFreeFrom"
         placeholder="Minimum amount for free shipping"
