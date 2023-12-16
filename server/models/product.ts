@@ -29,6 +29,17 @@ export function getAllArticles() {
   return products;
 }
 
+export function getAllVendorProducts(id: string) {
+  let products = database.prepare("select * from product where vendorId = ?").all(id)
+  console.log(products)
+  products.forEach((key) => {
+    // @ts-ignore
+    key["isVisible"] = key["isVisible"] !== 0;
+  });
+
+  return products;
+}
+
 export function createArticle(product: IProduct) {
   product.id = uuidv4();
   const currentTimestamp = new Date().toISOString();

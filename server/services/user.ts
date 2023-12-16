@@ -42,7 +42,6 @@ export function addUser(userBody: any) {
     createdAt: currentTimestamp,
     updatedAt: currentTimestamp
   };
-  console.log(user);
   return createUser(user);
 }
 

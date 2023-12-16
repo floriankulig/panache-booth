@@ -2,7 +2,7 @@ import express from "express";
 import { IProduct } from "../models/IProduct";
 import {
   addArticle,
-  allArticles,
+  allArticles, allVendorProducts,
   articleById,
   deleteArticle,
   updateArticle,
@@ -11,7 +11,15 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    res.status(200).json(await allArticles());
+    const id = req.query["vendorId"];
+    if (req.query.vendorId) {
+      // @ts-ignore
+      console.log(id)
+      // @ts-ignore
+      res.status(200).json(await allVendorProducts(id))
+    } else {
+      res.status(200).json(await allArticles());
+    }
   } catch (e: unknown) {
     res.status(404).send("Error: Something went wrong!");
   }
@@ -26,7 +34,7 @@ router.post("/", async (req, res) => {
       discount: req.body.discount,
       price: req.body.price,
       vendorId: req.body.vendorId,
-      purchases: req.body.purchases,
+      purchases: 0,
       inventory: req.body.inventory,
       isVisible: req.body.isVisible,
     };
@@ -37,9 +45,9 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:articleId", async (req, res) => {
+router.put("/:productId", async (req, res) => {
   try {
-    const articleId = req.params.articleId;
+    const articleId = req.params.productId;
     const article = await articleById(articleId);
     if (article != undefined) {
       const articleMap = new Map<string, string>();
@@ -62,9 +70,10 @@ router.put("/:articleId", async (req, res) => {
   }
 });
 
-router.delete("/:articleId", async (req, res) => {
-  const articleId = req.params.articleId;
+router.delete("/:productId", async (req, res) => {
+  const articleId = req.params.productId;
   try {
+
     if (articleById(articleId) !== undefined) {
       const user = await deleteArticle(articleId);
       res.sendStatus(200);
@@ -76,8 +85,8 @@ router.delete("/:articleId", async (req, res) => {
   }
 });
 
-router.get("/:articleId", async (req, res) => {
-  const articleId = req.params.articleId;
+router.get("/:productId", async (req, res) => {
+  const articleId = req.params.productId;
   try {
     if (articleById(articleId) !== undefined) {
       res.status(200).json(await articleById(articleId));

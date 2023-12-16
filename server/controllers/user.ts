@@ -7,7 +7,7 @@ import {
   updateUser,
   userById
 } from "../services/user";
-import { InvalidLogin } from "../util/customErrors";
+import { InvalidLogin, UserNotExisting } from "../util/customErrors";
 
 const router = express.Router();
 
@@ -29,7 +29,7 @@ router.post("/login", async (req, res) => {
     if (error instanceof InvalidLogin) {
       res.status(400).send(error.message);
     } else {
-      res.status(500).send("Error: Something went wrong!");
+      res.status(500).send("Internal server error!");
     }
   }
 });
@@ -37,11 +37,9 @@ router.post("/login", async (req, res) => {
 router.post("/", async (req, res) => {
   console.log(req.body);
   try {
-    console.log(typeof req.body);
     res.status(200).json(await addUser(req.body));
-  } catch (e: unknown) {
-    console.log(e);
-    res.status(500).send("Error: Something went wrong!");
+  } catch (error: unknown) {
+    res.status(500).send("Internal server error!");
   }
 });
 
@@ -63,10 +61,14 @@ router.put("/:userId", async (req, res) => {
       }
       res.status(200).json(await updateUser(userMap, userId));
     } else {
-      res.status(400).send("User not existing!");
+      throw new UserNotExisting();
     }
-  } catch (e: unknown) {
-    res.status(404).send("Error: Something went wrong!");
+  } catch (error) {
+    if (error instanceof UserNotExisting) {
+      res.status(400).send("User not existing!");
+    } else {
+      res.status(500).send("Internal server error!");
+    }
   }
 });
 
@@ -80,7 +82,7 @@ router.delete("/:userId", async (req, res) => {
       res.status(400).send("User not existing");
     }
   } catch (e: unknown) {
-    res.status(404).send("Error: Something went wrong. User was not deleted!");
+    res.status(500).send("Internal server error!");
   }
 });
 
@@ -90,10 +92,14 @@ router.get("/:userId", async (req, res) => {
     if (userById(userId) !== undefined) {
       res.status(200).json(await userById(userId));
     } else {
-      res.status(400).send("User does not exist");
+      throw new UserNotExisting();
     }
-  } catch (e: unknown) {
-    res.status(404).send("Error: Something went wrong!");
+  } catch (error: unknown) {
+    if (error instanceof UserNotExisting) {
+      res.status(400).send("User not existing!");
+    } else {
+      res.status(500).send("Internal server error!");
+    }
   }
 });
 

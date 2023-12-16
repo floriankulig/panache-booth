@@ -2,9 +2,9 @@ import { IProduct } from "../models/IProduct";
 import {
   createArticle,
   deleteArticleById,
-  getAllArticles,
+  getAllArticles, getAllVendorProducts,
   getArticleById,
-  updateArticleById
+  updateArticleById,
 } from "../models/product";
 
 export function articleById(id: string) {
@@ -13,6 +13,10 @@ export function articleById(id: string) {
 
 export function allArticles() {
   return getAllArticles();
+}
+
+export function allVendorProducts(id: string) {
+  return getAllVendorProducts(id);
 }
 
 export function addArticle(product: IProduct) {
