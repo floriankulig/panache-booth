@@ -1,7 +1,7 @@
 import { Component, OnInit, computed, effect, signal } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { AuthService, NotificationService } from "../../services";
-import { User } from "../../../ts";
+import { User } from "../../../models";
 import { AxiosError } from "axios";
 import { Location } from "@angular/common";
 import { format } from "date-fns";

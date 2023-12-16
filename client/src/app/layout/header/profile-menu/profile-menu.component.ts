@@ -4,7 +4,7 @@ import { RouterLink } from "@angular/router";
 import { AuthService } from "../../../services/auth/auth.service";
 import { getDistanceToDate } from "../../../../helpers";
 import { isToday } from "date-fns";
-import { User } from "../../../../ts";
+import { User } from "../../../../models";
 import { CartService, OrderService } from "../../../services";
 
 @Component({

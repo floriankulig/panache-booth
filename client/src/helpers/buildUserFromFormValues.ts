@@ -1,5 +1,5 @@
 import { FormGroup } from "@angular/forms";
-import { RegisterUser } from "../app/services";
+import { RegisterUser } from "../models";
 
 export const buildUserFromFormValues = (
   steps: FormGroup[],

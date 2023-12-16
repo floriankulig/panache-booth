@@ -1,16 +1,7 @@
 import { WritableSignal, Injectable, signal, effect } from "@angular/core";
 import axios, { AxiosError } from "axios";
-import { API_URL, User } from "../../../ts";
+import { API_URL, RegisterUser, User } from "../../../models";
 import { NotificationService } from "../notification/notification.service";
-
-export interface RegisterUser
-  extends Omit<User, "id" | "createdAt" | "updatedAt" | "address"> {
-  password: string;
-  houseNumber: string;
-  street: string;
-  postcode: string;
-  city: string;
-}
 
 @Injectable({
   providedIn: "root",

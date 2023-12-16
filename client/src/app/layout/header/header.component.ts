@@ -4,7 +4,7 @@ import { IconsModule } from "../../icons/icons.module";
 import { ProfileMenuComponent } from "./profile-menu/profile-menu.component";
 import { CartService, OrderService } from "../../services";
 import { NavigationEnd, Router } from "@angular/router";
-import { SIDEBAR_TABS } from "../../../ts";
+import { SIDEBAR_TABS } from "../../../models";
 
 @Component({
   selector: "pb-header",

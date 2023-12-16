@@ -2,7 +2,7 @@ import { EventEmitter, Component, Output, computed } from "@angular/core";
 import { IconsModule } from "../../icons/icons.module";
 import { LogoComponent } from "../../components/logo/logo.component";
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
-import { SIDEBAR_TABS } from "../../../ts";
+import { SIDEBAR_TABS } from "../../../models";
 import { AuthService } from "../../services";
 
 @Component({

@@ -1,6 +1,5 @@
 import { FormGroup } from "@angular/forms";
-import { FormProduct } from "../app/services";
-import { CategoryID, Product } from "../ts";
+import { FormProduct, CategoryID, Product } from "../models";
 
 export const buildProductFromFormValues = (
   formValues: FormGroup,

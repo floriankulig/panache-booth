@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import { Product } from "../../../../ts";
+import { Product } from "../../../../models";
 import { PositiveNumberDirective } from "../../../directives/positive-number.directive";
 import { of } from "rxjs";
 import { IconsModule } from "../../../icons/icons.module";

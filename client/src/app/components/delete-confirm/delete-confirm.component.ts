@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { Product, User } from "../../../ts";
+import { Product, User } from "../../../models";
 import { IconsModule } from "../../icons/icons.module";
 import { AuthService, NotificationService } from "../../services";
 

@@ -19,7 +19,7 @@ import {
 } from "@angular/router";
 import { AuthService } from "../../services";
 import { buildUserFromFormValues } from "../../../helpers";
-import { User } from "../../../ts";
+import { User } from "../../../models";
 
 @Component({
   selector: "pb-register",
