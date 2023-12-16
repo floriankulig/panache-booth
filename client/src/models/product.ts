@@ -24,7 +24,10 @@ interface APIProduct extends Omit<Product, "category" | "vendor"> {
   vendorId: string;
 }
 
-type FormProduct = Omit<APIProduct, "id" | "createdAt" | "updatedAt">;
+type FormProduct = Omit<
+  APIProduct,
+  "id" | "createdAt" | "updatedAt" | "purchases"
+>;
 
 export type { Category, CategoryID, FormProduct };
 export { Product, APIProduct };

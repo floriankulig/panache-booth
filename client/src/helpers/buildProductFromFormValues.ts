@@ -12,7 +12,6 @@ export const buildProductFromFormValues = (
     >),
     discount: formValues.value.discount / 100,
     category: "electronics" as CategoryID,
-    purchases: 0,
     isVisible,
   };
 
