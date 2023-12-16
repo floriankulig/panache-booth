@@ -13,8 +13,17 @@
     </section>
   </div>
 </div>
+@if (!!ownedProducts()) {
 
-@if (addProductModalOpen()) {
+<section class="grid content-inner">
+  @for (product of ownedProducts(); track product.id) {
+  <pb-product-card
+    [product]="product"
+    (update)="updateList()"
+  ></pb-product-card>
+  }
+</section>
+} @if (addProductModalOpen()) {
 <pb-modal (close)="addProductModalOpen.set(false)" heading="Add New Product">
   <pb-add-product
     (cancel)="addProductModalOpen.set(false)"

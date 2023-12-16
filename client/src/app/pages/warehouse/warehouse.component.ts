@@ -7,7 +7,10 @@ import {
 } from "@angular/core";
 import { IconsModule } from "../../icons/icons.module";
 import { ModalComponent } from "../../components/modal/modal.component";
-import { AddProductComponent } from "../../components/product";
+import {
+  AddProductComponent,
+  ProductCardComponent,
+} from "../../components/product";
 import {
   AuthService,
   NotificationService,
@@ -18,7 +21,12 @@ import { Product } from "../../../models";
 @Component({
   selector: "pb-warehouse",
   standalone: true,
-  imports: [IconsModule, ModalComponent, AddProductComponent],
+  imports: [
+    IconsModule,
+    ModalComponent,
+    AddProductComponent,
+    ProductCardComponent,
+  ],
   templateUrl: "./warehouse.component.html",
   styleUrl: "./warehouse.component.scss",
 })
@@ -53,6 +61,10 @@ export class WarehouseComponent {
 
   openAddProductModal() {
     this.addProductModalOpen.set(true);
+  }
+
+  updateList() {
+    this.getOwnedProducts(this.authService.user()?.id);
   }
 
   onProductCreated() {

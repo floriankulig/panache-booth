@@ -1,0 +1,7 @@
+@use "variables.scss" as *;
+
+:host {
+  background: $bgPrimary;
+  padding: clamp(grid(2), 3vw, grid(3));
+  border-radius: grid();
+}
