@@ -1,8 +1,8 @@
-import { Component, effect, signal } from "@angular/core";
+import { Component, computed, effect, signal } from "@angular/core";
 import { IconsModule } from "../../icons/icons.module";
 import { ModalComponent } from "../../components/modal/modal.component";
 import { AddProductComponent } from "../../components/product";
-import { ProductService } from "../../services";
+import { AuthService, ProductService } from "../../services";
 
 @Component({
   selector: "pb-warehouse",
@@ -13,12 +13,16 @@ import { ProductService } from "../../services";
 })
 export class WarehouseComponent {
   addProductModalOpen = signal(false);
+  ownedProducts = computed(() =>
+    this.productService
+      .products()
+      .filter((product) => product.vendor?.id === this.authService.user()?.id),
+  );
 
-  constructor(private productService: ProductService) {
-    effect(() => {
-      console.log(this.productService.products());
-    });
-  }
+  constructor(
+    private productService: ProductService,
+    private authService: AuthService,
+  ) {}
 
   openAddProductModal() {
     this.addProductModalOpen.set(true);

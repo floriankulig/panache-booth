@@ -1,12 +1,6 @@
-import { Injectable, OnInit, WritableSignal, signal } from "@angular/core";
+import { Injectable, WritableSignal, signal } from "@angular/core";
 import axios, { AxiosError } from "axios";
-import {
-  APIProduct,
-  API_URL,
-  CategoryID,
-  FormProduct,
-  Product,
-} from "../../../models";
+import { APIProduct, API_URL, FormProduct, Product } from "../../../models";
 import { categoryById } from "../../../helpers";
 
 @Injectable({
@@ -16,7 +10,6 @@ export class ProductService {
   products: WritableSignal<Product[]> = signal([]);
   constructor() {
     this.getProducts();
-    console.log(this.products());
   }
 
   async createProduct(product: FormProduct) {
