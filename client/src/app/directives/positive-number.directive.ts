@@ -17,7 +17,9 @@ export class PositiveNumberDirective {
   @Output() cleanedNumber = new EventEmitter<number>();
   constructor(private el: ElementRef) {}
 
-  @HostListener("input", ["$event"]) onInputChange(event: any) {
+  @HostListener("input", ["$event"]) onInputChange(event: {
+    target: HTMLInputElement;
+  }) {
     let initialValue: string = event.target?.value;
 
     if (+initialValue < 0) {
