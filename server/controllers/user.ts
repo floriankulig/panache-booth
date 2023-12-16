@@ -7,7 +7,8 @@ import {
   updateUser,
   userById
 } from "../services/user";
-import { InvalidLogin, UserNotExisting } from "../util/customErrors";
+import { InvalidLogin, UserNotExisting } from "../util/customUserErrors";
+import { SqliteError } from "better-sqlite3";
 
 const router = express.Router();
 
@@ -35,11 +36,17 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  console.log(req.body);
   try {
     res.status(200).json(await addUser(req.body));
   } catch (error: unknown) {
-    res.status(500).send("Internal server error!");
+    if (error instanceof SqliteError && error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+      res.status(400).send("Email already existing!");
+    } else if (error instanceof SqliteError) {
+      res.status(400).send("Database error!");
+    } else {
+      res.status(500).send("Internal server error!");
+    }
+
   }
 });
 

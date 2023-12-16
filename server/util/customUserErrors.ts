@@ -7,14 +7,9 @@ export class InvalidLogin extends Error {
 
 export class UserNotExisting extends Error {
   constructor() {
-    super("User is not exisiting!");
+    super("User is not existing!");
     this.name = "UserNotExisting"
   }
 }
 
-export class EmailAlreadyExisiting extends Error {
-  constructor() {
-    super("Email is already exisiting!");
-    this.name = "EmailAlreadyExisting"
-  }
-}
+

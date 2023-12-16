@@ -13,8 +13,8 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     res.status(200).json(await allOrders());
-  } catch (e: unknown) {
-    res.status(404).send("Error: Something went wrong!");
+  } catch (error) {
+    res.status(500).send("Internal server error!");
   }
 });
 
@@ -25,9 +25,8 @@ router.post("/", async (req, res) => {
       delivered: req.body.delivered
     };
     res.status(200).json(await addOrder(order, req.body.products));
-  } catch (e: unknown) {
-    console.log(e);
-    res.status(404).send("Error: Something went wrong!");
+  } catch (error) {
+    res.status(500).send("Internal server error!");
   }
 });
 
@@ -41,9 +40,8 @@ router.get("/:id", async (req, res) => {
     } else {
       res.status(200).json(await allVendorOrdersById(id));
     }
-  } catch (e: unknown) {
-    console.log(e);
-    res.status(404).send("Error: Something went wrong!");
+  } catch (error) {
+    res.status(500).send("Internal server error!");
   }
 });
 
@@ -52,9 +50,8 @@ router.delete("/:id", async (req, res) => {
     const id = req.params.id;
     await deleteOrder(id);
     res.sendStatus(200);
-  } catch (e: unknown) {
-    console.log(e);
-    res.status(404).send("Error: Something went wrong!");
+  } catch (error) {
+    res.status(500).send("Internal server error!");
   }
 });
 

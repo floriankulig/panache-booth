@@ -7,7 +7,7 @@ import {
   updateUserById
 } from "../models/user";
 import { IUser } from "../models/IUser";
-import { InvalidLogin } from "../util/customErrors";
+import { InvalidLogin } from "../util/customUserErrors";
 import { v4 as uuidv4 } from "uuid";
 
 export function userById(id: string) {

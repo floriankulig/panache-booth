@@ -7,6 +7,7 @@ import {
   deleteArticle,
   updateArticle,
 } from "../services/product";
+import { ProductNotExisting } from "../util/customProductErrors";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -20,8 +21,8 @@ router.get("/", async (req, res) => {
     } else {
       res.status(200).json(await allArticles());
     }
-  } catch (e: unknown) {
-    res.status(404).send("Error: Something went wrong!");
+  } catch (error) {
+    res.status(500).send("Internal server error!");
   }
 });
 
@@ -39,9 +40,8 @@ router.post("/", async (req, res) => {
       isVisible: req.body.isVisible,
     };
     res.status(200).json(await addArticle(article));
-  } catch (e: unknown) {
-    console.log(e);
-    res.status(404).send("Error: Something went wrong!");
+  } catch (error) {
+    res.status(500).send("Internal server error!");
   }
 });
 
@@ -63,25 +63,32 @@ router.put("/:productId", async (req, res) => {
       }
       res.status(200).json(await updateArticle(articleMap, articleId));
     } else {
-      res.status(400).send("User not existing!");
+      throw new ProductNotExisting();
     }
-  } catch (e: unknown) {
-    res.status(404).send("Error: Something went wrong!");
+  } catch (error) {
+    if (error instanceof ProductNotExisting) {
+      res.status(400).send(error.message)
+    } else {
+      res.status(500).send("Internal server error!");
+    }
   }
 });
 
 router.delete("/:productId", async (req, res) => {
   const articleId = req.params.productId;
   try {
-
     if (articleById(articleId) !== undefined) {
       const user = await deleteArticle(articleId);
       res.sendStatus(200);
     } else {
-      res.status(400).send("User not existing");
+      throw new ProductNotExisting();
     }
-  } catch (e: unknown) {
-    res.status(404).send("Error: Something went wrong. User was not deleted!");
+  } catch (error) {
+    if (error instanceof ProductNotExisting) {
+      res.status(400).send(error.message)
+    } else {
+      res.status(500).send("Internal server error! Product was not deleted!");
+    }
   }
 });
 
@@ -91,10 +98,14 @@ router.get("/:productId", async (req, res) => {
     if (articleById(articleId) !== undefined) {
       res.status(200).json(await articleById(articleId));
     } else {
-      res.status(400).send("User does not exist");
+      throw new ProductNotExisting();
     }
-  } catch (e: unknown) {
-    res.status(404).send("Error: Something went wrong!");
+  } catch (error) {
+    if (error instanceof ProductNotExisting) {
+      res.status(400).send(error.message)
+    } else {
+      res.status(500).send("Internal server error!");
+    }
   }
 });
 
