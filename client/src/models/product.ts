@@ -13,20 +13,20 @@ interface Product {
   description: string;
   category: Category;
   purchases: number;
-  inventory: number;
+  inventory?: number;
   isVisible: boolean;
   vendor: User;
+  vendorId: string;
   discount: number; // 0.0 - 1.0
 }
 
-interface APIProduct extends Omit<Product, "category" | "vendor"> {
+interface APIProduct extends Omit<Product, "category"> {
   category: CategoryID;
-  vendorId: string;
 }
 
 type FormProduct = Omit<
   APIProduct,
-  "id" | "createdAt" | "updatedAt" | "purchases"
+  "id" | "createdAt" | "updatedAt" | "purchases" | "vendor" | "vendorId"
 >;
 
 export type { Category, CategoryID, FormProduct };

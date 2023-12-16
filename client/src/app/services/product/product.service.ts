@@ -12,14 +12,13 @@ export class ProductService {
     this.getProducts();
   }
 
-  async createProduct(product: FormProduct) {
+  async createProduct(product: FormProduct, vendorId: string) {
     try {
-      const res = await axios.post(`${API_URL}/product`, { ...product });
-      const productData = {
-        ...res.data,
-        category: categoryById(res.data.category),
-      } as Product;
-      return productData;
+      const res = await axios.post(`${API_URL}/product`, {
+        ...product,
+        vendorId,
+      });
+      return this.synthesize<Product>(res.data);
     } catch (error) {
       throw error as AxiosError;
     }
@@ -27,11 +26,8 @@ export class ProductService {
 
   private async getProducts() {
     try {
-      const res = await axios.get(`${API_URL}/product`);
-      const products = res.data.map((product: APIProduct) => ({
-        ...product,
-        category: categoryById(product.category),
-      }));
+      const res = await axios.get<APIProduct[]>(`${API_URL}/product`);
+      const products = this.synthesize<Product[]>(res.data);
       this.products.set(products);
       return products;
     } catch (error) {
@@ -52,6 +48,20 @@ export class ProductService {
       return productData;
     } catch (error) {
       throw error as AxiosError;
+    }
+  }
+
+  private synthesize<T>(data: APIProduct | APIProduct[]) {
+    if (Array.isArray(data)) {
+      return data.map((product) => ({
+        ...product,
+        category: categoryById(product.category),
+      })) as T;
+    } else {
+      return {
+        ...data,
+        category: categoryById(data.category),
+      } as T;
     }
   }
 }

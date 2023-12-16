@@ -4,8 +4,8 @@ import { FormProduct, CategoryID, Product } from "../models";
 export const buildProductFromFormValues = (
   formValues: FormGroup,
   isVisible: boolean = true,
-): Omit<FormProduct, "vendorId"> => {
-  const product = {
+): FormProduct => {
+  const product: FormProduct = {
     ...(formValues.value as Pick<
       Product,
       "name" | "price" | "description" | "discount" | "inventory"
@@ -14,6 +14,5 @@ export const buildProductFromFormValues = (
     category: "electronics" as CategoryID,
     isVisible,
   };
-
   return product;
 };

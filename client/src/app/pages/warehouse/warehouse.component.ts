@@ -22,7 +22,11 @@ export class WarehouseComponent {
   constructor(
     private productService: ProductService,
     private authService: AuthService,
-  ) {}
+  ) {
+    effect(() => {
+      console.log(this.ownedProducts());
+    });
+  }
 
   openAddProductModal() {
     this.addProductModalOpen.set(true);

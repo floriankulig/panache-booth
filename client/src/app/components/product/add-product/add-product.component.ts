@@ -79,10 +79,12 @@ export class AddProductComponent {
       return;
     }
     try {
-      const product = await this.productService.createProduct({
-        ...buildProductFromFormValues(this.formGroup, true),
-        vendorId: this.authService.user()!.id,
-      });
+      const product = await this.productService.createProduct(
+        {
+          ...buildProductFromFormValues(this.formGroup, true),
+        },
+        this.authService.user()!.id,
+      );
       this.notificationService.addNotification({
         type: "success",
         duration: 5000,
