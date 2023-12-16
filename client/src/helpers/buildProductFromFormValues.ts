@@ -10,9 +10,11 @@ export const buildProductFromFormValues = (
       Product,
       "name" | "price" | "description" | "discount" | "inventory"
     >),
-    discount: formValues.value.discount / 100,
+    discount: Number((formValues.value.discount / 100).toFixed(2)),
     category: "electronics" as CategoryID,
     isVisible,
   };
+
+  console.log(product);
   return product;
 };

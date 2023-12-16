@@ -18,17 +18,23 @@ export class ProductService {
         ...product,
         vendorId,
       });
+      this.products.update((products) => [...products, res.data]);
       return this.synthesize<Product>(res.data);
     } catch (error) {
       throw error as AxiosError;
     }
   }
 
-  private async getProducts() {
+  async getProducts(vendorId?: string) {
     try {
-      const res = await axios.get<APIProduct[]>(`${API_URL}/product`);
+      const url = `${API_URL}/product${
+        vendorId ? `?vendorId=${vendorId}` : ""
+      }`;
+      const res = await axios.get<APIProduct[]>(url);
       const products = this.synthesize<Product[]>(res.data);
-      this.products.set(products);
+      if (!vendorId) {
+        this.products.set(products);
+      }
       return products;
     } catch (error) {
       throw error as AxiosError;

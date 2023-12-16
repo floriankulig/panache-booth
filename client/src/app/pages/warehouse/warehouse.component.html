@@ -18,7 +18,7 @@
 <pb-modal (close)="addProductModalOpen.set(false)" heading="Add New Product">
   <pb-add-product
     (cancel)="addProductModalOpen.set(false)"
-    (create)="addProductModalOpen.set(false)"
+    (create)="onProductCreated()"
   ></pb-add-product>
 </pb-modal>
 }
