@@ -2,7 +2,8 @@ import express from "express";
 import { IProduct } from "../models/IProduct";
 import {
   addArticle,
-  allArticles, allVendorProducts,
+  allArticles,
+  allVendorProducts,
   articleById,
   deleteArticle,
   updateArticle,
@@ -15,9 +16,9 @@ router.get("/", async (req, res) => {
     const id = req.query["vendorId"];
     if (req.query.vendorId) {
       // @ts-ignore
-      console.log(id)
+      console.log(id);
       // @ts-ignore
-      res.status(200).json(await allVendorProducts(id))
+      res.status(200).json(await allVendorProducts(id));
     } else {
       res.status(200).json(await allArticles());
     }
@@ -56,6 +57,8 @@ router.put("/:productId", async (req, res) => {
           if (key === "isVisible") {
             let temp = req.body[key];
             articleMap.set(key, temp.toString());
+          } else if (key === "vendor") {
+            articleMap.set("vendorId", req.body.vendor.id);
           } else {
             articleMap.set(key, req.body[key]);
           }
@@ -67,7 +70,7 @@ router.put("/:productId", async (req, res) => {
     }
   } catch (error) {
     if (error instanceof ProductNotExisting) {
-      res.status(400).send(error.message)
+      res.status(400).send(error.message);
     } else {
       res.status(500).send("Internal server error!");
     }
@@ -85,7 +88,7 @@ router.delete("/:productId", async (req, res) => {
     }
   } catch (error) {
     if (error instanceof ProductNotExisting) {
-      res.status(400).send(error.message)
+      res.status(400).send(error.message);
     } else {
       res.status(500).send("Internal server error! Product was not deleted!");
     }
@@ -102,7 +105,7 @@ router.get("/:productId", async (req, res) => {
     }
   } catch (error) {
     if (error instanceof ProductNotExisting) {
-      res.status(400).send(error.message)
+      res.status(400).send(error.message);
     } else {
       res.status(500).send("Internal server error!");
     }
