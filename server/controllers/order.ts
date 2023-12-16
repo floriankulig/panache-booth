@@ -26,6 +26,8 @@ router.post("/", async (req, res) => {
     };
     res.status(200).json(await addOrder(order, req.body.products));
   } catch (error) {
+    console.log(error)
+    console.log(error)
     res.status(500).send("Internal server error!");
   }
 });
@@ -41,6 +43,7 @@ router.get("/:id", async (req, res) => {
       res.status(200).json(await allVendorOrdersById(id));
     }
   } catch (error) {
+    console.log(error)
     res.status(500).send("Internal server error!");
   }
 });

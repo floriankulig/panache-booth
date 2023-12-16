@@ -6,20 +6,59 @@ import {
   getArticleById,
   updateArticleById,
 } from "../models/product";
+import { getUserById } from "../models/user";
 
 export function articleById(id: string) {
-  return getArticleById(id);
+  let product: any = getArticleById(id);
+
+  let vendorInfo: any = getUserById(product.vendorId)
+  console.log(vendorInfo)
+  const combinedProduct = {
+    ...product,
+    vendor: vendorInfo
+  }
+
+  return combinedProduct;
 }
 
 export function allArticles() {
-  return getAllArticles();
+  let products: any[] = getAllArticles();
+  let productsNew = [];
+
+  for (const product of products) {
+    let vendorInfo: any = getUserById(product.vendorId)
+    console.log(vendorInfo)
+    const combinedProduct = {
+      ...product,
+      vendor: vendorInfo
+    }
+    productsNew.push(combinedProduct);
+  }
+
+
+  return productsNew;
 }
 
 export function allVendorProducts(id: string) {
-  return getAllVendorProducts(id);
+  let products: any[] = getAllVendorProducts(id)
+  let productsNew = [];
+
+  for (const product of products) {
+    let vendorInfo: any = getUserById(id)
+    console.log(vendorInfo)
+    const combinedProduct = {
+      ...product,
+      vendor: vendorInfo
+    }
+    productsNew.push(combinedProduct);
+  }
+
+
+  return productsNew;
 }
 
 export function addArticle(product: IProduct) {
+
   return createArticle(product);
 }
 

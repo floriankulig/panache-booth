@@ -11,6 +11,7 @@ import {
   getProductsOfOrder,
   updateOrderById
 } from "../models/order";
+import { getUserById } from "../models/user";
 
 export function orderById(id: string) {
   return getOrderById(id);
@@ -19,12 +20,25 @@ export function orderById(id: string) {
 export function allUserOrdersById(id: string) {
   let orders: any[] = getAllOrdersByUserId(id);
   let newArray = [];
+  let productsNew = [];
+  console.log("Test")
+  for (const order of orders) {
+    let products: any[] = getProductsOfOrder(order.id);
 
-  for (const element of orders) {
-    let products = getProductsOfOrder(element.id);
+    for (const product of products) {
+      console.log(product.vendorId + "  Vendor id")
+      let vendorInfo: any = getUserById(product.vendorId)
+      console.log(vendorInfo)
+      const combinedProduct = {
+        ...product,
+        vendor: vendorInfo
+      }
+      productsNew.push(combinedProduct);
+    }
+    console.log(productsNew)
     const combinedObject = {
-      ...element,
-      products: [...products]
+      ...order,
+      products: [...productsNew]
     };
     newArray.push(combinedObject);
   }
