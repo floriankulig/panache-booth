@@ -1,3 +1,4 @@
 /server/node_modules/
-/server/database/
+/server/database/*.db
 /node_modules
+/server/database/webEngineering.db
