@@ -26,7 +26,7 @@ export class HeaderComponent {
   ) {
     this.router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
-        this.tabText = this.getTabText(val.url);
+        this.tabText = this.getTabText(val.url.split("?")[0]);
       }
     });
   }

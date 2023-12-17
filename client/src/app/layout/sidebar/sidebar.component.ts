@@ -21,7 +21,7 @@ export class SidebarComponent {
   constructor(private router: Router, private authService: AuthService) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.currentUrl = event.url;
+        this.currentUrl = event.url.split("?")[0];
       }
     });
   }
