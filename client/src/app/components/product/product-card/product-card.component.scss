@@ -3,7 +3,7 @@
 @mixin chip {
   padding: grid(1) grid(2);
   border-radius: grid(2);
-  font-size: clamp(0.8rem, 1vw, 1rem);
+  font-size: clamp(0.9rem, 3vw, 1rem);
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -27,6 +27,7 @@
 :host {
   .card {
     height: 100%;
+    position: relative;
     background: $bgPrimary;
     padding: clamp(grid(2), 3vw, grid(3));
     padding-bottom: grid(4);
@@ -102,7 +103,7 @@
     }
 
     &__heading {
-      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      font-size: clamp(1.25rem, 3vw, 1.5rem);
       font-weight: 700;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -175,9 +176,36 @@
     }
 
     &__price {
-      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      font-size: clamp(1.25rem, 3vw, 1.5rem);
       font-weight: 700;
       color: $textPrimary;
+    }
+
+    &__cta {
+      padding: grid(1.5);
+      cursor: pointer;
+      aspect-ratio: 1;
+      background: darken($bgSecondary, 5);
+      color: $textPrimary;
+      transition: all 0.3s ease;
+      border-radius: 54% 46% 52% 48% / 45% 56% 44% 55%;
+      box-shadow: 1px 1px 5px rgba($bgPrimaryDark, 0.05);
+
+      i-feather {
+        width: grid(2.5);
+        height: grid(2.5);
+      }
+
+      &:hover {
+        border-radius: 46% 54% 52% 48% / 56% 55% 45% 44%;
+        background: $bgPrimaryDark;
+        box-shadow: inset 4px 3px 4px rgba($textPrimaryDark, 0.15);
+        color: $textPrimaryDark;
+      }
+
+      &:active {
+        scale: 0.95;
+      }
     }
 
     &:hover {

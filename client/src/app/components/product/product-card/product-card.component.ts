@@ -1,8 +1,10 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   Output,
+  ViewChild,
   computed,
   effect,
   signal,
@@ -37,6 +39,10 @@ export class ProductCardComponent {
 
   optionsOpen = signal(false);
   deleteModalOpen = signal(false);
+
+  @ViewChild("menu") menu!: ElementRef<HTMLDivElement>;
+  @ViewChild("visibility") visibility!: ElementRef<HTMLDivElement>;
+  @ViewChild("cta") cta!: ElementRef<HTMLDivElement>;
 
   isOwnProduct = computed(
     () => this.product.vendor.id === this.authService.user()?.id,
@@ -74,6 +80,19 @@ export class ProductCardComponent {
       });
     }
   }
+
+  onCardClick(event: MouseEvent) {
+    if (
+      [this.menu, this.visibility, this.cta].some((el) =>
+        el.nativeElement.contains(event.target as Node),
+      )
+    ) {
+      return;
+    }
+    console.log("test");
+  }
+
+  onClickCTA() {}
 
   onDeleteSuccess() {
     this.deleteModalOpen.set(false);
