@@ -1,10 +1,10 @@
 @use "variables.scss" as *;
+@use "mixins.scss" as *;
 .heading {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-
+  margin-bottom: grid();
   .actions {
     display: flex;
     align-items: center;
@@ -14,4 +14,9 @@
 .grid {
   background: $bgSecondary;
   padding-block: clamp(grid(4), 5vw, grid(8));
+  height: auto;
+
+  &-transition {
+    @include border-transition(grid(4));
+  }
 }

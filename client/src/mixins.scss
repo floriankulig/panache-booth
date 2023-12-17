@@ -288,3 +288,19 @@
     }
   }
 }
+
+@mixin border-transition($height) {
+  background: $bgSecondary;
+  height: $height;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: $bgPrimary;
+    border-radius: 0 0 $height $height;
+  }
+}
