@@ -1,7 +1,190 @@
 @use "variables.scss" as *;
 
+@mixin chip {
+  padding: grid(1) grid(2);
+  border-radius: grid(2);
+  font-size: clamp(0.8rem, 1vw, 1rem);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-weight: 600;
+  cursor: default;
+  color: rgba($textPrimary, 0.85);
+  background: rgba(darken($bgSecondary, 5), 0.5);
+  border: 1px solid rgba(darken($bgSecondary, 5), 0.2);
+  // color: rgba($textPrimaryDark, 0.9);
+  // background: rgba($bgPrimaryDark, 0.3);
+  // border: 1px solid rgba($bgPrimaryDark, 0.01);
+  display: flex;
+  align-items: center;
+  gap: grid(1);
+  i-feather {
+    width: grid(2);
+    height: grid(2);
+  }
+}
+
 :host {
-  background: $bgPrimary;
-  padding: clamp(grid(2), 3vw, grid(3));
-  border-radius: grid();
+  .card {
+    height: 100%;
+    background: $bgPrimary;
+    padding: clamp(grid(2), 3vw, grid(3));
+    padding-bottom: grid(4);
+    border-radius: grid(1.5);
+    box-shadow: 2px 3px 32px rgba($bgPrimaryDark, 0.025);
+
+    &-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .vendor-actions {
+        width: grid(4);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        display: grid;
+        // position: relative;
+        place-items: center;
+        cursor: pointer;
+
+        &:is(:hover, :focus, :active, :focus-within) {
+          background: $bgSecondary;
+        }
+
+        i-feather.trigger {
+          width: grid(2.5);
+          height: grid(2.5);
+          color: $bgSecondaryDark;
+        }
+
+        ul.actions {
+          position: absolute;
+          overflow: hidden;
+          border-radius: grid(1.5);
+          z-index: 2;
+          box-shadow: 2px 3px 16px rgba($bgPrimaryDark, 0.1);
+          backdrop-filter: blur(8px) saturate(150%);
+          background: rgba($bgPrimary, 0.3);
+          li {
+            padding: grid(2) grid(4);
+            padding-left: grid(3);
+            &:first-child {
+              padding-top: grid(3);
+            }
+            &:last-child {
+              padding-bottom: grid(3);
+            }
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: grid(2);
+
+            &.delete {
+              color: $error;
+            }
+
+            i-feather {
+              width: grid(2.5);
+              height: grid(2.5);
+            }
+
+            &:is(:hover, :focus, :active, :focus-within) {
+              background: rgba($bgSecondaryDark, 0.05);
+
+              &.delete {
+                background: rgba($error, 0.05);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &__heading {
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      margin-top: grid(0.5);
+      color: $textPrimary;
+    }
+
+    &__vendor {
+      font-weight: 600;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      text-transform: capitalize;
+      color: rgba($textPrimary, 0.6);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: grid(1);
+      margin-block: grid(2);
+
+      .visibility {
+        @include chip();
+        transition: all 0.3s ease;
+        cursor: pointer;
+        will-change: width;
+
+        &.hidden {
+          color: $textSecondary;
+        }
+
+        &:is(:hover, :focus, :focus-within) {
+          background: rgba(darken($bgSecondary, 5), 0.8);
+        }
+        &:active {
+          scale: 0.95;
+        }
+      }
+    }
+
+    .category-chip {
+      overflow: hidden;
+      position: relative;
+      width: fit-content;
+      max-width: 100%;
+      border-radius: grid(2);
+
+      &-text {
+        @include chip;
+        position: relative;
+
+        backdrop-filter: blur(12px) saturate(110%);
+        z-index: 1;
+      }
+
+      &-bg {
+        position: absolute;
+        inset: 0;
+        width: 60%;
+        height: 100%;
+        scale: 0.7;
+        border-radius: grid(2);
+        background: $primary;
+        z-index: 0;
+        transform: translate(-5%, 5%);
+        transition: all 0.7s ease;
+      }
+    }
+
+    &__price {
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      font-weight: 700;
+      color: $textPrimary;
+    }
+
+    &:hover {
+      .category-chip-bg {
+        scale: 0.8;
+        transform: translate(40%, -2%) scaleX(1.5);
+      }
+    }
+  }
 }

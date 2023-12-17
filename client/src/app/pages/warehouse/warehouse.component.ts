@@ -49,7 +49,10 @@ export class WarehouseComponent {
       {
         include: ["name", "vendorName", "categoryName", "description", "price"],
       },
-    ) as Product[];
+    ).map((prod) => {
+      const { vendorName, categoryName, ...product } = prod;
+      return product;
+    }) as Product[];
   });
 
   constructor(

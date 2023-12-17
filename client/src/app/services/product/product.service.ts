@@ -57,6 +57,17 @@ export class ProductService {
     }
   }
 
+  async deleteProduct(id: string) {
+    try {
+      await axios.delete(`${API_URL}/product/${id}`);
+      this.products.update((products) =>
+        products.filter((product) => product.id !== id),
+      );
+    } catch (error) {
+      throw error as AxiosError;
+    }
+  }
+
   private synthesize<T>(data: APIProduct | APIProduct[]) {
     if (Array.isArray(data)) {
       return data.map((product) => ({

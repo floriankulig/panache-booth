@@ -1,1 +1,62 @@
-<p>product-card works!</p>
+<div class="card">
+  <div class="card-bar">
+    <span class="card__vendor">{{
+      isOwnProduct() ? "You" : product.vendor.userName
+    }}</span>
+    @if (isOwnProduct()) {
+    <div
+      class="vendor-actions"
+      role="button"
+      (click)="optionsOpen.set(true)"
+      (onClickOutside)="optionsOpen.set(false)"
+    >
+      <i-feather name="more-vertical" class="trigger"></i-feather>
+      @if (optionsOpen()) {
+      <ul class="actions">
+        <!-- <li>{{
+        product.isVisible ? "Visible" : "Hidden"
+      }}</li> -->
+        <li><i-feather name="edit-3"></i-feather> Edit</li>
+        <li class="delete" (click)="deleteModalOpen.set(true)">
+          <i-feather name="trash"></i-feather>Delete
+        </li>
+      </ul>
+      }
+    </div>
+    }
+  </div>
+  <h5 class="card__heading">{{ product.name }}</h5>
+  <div class="chips">
+    @if (isOwnProduct()) {
+
+    <div
+      [class]="{ visibility: true, hidden: !product.isVisible }"
+      (click)="toggleVisibility()"
+    >
+      <i-feather
+        [name]="product.isVisible ? 'eye' : 'eye-off'"
+        class="visibility-icon"
+      ></i-feather>
+      <span class="visibility-text">{{
+        product.isVisible ? "Visible" : "Hidden"
+      }}</span>
+    </div>
+    }
+    <div class="category-chip">
+      <div class="category-chip-bg"></div>
+      <span class="category-chip-text">
+        {{ product.category.displayValue }}</span
+      >
+    </div>
+  </div>
+  <div class="card__price">{{ formattedPrice }}€</div>
+</div>
+
+@if (deleteModalOpen()) {
+<pb-modal (close)="deleteModalOpen.set(false)">
+  <pb-delete-confirm
+    [product]="product"
+    (delete)="onDeleteSuccess()"
+  ></pb-delete-confirm>
+</pb-modal>
+}
