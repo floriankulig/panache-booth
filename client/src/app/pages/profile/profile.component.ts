@@ -30,7 +30,13 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private notificationService: NotificationService,
     private authService: AuthService,
-  ) {}
+  ) {
+    effect(() => {
+      if (!!this.profile && !this.profile.isVendor && !this.isOwnProfile()) {
+        this.router.navigate(["/"]);
+      }
+    });
+  }
 
   ngOnInit() {
     this.route.queryParamMap.subscribe(async (params: ParamMap) => {
@@ -65,15 +71,6 @@ export class ProfileComponent implements OnInit {
         (this.profile &&
           format(new Date(this.profile.createdAt), "dd.MM.yyyy")) ||
         undefined;
-
-      // if (this.profile?.isVendor && !this.isOwnProfile) {
-      //   this.router.navigate(["/"]);
-      //   this.notificationService.addNotification({
-      //     message: "Profile does not exist.",
-      //     type: "error",
-      //     duration: 0,
-      //   });
-      // }
     });
   }
 
