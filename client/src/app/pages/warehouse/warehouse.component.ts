@@ -17,6 +17,9 @@ import {
   ProductService,
 } from "../../services";
 import { Product } from "../../../models";
+import { ActivatedRoute } from "@angular/router";
+import { filterByString } from "../../../helpers";
+import { map } from "rxjs";
 
 @Component({
   selector: "pb-warehouse",
@@ -33,15 +36,36 @@ import { Product } from "../../../models";
 export class WarehouseComponent {
   addProductModalOpen = signal(false);
   ownedProducts: WritableSignal<Product[]> = signal([]);
+  searchFilter: WritableSignal<string> = signal("");
+
+  filteredOwnedProducts = computed(() => {
+    return filterByString(
+      this.ownedProducts().map((product) => ({
+        ...product,
+        vendorName: product.vendor.userName,
+        categoryName: product.category.displayValue,
+      })),
+      this.searchFilter(),
+      {
+        include: ["name", "vendorName", "categoryName", "description", "price"],
+      },
+    ) as Product[];
+  });
 
   constructor(
     private productService: ProductService,
     private authService: AuthService,
     private notificationService: NotificationService,
+    private route: ActivatedRoute,
   ) {
-    this.getOwnedProducts(this.authService.user()?.id);
+    this.updateList();
     effect(() => {
       console.log(this.ownedProducts());
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      const search = params["q"];
+      this.searchFilter.set(search || "");
     });
   }
 
@@ -69,6 +93,6 @@ export class WarehouseComponent {
 
   onProductCreated() {
     this.addProductModalOpen.set(false);
-    this.getOwnedProducts();
+    this.updateList();
   }
 }

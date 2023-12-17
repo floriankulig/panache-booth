@@ -13,10 +13,10 @@
     </section>
   </div>
 </div>
-@if (!!ownedProducts()) {
+@if (!!filteredOwnedProducts().length) {
 <div class="grid-transition"></div>
 <section class="grid content-inner">
-  @for (product of ownedProducts(); track product.id) {
+  @for (product of filteredOwnedProducts(); track product.id) {
   <pb-product-card
     [product]="product"
     (update)="updateList()"
