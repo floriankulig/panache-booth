@@ -82,6 +82,7 @@ export function updateArticleById(
   articleChanges: Map<string, string>,
   id: string,
 ) {
+  console.log(articleChanges)
   let sqlString = "update product set";
 
   articleChanges.forEach((value: string, key: string) => {
@@ -97,7 +98,7 @@ export function updateArticleById(
   });
 
   const currentTimestamp = new Date().toISOString();
-  sqlString += `updatedAt = '${currentTimestamp}' where id = '${id}';`;
+  sqlString += ` updatedAt = '${currentTimestamp}' where id = '${id}';`;
   database.prepare(sqlString).run();
   return getArticleById(id);
 }

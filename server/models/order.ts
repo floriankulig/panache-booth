@@ -52,9 +52,17 @@ export function deleteOrderById(id: string) {
 }
 
 export function getAllOrdersByUserId(id: string) {
-  let orders = database
+  return database
     .prepare("select * from orders where userId = ?")
     .all(id);
+}
+
+export function getAllOrdersWithVendorProducts(vendorId: string) {
+  let orders = database.prepare(
+    "select orders.id, orders.price, orders.delivered, orders.createdAt, orders.updatedAt " +
+    "from orders join orderProduct on orders.id = orderProduct.orderId join product on orderProduct.productId = product.id " +
+    "where product.vendorId = ?;"
+  ).all(vendorId);
   return orders;
 }
 
@@ -82,15 +90,23 @@ export function createOrderProductEntity(
 }
 
 export function getProductsOfOrder(orderId: string) {
-  let products = database
+  return database
     .prepare(
       "select product.*, orderProduct.amount " +
-        "from orders " +
-        "join orderProduct on orders.id = orderProduct.OrderId " +
-        "join product on orderProduct.productId = product.id " +
-        "where orders.id = ?;"
+      "from orders " +
+      "join orderProduct on orders.id = orderProduct.OrderId " +
+      "join product on orderProduct.productId = product.id " +
+      "where orders.id = ?;"
     )
     .all(orderId);
+}
 
-  return products;
+export function getProductsOfOrderVendor(orderId: string, vendorId: string) {
+  return database.prepare(
+    "select product.*, orderProduct.amount " +
+    "from orders " +
+    "join orderProduct on orders.id = orderProduct.OrderId " +
+    "join product on orderProduct.productId = product.id " +
+    "where orders.id = ? and product.vendorId = ?;"
+  ).all(orderId, vendorId);
 }

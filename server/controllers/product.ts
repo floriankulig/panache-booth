@@ -52,6 +52,7 @@ router.put("/:productId", async (req, res) => {
     const article = await articleById(articleId);
     if (article != undefined) {
       const articleMap = new Map<string, string>();
+      console.log(req.body)
       for (let key in req.body) {
         if (req.body.hasOwnProperty(key)) {
           if (key === "isVisible") {
@@ -60,10 +61,12 @@ router.put("/:productId", async (req, res) => {
           } else if (key === "vendor") {
             articleMap.set("vendorId", req.body.vendor.id);
           } else {
+            console.log(key)
             articleMap.set(key, req.body[key]);
           }
         }
       }
+      console.log(articleMap)
       res.status(200).json(await updateArticle(articleMap, articleId));
     } else {
       throw new ProductNotExisting();
@@ -72,6 +75,7 @@ router.put("/:productId", async (req, res) => {
     if (error instanceof ProductNotExisting) {
       res.status(400).send(error.message);
     } else {
+      console.log(error)
       res.status(500).send("Internal server error!");
     }
   }
@@ -107,6 +111,7 @@ router.get("/:productId", async (req, res) => {
     if (error instanceof ProductNotExisting) {
       res.status(400).send(error.message);
     } else {
+      console.log(error)
       res.status(500).send("Internal server error!");
     }
   }

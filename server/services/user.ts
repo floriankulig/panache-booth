@@ -15,9 +15,8 @@ export function userById(id: string) {
 }
 
 export function allUsers() {
-  let users = getAllUsers();
+  let users: any[] = getAllUsers();
   users.forEach((key) => {
-    // @ts-ignore
     key["isVendor"] = key["isVendor"] !== 0;
   });
   return users;
@@ -62,3 +61,6 @@ export function loginUser(email: string, password: string) {
     throw new InvalidLogin();
   }
 }
+
+
+

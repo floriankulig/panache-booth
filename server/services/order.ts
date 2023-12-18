@@ -6,10 +6,10 @@ import {
   deleteOrderById,
   getAllOrders,
   getAllOrdersByUserId,
-  getAllOrdersByVendorId,
+  getAllOrdersByVendorId, getAllOrdersWithVendorProducts,
   getOrderById,
-  getProductsOfOrder,
-  updateOrderById
+  getProductsOfOrder, getProductsOfOrderVendor,
+  updateOrderById,
 } from "../models/order";
 import { getUserById } from "../models/user";
 
@@ -21,32 +21,53 @@ export function allUserOrdersById(id: string) {
   let orders: any[] = getAllOrdersByUserId(id);
   let newArray = [];
   let productsNew = [];
-  console.log("Test")
+
   for (const order of orders) {
     let products: any[] = getProductsOfOrder(order.id);
 
     for (const product of products) {
-      console.log(product.vendorId + "  Vendor id")
       let vendorInfo: any = getUserById(product.vendorId)
-      console.log(vendorInfo)
       const combinedProduct = {
         ...product,
         vendor: vendorInfo
       }
       productsNew.push(combinedProduct);
     }
-    console.log(productsNew)
     const combinedObject = {
       ...order,
       products: [...productsNew]
     };
     newArray.push(combinedObject);
+    productsNew = [];
   }
   return newArray;
 }
 
-export function allVendorOrdersById(id: string) {
-  return getAllOrdersByVendorId(id);
+export function allVendorOrdersById(vendorId: string) {
+  let orders: any[] = getAllOrdersWithVendorProducts(vendorId);
+  let newArray = [];
+  let productsNew = [];
+
+  for (const order of orders) {
+    console.log(order.id)
+    let orderProductsVendor: any[] = getProductsOfOrderVendor(order.id, vendorId)
+    console.log(orderProductsVendor)
+    for (const orderProductVendor of orderProductsVendor) {
+      let vendorInfo: any = getUserById(orderProductVendor.vendorId)
+      const combinedProduct = {
+        ...orderProductVendor,
+        vendor: vendorInfo
+      }
+      productsNew.push(combinedProduct);
+    }
+    const combinedObject = {
+      ...order,
+      products: [...productsNew]
+    };
+    newArray.push(combinedObject);
+    productsNew = [];
+  }
+  return newArray;
 }
 
 export function allOrders() {

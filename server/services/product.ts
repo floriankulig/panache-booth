@@ -9,8 +9,9 @@ import {
 import { getUserById } from "../models/user";
 
 export function articleById(id: string) {
+  console.log("id" + id)
   let product: any = getArticleById(id);
-
+  console.log(product)
   let vendorInfo: any = getUserById(product.vendorId)
   console.log(vendorInfo)
   const combinedProduct = {
@@ -26,6 +27,7 @@ export function allArticles() {
   let productsNew = [];
 
   for (const product of products) {
+    console.log(product.vendorId)
     let vendorInfo: any = getUserById(product.vendorId)
     console.log(vendorInfo)
     const combinedProduct = {

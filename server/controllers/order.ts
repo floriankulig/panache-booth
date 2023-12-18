@@ -26,8 +26,6 @@ router.post("/", async (req, res) => {
     };
     res.status(200).json(await addOrder(order, req.body.products));
   } catch (error) {
-    console.log(error)
-    console.log(error)
     res.status(500).send("Internal server error!");
   }
 });
@@ -35,8 +33,6 @@ router.post("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
-    console.log(req.query.isVendor);
     if (req.query.isVendor === "false") {
       res.status(200).json(await allUserOrdersById(id));
     } else {
