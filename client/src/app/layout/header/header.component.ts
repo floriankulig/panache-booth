@@ -41,7 +41,7 @@ export class HeaderComponent {
   }
 
   openCart() {
-    this.cartService.setCart(true);
+    this.cartService.setCartOpen(true);
   }
   openOrders() {
     this.orderService.ordersOpen.set(true);

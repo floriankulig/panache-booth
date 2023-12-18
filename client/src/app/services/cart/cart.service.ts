@@ -31,7 +31,7 @@ export class CartService {
     this.updateCartOpen(newValue);
   }
 
-  setCart(isOpen: boolean) {
+  setCartOpen(isOpen: boolean) {
     this.updateCartOpen(isOpen);
   }
 
