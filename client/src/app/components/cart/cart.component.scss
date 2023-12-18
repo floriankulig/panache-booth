@@ -1,0 +1,151 @@
+@use "variables.scss" as *;
+
+:host {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  height: 100% !important;
+
+  .summary {
+    position: relative;
+    width: clamp(250px, 30%, 300px);
+    & > * {
+      padding: grid(3);
+    }
+    border-radius: grid(2.5);
+    overflow: hidden;
+    background: $bgSecondaryDark;
+    color: $textPrimaryDark;
+
+    &__title {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+
+      padding-bottom: grid(2);
+      background: $bgPrimaryDark;
+      &--label {
+        font-weight: 600;
+      }
+
+      &--action {
+        color: $textSecondaryDark;
+        text-decoration: underline;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        &:hover {
+          color: $textPrimaryDark;
+        }
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+    }
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: grid();
+      border-bottom: 1px solid lighten($bgSecondaryDark, 5);
+      margin-block: grid();
+      &:not(:first-child) {
+        margin-top: grid(3);
+      }
+      color: $textSecondaryDark;
+      font-weight: 600;
+      &--label {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+      }
+    }
+
+    &__list {
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-gutter: stable;
+      padding-right: grid(2) !important;
+      scrollbar-color: $bgPrimaryDark transparent;
+      &-item {
+        .row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: grid(1.5);
+
+          &:first-child {
+            height: 20px;
+          }
+          &:not(:first-child) {
+            color: $textSecondaryDark;
+            margin-top: 2px;
+            font-size: 0.8rem;
+          }
+        }
+        padding: grid(0.5) 0;
+
+        .discount {
+          font-size: 12px;
+          padding: grid(0.5) grid(1);
+          border-radius: grid(3);
+          background: $bgPrimaryDark;
+        }
+
+        &--label {
+          display: flex;
+          gap: grid(1);
+          flex: 1;
+          align-items: center;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+
+          i-feather {
+            margin-bottom: 1px;
+            width: grid(2.25);
+            height: grid(2.25);
+          }
+        }
+        &--value {
+        }
+
+        .wrong {
+          text-decoration: line-through;
+          color: $textSecondaryDark;
+        }
+      }
+    }
+
+    &__action {
+      background: $bgPrimaryDark;
+      &-price {
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+
+        &--label {
+          color: $textSecondaryDark;
+          text-transform: uppercase;
+        }
+        &--tax {
+          color: $textSecondaryDark;
+          font-size: 0.8rem;
+          font-weight: 500;
+          a {
+            text-decoration: underline;
+          }
+        }
+        &--value {
+          margin-block: grid(1);
+          font-size: clamp(2.5rem, 5vw, 3.5rem);
+          font-weight: 700;
+        }
+      }
+      button {
+        margin-top: grid(3);
+        width: 100%;
+      }
+    }
+  }
+}

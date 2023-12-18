@@ -1,1 +1,96 @@
-<p>cart works!</p>
+<section class="list"></section>
+<section class="summary">
+  <div class="summary__title">
+    <h2 class="summary__title--label">Summary</h2>
+    <div
+      class="summary__title--action"
+      role="button"
+      aria-label="Clear Cart"
+      (click)="onClearCart()"
+    >
+      Clear Cart
+    </div>
+  </div>
+  <ul class="summary__list">
+    <div class="summary__header">
+      <span class="summary__header--label">Items ({{ uniqueItems }})</span>
+      <span class="summary__header--value"> {{ itemsTotal.toFixed(2) }}€</span>
+    </div>
+
+    @for (product of cartProductsDiscountedLast; track product.id){
+    <li class="summary__list-item">
+      <div class="row">
+        <span class="summary__list-item--label">
+          {{ product.name }}
+          @if (product.discount) {
+          <span class="discount">-{{ product.discount * 100 }}%</span>
+          }
+        </span>
+        <span class="summary__list-item--value">
+          {{ (discounted(product) * product.quantity).toFixed(2) }}€
+        </span>
+      </div>
+      @if (product.discount) {
+      <div class="row">
+        <span class="summary__list-item--label"> </span>
+        <span class="summary__list-item--value wrong">
+          {{ product.price.toFixed(2) }}€
+        </span>
+      </div>
+      }
+    </li>
+    }
+    <div class="summary__header">
+      <span class="summary__header--label">Shipping </span>
+      <span class="summary__header--value">
+        {{ shippingTotal.toFixed(2) }}€</span
+      >
+    </div>
+    @for (entry of itemsByVendor(); track entry.vendor.id){
+    <li class="summary__list-item">
+      <div class="row">
+        <span class="summary__list-item--label">
+          <i-feather name="user"> </i-feather>
+          {{ entry.vendor.userName }}</span
+        >
+        @if(entry.vendor.shippingFreeFrom && entry.total >
+        (entry.vendor.shippingFreeFrom)){
+        <span class="summary__list-item--value">
+          <span class="wrong"
+            >{{ entry.vendor.shippingCost?.toFixed(2) }}€</span
+          >
+          0.00€
+        </span>
+        } @else {
+        <span class="summary__list-item--value">
+          {{ entry.vendor.shippingCost?.toFixed(2) }}€
+        </span>
+        }
+      </div>
+    </li>
+    }
+  </ul>
+
+  <div class="summary__action">
+    <div class="summary__action-price">
+      <span class="summary__action-price--label">Total</span>
+      <span class="summary__action-price--value"
+        >{{ cartTotal.toFixed(2) }}€</span
+      >
+      <span class="summary__action-price--tax"
+        >Incl.
+        <a
+          href="https://www.bundesfinanzministerium.de/Content/EN/Standardartikel/Topics/Taxation/Articles/vat.html/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >19% Tax</a
+        >
+        of {{ (cartTotal * 0.19).toFixed(2) }}€</span
+      >
+    </div>
+    <button [disabled]="itemsCount > 0">
+      <i-feather name="shopping-bag"></i-feather>
+      Checkout
+    </button>
+  </div>
+</section>

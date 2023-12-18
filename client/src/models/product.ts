@@ -29,5 +29,9 @@ type FormProduct = Omit<
   "id" | "createdAt" | "updatedAt" | "purchases" | "vendor" | "vendorId"
 >;
 
+interface CartProduct extends Product {
+  quantity: number;
+}
+
 export type { Category, CategoryID, FormProduct };
-export { Product, APIProduct };
+export { Product, APIProduct, CartProduct };

@@ -32,9 +32,7 @@ export class ProductService {
       }`;
       const res = await axios.get<APIProduct[]>(url);
       const products = this.synthesize<Product[]>(res.data);
-      if (!vendorId) {
-        this.products.set(products);
-      }
+      this.products.set(products);
       return products;
     } catch (error) {
       throw error as AxiosError;

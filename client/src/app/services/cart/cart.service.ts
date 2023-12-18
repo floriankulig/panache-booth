@@ -8,7 +8,7 @@ import {
 } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { filter, map } from "rxjs";
-import { Product } from "../../../models";
+import { CartProduct, Product } from "../../../models";
 import { ProductService } from "../product/product.service";
 import { NotificationService } from "../notification/notification.service";
 
@@ -23,14 +23,16 @@ export interface CartItem {
 export class CartService {
   cartOpen = signal(false);
   private cartItems: WritableSignal<CartItem[]> = signal([]);
-  cartProducts: Signal<Product[]> = computed(() =>
+  cartProducts: Signal<CartProduct[]> = computed(() =>
     this.productService
       .products()
-      .filter(
-        (product) =>
-          product.isVisible &&
-          !!this.cartItems().find((item) => item.id === product.id),
-      ),
+      .map((product) => ({
+        ...product,
+        quantity:
+          this.cartItems().find((item) => item.id === product.id)?.quantity ||
+          -1,
+      }))
+      .filter((product) => product.isVisible && product.quantity > 0),
   );
 
   private _urlStateName = "cart";
@@ -101,5 +103,9 @@ export class CartService {
       message: `${product.name} added to cart`,
       duration: 1500,
     });
+  }
+
+  clearCart() {
+    this.cartItems.set([]);
   }
 }

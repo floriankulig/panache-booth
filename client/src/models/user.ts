@@ -11,8 +11,8 @@ interface User {
   city: string;
   iban?: string;
   bic?: string;
-  shippingCost?: string;
-  shippingFreeFrom?: string;
+  shippingCost?: number;
+  shippingFreeFrom?: number;
 }
 interface RegisterUser
   extends Omit<User, "id" | "createdAt" | "updatedAt" | "address"> {
