@@ -1,10 +1,4 @@
-import {
-  Component,
-  WritableSignal,
-  computed,
-  effect,
-  signal,
-} from "@angular/core";
+import { Component, WritableSignal, computed, signal } from "@angular/core";
 import { IconsModule } from "../../icons/icons.module";
 import { ModalComponent } from "../../components/modal/modal.component";
 import {
@@ -19,7 +13,6 @@ import {
 import { Product } from "../../../models";
 import { ActivatedRoute } from "@angular/router";
 import { filterByString } from "../../../helpers";
-import { map } from "rxjs";
 
 @Component({
   selector: "pb-warehouse",
@@ -62,9 +55,6 @@ export class WarehouseComponent {
     private route: ActivatedRoute,
   ) {
     this.updateList();
-    effect(() => {
-      console.log(this.ownedProducts());
-    });
 
     this.route.queryParams.subscribe((params) => {
       const search = params["q"];
