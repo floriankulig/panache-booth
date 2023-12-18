@@ -21,6 +21,7 @@ import { ModalComponent } from "../../modal/modal.component";
 import { DeleteConfirmComponent } from "../../delete-confirm/delete-confirm.component";
 import { AddProductComponent } from "../add-product/add-product.component";
 import { getDiscountedPrice } from "../../../../helpers";
+import { SwitchComponent } from "../../switch/switch.component";
 
 @Component({
   selector: "pb-product-card",
@@ -31,6 +32,7 @@ import { getDiscountedPrice } from "../../../../helpers";
     ModalComponent,
     DeleteConfirmComponent,
     AddProductComponent,
+    SwitchComponent,
   ],
   templateUrl: "./product-card.component.html",
   styleUrl: "./product-card.component.scss",

@@ -75,6 +75,7 @@
         ul.actions {
           position: absolute;
           overflow: hidden;
+          right: -12px;
           border-radius: grid(1.5);
           z-index: 2;
           box-shadow: 2px 3px 16px rgba($bgPrimaryDark, 0.1);
@@ -99,6 +100,15 @@
               color: $error;
             }
 
+            &.switch {
+              padding-left: grid(1.5);
+
+              .label-menu {
+                display: block;
+                width: 52px;
+              }
+            }
+
             i-feather {
               width: grid(2.5);
               height: grid(2.5);
@@ -111,6 +121,11 @@
                 background: rgba($error, 0.05);
               }
             }
+          }
+          .div {
+            width: 100%;
+            height: 1px;
+            background: rgba($textSecondary, 0.3);
           }
         }
       }

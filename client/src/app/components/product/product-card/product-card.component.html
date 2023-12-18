@@ -17,9 +17,14 @@
       <i-feather name="more-vertical" class="trigger"></i-feather>
       @if (optionsOpen()) {
       <ul class="actions">
-        <!-- <li>{{
-        product.isVisible ? "Visible" : "Hidden"
-      }}</li> -->
+        <li class="switch" (click)="toggleVisibility()">
+          <pb-switch [value]="product.isVisible">
+            <span class="label-menu">
+              {{ product.isVisible ? "Visible" : "Hidden" }}
+            </span>
+          </pb-switch>
+        </li>
+        <div class="div"></div>
         <li (click)="editModalOpen.set(true)">
           <i-feather name="edit-3"></i-feather> Edit
         </li>
