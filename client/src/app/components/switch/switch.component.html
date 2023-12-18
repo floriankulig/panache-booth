@@ -1,0 +1,8 @@
+<div [class]="{ switch: true, active: isActive }">
+  <div [class]="{ 'switch-indicator': true, active: isActive }">
+    <i-feather [name]="isActive ? activeIcon : inactiveIcon"></i-feather>
+  </div>
+</div>
+<span class="label">
+  <ng-content></ng-content>
+</span>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, Output, signal } from "@angular/core";
 import {
   AbstractControl,
   FormBuilder,
@@ -18,6 +18,7 @@ import {
 } from "../../../services";
 import { AxiosError } from "axios";
 import { buildProductFromFormValues } from "../../../../helpers";
+import { SwitchComponent } from "../../switch/switch.component";
 
 @Component({
   selector: "pb-add-product",
@@ -27,6 +28,7 @@ import { buildProductFromFormValues } from "../../../../helpers";
     IconsModule,
     ReactiveFormsModule,
     PositiveNumberDirective,
+    SwitchComponent,
   ],
   templateUrl: "./add-product.component.html",
   styleUrl: "./add-product.component.scss",
@@ -36,6 +38,7 @@ export class AddProductComponent {
   submitting = false;
   errorMessage = "";
   formGroup: FormGroup = new FormGroup({});
+  isVisible = signal(true);
 
   @Output() cancel = new EventEmitter();
   @Output() create = new EventEmitter<Product>();
@@ -67,10 +70,15 @@ export class AddProductComponent {
       inventory: [this.initialValues?.inventory || ""],
       discount: [(this.initialValues?.discount || 0) * 100 || ""],
     });
+    this.isVisible = signal(this.initialValues?.isVisible || true);
   }
 
   onCancel() {
     this.cancel.emit();
+  }
+
+  toggleShow() {
+    this.isVisible.update((prev) => !prev);
   }
 
   get primaryText() {
@@ -108,7 +116,7 @@ export class AddProductComponent {
   private async createProduct() {
     const product = await this.productService.createProduct(
       {
-        ...buildProductFromFormValues(this.formGroup, true),
+        ...buildProductFromFormValues(this.formGroup, this.isVisible()),
       },
       this.authService.user()!.id,
     );
@@ -123,13 +131,9 @@ export class AddProductComponent {
     if (!this.initialValues) {
       return;
     }
-    console.log({
-      ...this.initialValues,
-      ...buildProductFromFormValues(this.formGroup, true),
-    });
     const product = await this.productService.updateProduct({
       ...this.initialValues,
-      ...buildProductFromFormValues(this.formGroup, true),
+      ...buildProductFromFormValues(this.formGroup, this.isVisible()),
     });
     this.notificationService.addNotification({
       type: "success",

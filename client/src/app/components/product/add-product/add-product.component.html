@@ -88,6 +88,9 @@
       />
     </div>
   </div>
+  <pb-switch [value]="isVisible" (valueChange)="toggleShow()">
+    Show Product</pb-switch
+  >
   <div [class]="{ error: true, hidden: !errorMessage }">
     <i-feather name="alert-circle"></i-feather>
     <p>Error: {{ errorMessage }}</p>

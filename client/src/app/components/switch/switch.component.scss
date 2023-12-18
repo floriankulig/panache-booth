@@ -1,0 +1,75 @@
+@use "variables.scss" as *;
+:host {
+  $height: grid(3.5);
+  $paddInner: grid(0.25);
+  $indHeight: $height - ($paddInner * 3);
+  display: flex;
+  align-items: center;
+  gap: grid(2);
+  cursor: pointer;
+
+  .switch {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: $paddInner;
+    width: grid(6);
+    height: $height;
+    border-radius: $height;
+    border: 1px solid rgba($textSecondary, 0.15);
+    background: rgba($bgPrimary, 0.5);
+    transition: all 0.15s ease;
+
+    &.active {
+      border-color: rgba($success, 0.25);
+      background: rgb(242, 255, 242);
+      .switch-indicator {
+        background: $success;
+        translate: 10px;
+      }
+    }
+
+    &-indicator {
+      height: $indHeight;
+      width: $indHeight;
+      border-radius: $indHeight;
+      display: grid;
+      place-items: center;
+      position: absolute;
+      will-change: width;
+      transition: all 0.2s ease;
+      background: $textSecondary;
+      translate: -10px;
+      &.active {
+        background: $success;
+        i-feather {
+          scale: 1;
+        }
+      }
+
+      i-feather {
+        scale: 0.9;
+        transition: scale 0.2s ease;
+        width: grid(1.75);
+        height: grid(1.75);
+        color: $textPrimaryDark;
+      }
+    }
+  }
+
+  &:active {
+    .switch-indicator {
+      width: $indHeight + grid();
+      translate: -6px;
+
+      &.active {
+        translate: 6px !important;
+      }
+    }
+  }
+
+  .label {
+    font-weight: 500;
+  }
+}
