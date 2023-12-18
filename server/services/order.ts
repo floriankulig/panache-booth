@@ -6,7 +6,7 @@ import {
   deleteOrderById,
   getAllOrders,
   getAllOrdersByUserId,
-  getAllOrdersByVendorId, getAllOrdersWithVendorProducts,
+  getAllOrdersWithVendorProducts,
   getOrderById,
   getProductsOfOrder, getProductsOfOrderVendor,
   updateOrderById,
@@ -25,8 +25,9 @@ export function allUserOrdersById(id: string) {
   for (const order of orders) {
     let products: any[] = getProductsOfOrder(order.id);
 
-    for (const product of products) {
-      let vendorInfo: any = getUserById(product.vendorId)
+    for (let product of products) {
+      let vendorInfo: any = getUserById(product.vendorId);
+      product.delivered = product.delivered === 1 ? true : false;
       const combinedProduct = {
         ...product,
         vendor: vendorInfo
@@ -54,6 +55,7 @@ export function allVendorOrdersById(vendorId: string) {
     console.log(orderProductsVendor)
     for (const orderProductVendor of orderProductsVendor) {
       let vendorInfo: any = getUserById(orderProductVendor.vendorId)
+      orderProductVendor.delivered = orderProductVendor.delivered === 1 ? true : false;
       const combinedProduct = {
         ...orderProductVendor,
         vendor: vendorInfo
@@ -91,7 +93,8 @@ export function addOrder(
 
   let testOrder = createOrder(newOrder);
   products.forEach((item) => {
-    createOrderProductEntity(newOrder.id, item.id, item.amount);
+    let delivered = item.delivered ? 1 : 0;
+    createOrderProductEntity(newOrder.id, item.id, item.amount, delivered);
   });
 
   return testOrder;

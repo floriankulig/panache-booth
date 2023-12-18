@@ -66,33 +66,26 @@ export function getAllOrdersWithVendorProducts(vendorId: string) {
   return orders;
 }
 
-export function getAllOrdersByVendorId(id: string) {
-  let orders = database
-    .prepare(
-      "select o.price, p.price from orders as o inner join product as p on orders.productId = product.id where vendorId = ?"
-    )
-    .get(id);
-}
-
 export function createOrderProductEntity(
   orderId: string,
   productId: string,
-  amount: number
+  amount: number,
+  delivered: number
 ) {
   database
     .prepare(
       "insert into orderProduct " +
-        "(orderId, productId, amount) " +
+        "(orderId, productId, amount, delivered) " +
         "values " +
-        "(?, ?, ?);"
+        "(?, ?, ?, ?);"
     )
-    .run(orderId, productId, amount);
+    .run(orderId, productId, amount, delivered);
 }
 
 export function getProductsOfOrder(orderId: string) {
   return database
     .prepare(
-      "select product.*, orderProduct.amount " +
+      "select product.*, orderProduct.amount, orderProduct.delivered " +
       "from orders " +
       "join orderProduct on orders.id = orderProduct.OrderId " +
       "join product on orderProduct.productId = product.id " +
@@ -103,7 +96,7 @@ export function getProductsOfOrder(orderId: string) {
 
 export function getProductsOfOrderVendor(orderId: string, vendorId: string) {
   return database.prepare(
-    "select product.*, orderProduct.amount " +
+    "select product.*, orderProduct.amount, orderProduct.delivered " +
     "from orders " +
     "join orderProduct on orders.id = orderProduct.OrderId " +
     "join product on orderProduct.productId = product.id " +
