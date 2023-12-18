@@ -41,11 +41,10 @@ export class ProductService {
     }
   }
 
-  async updateProduct(product: Product) {
+  async updateProduct(product: APIProduct) {
     try {
       const res = await axios.put(`${API_URL}/product/${product.id}`, {
         ...product,
-        category: product.category.id,
       });
       const productData = {
         ...res.data,

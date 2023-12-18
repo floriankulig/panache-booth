@@ -19,6 +19,7 @@ import {
 import { ClickOutsideDirective } from "../../../directives/click-outside.directive";
 import { ModalComponent } from "../../modal/modal.component";
 import { DeleteConfirmComponent } from "../../delete-confirm/delete-confirm.component";
+import { AddProductComponent } from "../add-product/add-product.component";
 
 @Component({
   selector: "pb-product-card",
@@ -28,6 +29,7 @@ import { DeleteConfirmComponent } from "../../delete-confirm/delete-confirm.comp
     ClickOutsideDirective,
     ModalComponent,
     DeleteConfirmComponent,
+    AddProductComponent,
   ],
   templateUrl: "./product-card.component.html",
   styleUrl: "./product-card.component.scss",
@@ -39,6 +41,7 @@ export class ProductCardComponent {
 
   optionsOpen = signal(false);
   deleteModalOpen = signal(false);
+  editModalOpen = signal(false);
 
   @ViewChild("menu") menu!: ElementRef<HTMLDivElement>;
   @ViewChild("visibility") visibility!: ElementRef<HTMLDivElement>;
@@ -62,15 +65,16 @@ export class ProductCardComponent {
     try {
       await this.productService.updateProduct({
         ...this.product,
+        category: this.product.category.id,
         isVisible: !this.product.isVisible,
       });
-      this.notificationService.addNotification({
-        type: "success",
-        message: this.product.isVisible
-          ? `${this.product.name} is now hidden`
-          : `${this.product.name} is now visible`,
-        duration: 1000,
-      });
+      // this.notificationService.addNotification({
+      //   type: "success",
+      //   message: this.product.isVisible
+      //     ? `${this.product.name} is now hidden`
+      //     : `${this.product.name} is now visible`,
+      //   duration: 1000,
+      // });
       this.update.emit();
     } catch (error) {
       this.notificationService.addNotification({
@@ -96,6 +100,10 @@ export class ProductCardComponent {
 
   onDeleteSuccess() {
     this.deleteModalOpen.set(false);
+    this.update.emit();
+  }
+  onProductUpdated() {
+    this.editModalOpen.set(false);
     this.update.emit();
   }
 }

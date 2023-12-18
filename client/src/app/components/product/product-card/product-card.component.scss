@@ -27,6 +27,7 @@
 :host {
   .card {
     height: 100%;
+    width: 100%;
     position: relative;
     background: $bgPrimary;
     padding: clamp(grid(2), 3vw, grid(3));
@@ -175,6 +176,10 @@
       }
     }
 
+    &-bar:last-child {
+      height: 48px;
+    }
+
     &__price {
       font-size: clamp(1.25rem, 3vw, 1.5rem);
       font-weight: 700;
@@ -182,18 +187,19 @@
     }
 
     &__cta {
-      padding: grid(1.5);
+      display: grid;
+      place-items: center;
       cursor: pointer;
+      height: 100%;
       aspect-ratio: 1;
-      background: darken($bgSecondary, 5);
+      background: darken($bgSecondary, 2);
       color: $textPrimary;
       transition: all 0.3s ease;
       border-radius: 54% 46% 52% 48% / 45% 56% 44% 55%;
       box-shadow: 1px 1px 5px rgba($bgPrimaryDark, 0.05);
 
       i-feather {
-        width: grid(2.5);
-        height: grid(2.5);
+        scale: 0.9;
       }
 
       &:hover {
@@ -201,6 +207,9 @@
         background: $bgPrimaryDark;
         box-shadow: inset 4px 3px 4px rgba($textPrimaryDark, 0.15);
         color: $textPrimaryDark;
+        i-feather {
+          scale: 1;
+        }
       }
 
       &:active {
@@ -211,7 +220,7 @@
     &:hover {
       .category-chip-bg {
         scale: 0.8;
-        transform: translate(40%, -2%) scaleX(1.5);
+        transform: translate(40%, -2%) scaleX(1.3);
       }
     }
   }

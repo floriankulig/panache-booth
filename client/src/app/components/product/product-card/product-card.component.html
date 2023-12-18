@@ -17,7 +17,9 @@
         <!-- <li>{{
         product.isVisible ? "Visible" : "Hidden"
       }}</li> -->
-        <li><i-feather name="edit-3"></i-feather> Edit</li>
+        <li (click)="editModalOpen.set(true)">
+          <i-feather name="edit-3"></i-feather> Edit
+        </li>
         <li class="delete" (click)="deleteModalOpen.set(true)">
           <i-feather name="trash"></i-feather>Delete
         </li>
@@ -53,9 +55,11 @@
   </div>
   <div class="card-bar">
     <div class="card__price">{{ formattedPrice }}€</div>
+    @if (product.isVisible) {
     <div class="card__cta" role="button" click="onClickCTA()" #cta>
       <i-feather name="shopping-bag"></i-feather>
     </div>
+    }
   </div>
 </div>
 
@@ -65,5 +69,13 @@
     [product]="product"
     (delete)="onDeleteSuccess()"
   ></pb-delete-confirm>
+</pb-modal>
+} @if (editModalOpen()) {
+<pb-modal (close)="editModalOpen.set(false)" [heading]="'Edit ' + product.name">
+  <pb-add-product
+    [initialValues]="product"
+    (cancel)="editModalOpen.set(false)"
+    (create)="onProductUpdated()"
+  ></pb-add-product>
 </pb-modal>
 }
