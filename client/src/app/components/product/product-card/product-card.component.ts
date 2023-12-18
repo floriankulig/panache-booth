@@ -20,6 +20,7 @@ import { ClickOutsideDirective } from "../../../directives/click-outside.directi
 import { ModalComponent } from "../../modal/modal.component";
 import { DeleteConfirmComponent } from "../../delete-confirm/delete-confirm.component";
 import { AddProductComponent } from "../add-product/add-product.component";
+import { getDiscountedPrice } from "../../../../helpers";
 
 @Component({
   selector: "pb-product-card",
@@ -58,7 +59,7 @@ export class ProductCardComponent {
   ) {}
 
   get formattedPrice(): string {
-    return Number(this.product.price).toFixed(2);
+    return Number(getDiscountedPrice(this.product)).toFixed(2);
   }
 
   async toggleVisibility(): Promise<void> {

@@ -34,6 +34,19 @@
     padding-bottom: grid(4);
     border-radius: grid(1.5);
     box-shadow: 2px 3px 32px rgba($bgPrimaryDark, 0.025);
+    cursor: pointer;
+
+    .discount {
+      position: absolute;
+      top: grid(-2);
+      right: grid(-2);
+      padding: grid(1) grid(1.5);
+      border-radius: grid(3);
+      background: rgba($error, 0.85);
+      color: $textPrimaryDark;
+      font-weight: 500;
+      backdrop-filter: blur(8px) saturate(150%);
+    }
 
     &-bar {
       display: flex;
@@ -65,8 +78,8 @@
           border-radius: grid(1.5);
           z-index: 2;
           box-shadow: 2px 3px 16px rgba($bgPrimaryDark, 0.1);
-          backdrop-filter: blur(8px) saturate(150%);
-          background: rgba($bgPrimary, 0.3);
+          backdrop-filter: blur(16px) saturate(120%);
+          background: rgba($bgPrimary, 0.5);
           li {
             padding: grid(2) grid(4);
             padding-left: grid(3);
@@ -184,6 +197,13 @@
       font-size: clamp(1.25rem, 3vw, 1.5rem);
       font-weight: 700;
       color: $textPrimary;
+
+      &--old {
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+        font-weight: 600;
+        color: $textSecondary;
+        text-decoration: line-through;
+      }
     }
 
     &__cta {

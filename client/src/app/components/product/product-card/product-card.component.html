@@ -1,4 +1,7 @@
 <div class="card" (click)="onCardClick($event)">
+  @if (!!product.discount) {
+  <div class="discount">-{{ product.discount * 100 }}%</div>
+  }
   <div class="card-bar">
     <span class="card__vendor">{{
       isOwnProduct() ? "You" : product.vendor.userName
@@ -54,7 +57,11 @@
     </div>
   </div>
   <div class="card-bar">
-    <div class="card__price">{{ formattedPrice }}€</div>
+    <div class="card__price">
+      {{ formattedPrice }}€ @if (!!product.discount) {
+      <span class="card__price--old">{{ product.price.toFixed(2) }}€</span>
+      }
+    </div>
     @if (product.isVisible) {
     <div class="card__cta" role="button" click="onClickCTA()" #cta>
       <i-feather name="shopping-bag"></i-feather>

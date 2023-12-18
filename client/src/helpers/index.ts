@@ -4,3 +4,4 @@ export * from "./buildUserFromFormValues";
 export * from "./buildProductFromFormValues";
 export * from "./categoryById";
 export * from "./filterByString";
+export * from "./getDiscountedPrice";
