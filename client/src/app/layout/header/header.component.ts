@@ -14,7 +14,7 @@ import { SIDEBAR_TABS } from "../../../models";
   styleUrl: "./header.component.scss",
 })
 export class HeaderComponent {
-  productsInCart = computed(() => this.cartService.cartItems().length);
+  productsInCart = computed(() => this.cartService.cartProducts().length);
   tabText = "Products";
 
   @Output() openSidebar = new EventEmitter();
