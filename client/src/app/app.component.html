@@ -12,7 +12,10 @@
 </ul>
 
 @if (cartService.cartOpen()){
-<pb-modal heading="Cart" (close)="cartService.setCart(false)">
+<pb-modal
+  [heading]="'Cart (' + cartService.cartProducts().length + ')'"
+  (close)="cartService.setCartOpen(false)"
+>
   <pb-cart></pb-cart>
 </pb-modal>
 } @if (orderService.ordersOpen()){

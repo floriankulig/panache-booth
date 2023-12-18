@@ -68,7 +68,7 @@
       }
     </div>
     @if (product.isVisible) {
-    <div class="card__cta" role="button" click="onClickCTA()" #cta>
+    <div class="card__cta" role="button" (click)="onClickCTA()" #cta>
       <i-feather name="shopping-bag"></i-feather>
     </div>
     }

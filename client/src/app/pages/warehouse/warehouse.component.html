@@ -1,29 +1,32 @@
-<div class="content-inner">
-  <div class="heading">
-    <h1 class="page-title">Your Products</h1>
-    <section class="actions">
-      <button
-        class="mobile-main icon"
-        title="Add new Product"
-        aria-label="Add new Product"
-        (click)="openAddProductModal()"
-      >
-        <i-feather name="plus"></i-feather> <span>Add Product</span>
-      </button>
-    </section>
+<div class="warehouse-wrapper">
+  <div class="content-inner">
+    <div class="heading">
+      <h1 class="page-title">Your Products</h1>
+      <section class="actions">
+        <button
+          class="mobile-main icon"
+          title="Add new Product"
+          aria-label="Add new Product"
+          (click)="openAddProductModal()"
+        >
+          <i-feather name="plus"></i-feather> <span>Add Product</span>
+        </button>
+      </section>
+    </div>
   </div>
-</div>
-@if (!!filteredOwnedProducts().length) {
-<div class="grid-transition"></div>
-<section class="grid content-inner">
-  @for (product of filteredOwnedProducts(); track product.id) {
-  <pb-product-card
-    [product]="product"
-    (update)="updateList()"
-  ></pb-product-card>
+  @if (!!filteredOwnedProducts().length) {
+  <div class="grid-transition"></div>
+  <section class="grid content-inner">
+    @for (product of filteredOwnedProducts(); track product.id) {
+    <pb-product-card
+      [product]="product"
+      (update)="updateList()"
+    ></pb-product-card>
+    }
+  </section>
   }
-</section>
-} @if (addProductModalOpen()) {
+</div>
+@if (addProductModalOpen()) {
 <pb-modal (close)="addProductModalOpen.set(false)" heading="Add New Product">
   <pb-add-product
     (cancel)="addProductModalOpen.set(false)"

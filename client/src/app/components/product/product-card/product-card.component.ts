@@ -13,6 +13,7 @@ import { Product } from "../../../../models";
 import { IconsModule } from "../../../icons/icons.module";
 import {
   AuthService,
+  CartService,
   NotificationService,
   ProductService,
 } from "../../../services";
@@ -58,6 +59,7 @@ export class ProductCardComponent {
     private authService: AuthService,
     private productService: ProductService,
     private notificationService: NotificationService,
+    private cartService: CartService,
   ) {}
 
   get formattedPrice(): string {
@@ -99,7 +101,9 @@ export class ProductCardComponent {
     console.log("test");
   }
 
-  onClickCTA() {}
+  onClickCTA() {
+    this.cartService.addToCart(this.product);
+  }
 
   onDeleteSuccess() {
     this.deleteModalOpen.set(false);
