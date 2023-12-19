@@ -202,10 +202,32 @@
         transform: translate(-5%, 5%);
         transition: all 0.7s ease;
       }
+
+      &.inventory {
+        .category-chip-bg {
+          width: 70%;
+          height: 80%;
+          transform: translate(0%, 20%);
+          background: $warning;
+        }
+        i-feather {
+          color: $warning;
+        }
+
+        &.error {
+          .category-chip-bg {
+            background: $error;
+          }
+          i-feather {
+            color: $error;
+          }
+        }
+      }
     }
 
     &-bar:last-child {
       height: 48px;
+      margin-top: auto;
     }
 
     &__price {
@@ -236,6 +258,12 @@
       i-feather {
         transition: all 0.3s ease-in-out;
         scale: 0.9;
+      }
+
+      &.disabled {
+        color: rgba($textPrimary, 0.5);
+        cursor: not-allowed !important;
+        pointer-events: none;
       }
 
       &:hover {

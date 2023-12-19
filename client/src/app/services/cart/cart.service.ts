@@ -26,12 +26,16 @@ export class CartService {
   cartProducts: Signal<CartProduct[]> = computed(() =>
     this.productService
       .products()
-      .map((product) => ({
-        ...product,
-        quantity:
+      .map((product) => {
+        let quantity =
           this.cartItems().find((item) => item.id === product.id)?.quantity ||
-          -1,
-      }))
+          -1;
+        quantity = Math.min(quantity, product.inventory || Infinity);
+        return {
+          ...product,
+          quantity,
+        };
+      })
       .filter((product) => product.isVisible && product.quantity > 0),
   );
 
@@ -115,6 +119,10 @@ export class CartService {
         return [...prev, { id: item.id, quantity }];
       }
     });
+  }
+
+  getItemQuantity(item: CartProduct | Product) {
+    return this.cartItems().find((i) => i.id === item.id)?.quantity || 0;
   }
 
   removeItem(item: CartProduct) {

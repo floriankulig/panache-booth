@@ -69,7 +69,7 @@
             <pb-quantity
               [value]="item.quantity"
               [min]="1"
-              [max]="item.inventory"
+              [max]="item.inventory || 999"
               (valueChange)="onQuantityChange(item, $event)"
             ></pb-quantity>
           </div>
@@ -124,7 +124,7 @@
       <div class="row">
         <span class="summary__list-item--label"> </span>
         <span class="summary__list-item--value wrong">
-          {{ product.price.toFixed(2) }}€
+          {{ (+product.price.toFixed(2) * product.quantity).toFixed(2) }}€
         </span>
       </div>
       }

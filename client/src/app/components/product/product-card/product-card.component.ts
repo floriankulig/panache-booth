@@ -9,7 +9,7 @@ import {
   effect,
   signal,
 } from "@angular/core";
-import { Product } from "../../../../models";
+import { CartProduct, Product } from "../../../../models";
 import { IconsModule } from "../../../icons/icons.module";
 import {
   AuthService,
@@ -64,6 +64,12 @@ export class ProductCardComponent {
 
   get formattedPrice(): string {
     return Number(getDiscountedPrice(this.product)).toFixed(2);
+  }
+
+  amountLeft(product: Product): number {
+    const amount =
+      (product.inventory || 0) - this.cartService.getItemQuantity(product);
+    return amount;
   }
 
   async toggleVisibility(): Promise<void> {
