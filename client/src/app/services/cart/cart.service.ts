@@ -127,12 +127,6 @@ export class CartService {
 
   removeItem(item: CartProduct) {
     this.cartItems.update((prev) => prev.filter((i) => i.id !== item.id));
-    this.notificationService.addNotification({
-      icon: "trash",
-      type: "error",
-      message: `${item.name} removed from cart`,
-      duration: 1500,
-    });
   }
 
   clearCart() {
