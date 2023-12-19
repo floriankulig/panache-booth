@@ -12,7 +12,7 @@ interface User {
   iban?: string;
   bic?: string;
   shippingCost?: number;
-  shippingFreeFrom?: number;
+  shippingFreeFrom: number;
 }
 interface RegisterUser
   extends Omit<User, "id" | "createdAt" | "updatedAt" | "address"> {

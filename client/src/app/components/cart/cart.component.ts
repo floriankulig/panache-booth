@@ -72,7 +72,10 @@ export class CartComponent {
   get shippingTotal() {
     return this.itemsByVendor().reduce((shippingtotal, { vendor, items }) => {
       const costPerVendor = this.costOfCartProducts(items);
-      if (costPerVendor > Number(vendor.shippingFreeFrom)) {
+      if (
+        costPerVendor > Number(vendor.shippingFreeFrom) &&
+        this.vendorHasFreeShipping(vendor)
+      ) {
         return shippingtotal;
       } else {
         return shippingtotal + Number(vendor.shippingCost);
@@ -101,6 +104,10 @@ export class CartComponent {
   }
   discounted(product: CartProduct) {
     return getDiscountedPrice(product);
+  }
+
+  vendorHasFreeShipping(vendor: User) {
+    return vendor.shippingFreeFrom >= 0;
   }
 
   get cartProductsDiscountedLast() {

@@ -22,7 +22,7 @@ export const buildUserFromFormValues = (
     isVendor: formType === "vendor",
     ...paymentInformation,
     shippingCost: shippingCost ? shippingCost.toString() : "0",
-    shippingFreeFrom: shippingFreeFrom ? shippingFreeFrom.toString() : "0",
+    shippingFreeFrom: shippingFreeFrom ? shippingFreeFrom.toString() : "-1",
   };
 
   return user;

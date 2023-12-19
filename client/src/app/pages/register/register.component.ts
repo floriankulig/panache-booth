@@ -93,7 +93,11 @@ export class RegisterComponent {
         iban: [initialState?.iban || "", Validators.required],
         bic: [initialState?.bic || "", Validators.required],
         shippingCost: [initialState?.shippingCost || 0],
-        shippingFreeFrom: [initialState?.shippingFreeFrom || 0],
+        shippingFreeFrom: [
+          initialState?.shippingFreeFrom && initialState?.shippingFreeFrom >= 0
+            ? initialState?.shippingFreeFrom
+            : "",
+        ],
       }),
     ];
 
