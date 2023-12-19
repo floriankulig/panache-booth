@@ -15,7 +15,6 @@
     display: flex;
     flex-direction: column;
     gap: grid(3);
-    // padding-block: grid(3);
 
     &__vendor {
       background: rgba($bgPrimary, 0.5);
@@ -58,6 +57,12 @@
         font-weight: 600;
       }
 
+      &--name {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
       &--shipping {
         span {
           display: flex;
@@ -88,12 +93,23 @@
             &:nth-child(3) {
               margin-block: grid();
               align-items: flex-end;
+
+              @media screen and (max-width: 768px) {
+                flex-direction: column;
+                align-items: flex-start;
+              }
             }
           }
           &-name,
           &-total {
             font-size: 1.3rem;
             font-weight: 600;
+          }
+
+          &-name {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
           }
 
           &-total {
@@ -126,10 +142,20 @@
             overflow: hidden;
           }
 
+          &-actions {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: grid(1.5);
+            margin-left: auto;
+          }
+
           &-delete {
             width: grid(5);
             aspect-ratio: 1;
             display: grid;
+            flex-shrink: 0;
             place-items: center;
             border-radius: grid();
             cursor: pointer;
@@ -159,7 +185,7 @@
 
   .summary {
     position: relative;
-    width: clamp(250px, 30%, 300px);
+    width: clamp(280px, 30%, 300px);
     & > * {
       padding: grid(3);
     }
@@ -257,8 +283,6 @@
             height: grid(2.25);
           }
         }
-        &--value {
-        }
 
         .wrong {
           text-decoration: line-through;
@@ -297,6 +321,14 @@
         margin-top: grid(3);
         width: 100%;
       }
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    flex-direction: column;
+
+    .summary {
+      width: 100%;
     }
   }
 }

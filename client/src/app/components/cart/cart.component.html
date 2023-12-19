@@ -65,21 +65,23 @@
               {{ item.description }}
             </p>
           </div>
-          <div class="items__vendor--items-item-quantity">
-            <pb-quantity
-              [value]="item.quantity"
-              [min]="1"
-              [max]="item.inventory || 999"
-              (valueChange)="onQuantityChange(item, $event)"
-            ></pb-quantity>
-          </div>
-          <div
-            class="items__vendor--items-item-delete"
-            (click)="onRemoveItem(item)"
-            role="button"
-            [ariaLabel]="'Remove Item' + item.name"
-          >
-            <i-feather name="trash-2"></i-feather>
+          <div class="items__vendor--items-item-actions">
+            <div class="items__vendor--items-item-quantity">
+              <pb-quantity
+                [value]="item.quantity"
+                [min]="1"
+                [max]="item.inventory || 999"
+                (valueChange)="onQuantityChange(item, $event)"
+              ></pb-quantity>
+            </div>
+            <div
+              class="items__vendor--items-item-delete"
+              (click)="onRemoveItem(item)"
+              role="button"
+              [ariaLabel]="'Remove Item' + item.name"
+            >
+              <i-feather name="trash-2"></i-feather>
+            </div>
           </div>
         </div>
       </li>

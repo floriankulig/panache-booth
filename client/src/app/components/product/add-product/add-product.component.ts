@@ -57,6 +57,7 @@ export class AddProductComponent {
   }
 
   private initValues() {
+    console.log(this.initialValues);
     this.formGroup = this.formBuilder.group({
       name: [this.initialValues?.name || "", Validators.required],
       description: [this.initialValues?.description || "", Validators.required],

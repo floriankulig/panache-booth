@@ -33,6 +33,9 @@
     padding: clamp(grid(2), 3vw, grid(3));
     padding-bottom: grid(4);
     border-radius: grid(1.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     box-shadow: 2px 3px 32px rgba($bgPrimaryDark, 0.025);
     cursor: pointer;
 

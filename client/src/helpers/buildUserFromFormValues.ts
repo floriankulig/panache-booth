@@ -11,7 +11,7 @@ export const buildUserFromFormValues = (
   const { postcode, houseNumber, ...address } = steps[1].value;
   const { shippingCost, shippingFreeFrom, ...paymentInformation } =
     steps[2].value;
-
+  console.log(shippingFreeFrom);
   const user: RegisterUser = {
     userName: username,
     email,
@@ -22,8 +22,12 @@ export const buildUserFromFormValues = (
     isVendor: formType === "vendor",
     ...paymentInformation,
     shippingCost: shippingCost ? shippingCost.toString() : "0",
-    shippingFreeFrom: shippingFreeFrom ? shippingFreeFrom.toString() : "-1",
+    shippingFreeFrom: shippingFreeFrom.toString().trim()
+      ? shippingFreeFrom.toString()
+      : "-1",
   };
+
+  console.log(user);
 
   return user;
 };

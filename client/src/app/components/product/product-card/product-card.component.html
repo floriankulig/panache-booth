@@ -2,88 +2,92 @@
   @if (!!product.discount) {
   <div class="discount">-{{ product.discount * 100 }}%</div>
   }
-  <div class="card-bar">
-    <span class="card__vendor">{{
-      isOwnProduct() ? "You" : product.vendor.userName
-    }}</span>
-    @if (isOwnProduct()) {
-    <div
-      class="vendor-actions"
-      #menu
-      role="button"
-      (click)="optionsOpen.set(true)"
-      (onClickOutside)="optionsOpen.set(false)"
-    >
-      <i-feather name="more-vertical" class="trigger"></i-feather>
-      @if (optionsOpen()) {
-      <ul class="actions">
-        <li class="switch" (click)="toggleVisibility()">
-          <pb-switch [value]="product.isVisible">
-            <span class="label-menu">
-              {{ product.isVisible ? "Visible" : "Hidden" }}
-            </span>
-          </pb-switch>
-        </li>
-        <div class="div"></div>
-        <li (click)="editModalOpen.set(true)">
-          <i-feather name="edit-3"></i-feather> Edit
-        </li>
-        <li class="delete" (click)="deleteModalOpen.set(true)">
-          <i-feather name="trash"></i-feather>Delete
-        </li>
-      </ul>
+  <div>
+    <div class="card-bar">
+      <span class="card__vendor">{{
+        isOwnProduct() ? "You" : product.vendor.userName
+      }}</span>
+      @if (isOwnProduct()) {
+      <div
+        class="vendor-actions"
+        #menu
+        role="button"
+        (click)="optionsOpen.set(true)"
+        (onClickOutside)="optionsOpen.set(false)"
+      >
+        <i-feather name="more-vertical" class="trigger"></i-feather>
+        @if (optionsOpen()) {
+        <ul class="actions">
+          <li class="switch" (click)="toggleVisibility()">
+            <pb-switch [value]="product.isVisible">
+              <span class="label-menu">
+                {{ product.isVisible ? "Visible" : "Hidden" }}
+              </span>
+            </pb-switch>
+          </li>
+          <div class="div"></div>
+          <li (click)="editModalOpen.set(true)">
+            <i-feather name="edit-3"></i-feather> Edit
+          </li>
+          <li class="delete" (click)="deleteModalOpen.set(true)">
+            <i-feather name="trash"></i-feather>Delete
+          </li>
+        </ul>
+        }
+      </div>
       }
     </div>
-    }
-  </div>
-  <h5 class="card__heading">{{ product.name }}</h5>
-  <div class="chips">
-    @if (isOwnProduct()) {
+    <h5 class="card__heading">{{ product.name }}</h5>
+    <div class="chips">
+      @if (isOwnProduct()) {
 
-    <div
-      #visibility
-      [class]="{ visibility: true, hidden: !product.isVisible }"
-      (click)="toggleVisibility()"
-    >
-      <i-feather
-        [name]="product.isVisible ? 'eye' : 'eye-off'"
-        class="visibility-icon"
-      ></i-feather>
-      <span class="visibility-text">{{
-        product.isVisible ? "Visible" : "Hidden"
-      }}</span>
-    </div>
-    }
-    <div class="category-chip">
-      <div class="category-chip-bg"></div>
-      <span class="category-chip-text">
-        {{ product.category.displayValue }}</span
+      <div
+        #visibility
+        [class]="{ visibility: true, hidden: !product.isVisible }"
+        (click)="toggleVisibility()"
       >
-    </div>
-    @if (product.inventory && amountLeft(product) <= 10) {
-    <div
-      [class]="{
-        'category-chip': true,
-        inventory: true,
-        error: amountLeft(product) <= 0
-      }"
-    >
-      <div class="category-chip-bg"></div>
-      <span class="category-chip-text">
         <i-feather
-          [name]="amountLeft(product) <= 0 ? 'alert-circle' : 'alert-triangle'"
+          [name]="product.isVisible ? 'eye' : 'eye-off'"
+          class="visibility-icon"
         ></i-feather>
-        {{
-          amountLeft(product) >= 100
-            ? "99+"
-            : amountLeft(product) <= 0
-            ? 0
-            : amountLeft(product)
-        }}
-        left</span
+        <span class="visibility-text">{{
+          product.isVisible ? "Visible" : "Hidden"
+        }}</span>
+      </div>
+      }
+      <div class="category-chip">
+        <div class="category-chip-bg"></div>
+        <span class="category-chip-text">
+          {{ product.category.displayValue }}</span
+        >
+      </div>
+      @if (product.inventory && amountLeft(product) <= 10) {
+      <div
+        [class]="{
+          'category-chip': true,
+          inventory: true,
+          error: amountLeft(product) <= 0
+        }"
       >
+        <div class="category-chip-bg"></div>
+        <span class="category-chip-text">
+          <i-feather
+            [name]="
+              amountLeft(product) <= 0 ? 'alert-circle' : 'alert-triangle'
+            "
+          ></i-feather>
+          {{
+            amountLeft(product) >= 100
+              ? "99+"
+              : amountLeft(product) <= 0
+              ? 0
+              : amountLeft(product)
+          }}
+          left</span
+        >
+      </div>
+      }
     </div>
-    }
   </div>
   <div class="card-bar">
     <div class="card__price">

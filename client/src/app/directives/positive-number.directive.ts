@@ -21,7 +21,11 @@ export class PositiveNumberDirective {
     target: HTMLInputElement;
   }) {
     let initialValue: string = event.target?.value;
-
+    console.log(typeof Number(initialValue));
+    if (!initialValue) {
+      this.el.nativeElement.value = "";
+      return;
+    }
     if (+initialValue < 0) {
       this.el.nativeElement.value = 0;
       return;
