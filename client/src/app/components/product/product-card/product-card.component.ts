@@ -99,12 +99,11 @@ export class ProductCardComponent {
   onCardClick(event: MouseEvent) {
     if (
       [this.menu, this.visibility, this.cta].some((el) =>
-        el.nativeElement.contains(event.target as Node),
+        el?.nativeElement.contains(event.target as Node),
       )
     ) {
       return;
     }
-    console.log("test");
   }
 
   onClickCTA() {
