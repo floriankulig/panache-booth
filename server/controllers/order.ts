@@ -21,8 +21,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const order: Omit<IOrder, "id" | "createdAt" | "updatedAt" | "price"> = {
-      userId: req.body.userId,
-      delivered: req.body.delivered
+      userId: req.body.userId
     };
     res.status(200).json(await addOrder(order, req.body.products));
   } catch (error) {

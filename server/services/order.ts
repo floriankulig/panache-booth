@@ -27,7 +27,6 @@ export function allUserOrdersById(id: string) {
 
     for (let product of products) {
       let vendorInfo: any = getUserById(product.vendorId);
-      product.delivered = product.delivered === 1 ? true : false;
       const combinedProduct = {
         ...product,
         vendor: vendorInfo
@@ -87,8 +86,7 @@ export function addOrder(
     createdAt: currentTimestamp,
     updatedAt: currentTimestamp,
     userId: order.userId,
-    price: 45.5,
-    delivered: order.delivered
+    price: 45.5
   };
 
   let testOrder = createOrder(newOrder);

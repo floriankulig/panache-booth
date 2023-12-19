@@ -4,11 +4,12 @@ import {
   allUsers,
   deleteUser,
   loginUser,
-  updateUser,
-  userById
+  updateUser, userByEmail,
+  userById,
 } from "../services/user";
 import { InvalidLogin, UserNotExisting } from "../util/customUserErrors";
 import { SqliteError } from "better-sqlite3";
+import { customAuth } from "../util/customAuth";
 
 const router = express.Router();
 
@@ -109,5 +110,7 @@ router.get("/:userId", async (req, res) => {
     }
   }
 });
+
+
 
 export { router as userController };
