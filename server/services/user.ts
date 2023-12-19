@@ -1,10 +1,10 @@
 import {
   createUser,
   deleteUserById,
-  getAllUsers,
+  getAllUsers, getUserByEmail,
   getUserById,
   loggedInUser,
-  updateUserById
+  updateUserById,
 } from "../models/user";
 import { IUser } from "../models/IUser";
 import { InvalidLogin } from "../util/customUserErrors";
@@ -12,6 +12,10 @@ import { v4 as uuidv4 } from "uuid";
 
 export function userById(id: string) {
   return getUserById(id);
+}
+
+export function userByEmail(email: string) {
+  return getUserByEmail(email);
 }
 
 export function allUsers() {

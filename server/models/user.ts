@@ -21,6 +21,25 @@ export function getUserById(id: string) {
   }
 }
 
+export function getUserByEmail(email: string) {
+  try {
+    let user = database
+      .prepare(
+        "select * from user where email = ?"
+      )
+      .get(email);
+    if (user != undefined) {
+      // @ts-ignore
+      user["isVendor"] = user["isVendor"] !== 0;
+      return user;
+    } else {
+      return undefined;
+    }
+  } catch (e: unknown) {
+    return e;
+  }
+}
+
 export function getAllUsers() {
   return database
     .prepare(
