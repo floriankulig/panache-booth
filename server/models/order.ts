@@ -68,23 +68,23 @@ export function getAllOrdersWithVendorProducts(vendorId: string) {
 export function createOrderProductEntity(
   orderId: string,
   productId: string,
-  amount: number,
+  quantity: number,
   delivered: number
 ) {
   database
     .prepare(
       "insert into orderProduct " +
-        "(orderId, productId, amount, delivered) " +
+        "(orderId, productId, quantity, delivered) " +
         "values " +
         "(?, ?, ?, ?);"
     )
-    .run(orderId, productId, amount, delivered);
+    .run(orderId, productId, quantity, delivered);
 }
 
 export function getProductsOfOrder(orderId: string) {
   return database
     .prepare(
-      "select product.*, orderProduct.amount, orderProduct.delivered " +
+      "select product.*, orderProduct.quantity, orderProduct.delivered " +
       "from orders " +
       "join orderProduct on orders.id = orderProduct.OrderId " +
       "join product on orderProduct.productId = product.id " +
@@ -95,7 +95,7 @@ export function getProductsOfOrder(orderId: string) {
 
 export function getProductsOfOrderVendor(orderId: string, vendorId: string) {
   return database.prepare(
-    "select product.*, orderProduct.amount, orderProduct.delivered " +
+    "select product.*, orderProduct.quantity, orderProduct.delivered " +
     "from orders " +
     "join orderProduct on orders.id = orderProduct.OrderId " +
     "join product on orderProduct.productId = product.id " +

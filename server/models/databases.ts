@@ -25,9 +25,9 @@ const createProductTable =
   "create table if not exists product (" +
   "id varchar(36) not null primary key, " +
   "name varchar(255) not null, " +
-  "description varchar(200), " +
+  "description varchar(200) not null, " +
   "category varchar(36), " +
-  "discount decimal(4,3), " +
+  "discount decimal(3,2), " +
   "price decimal(10,2), " +
   "vendorId varchar(36) not null, " +
   "purchases integer, " +
@@ -49,7 +49,7 @@ const createOrderProductTable =
   "create table if not exists orderProduct (" +
   "orderId varchar(36) not null, " +
   "productId varchar(36) not null, " +
-  "amount integer not null, " +
+  "quantity integer not null, " +
   "delivered integer not null, " +
   "primary key(orderId, productId), " +
   "foreign key(orderId) references orders(id), " +

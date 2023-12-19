@@ -92,7 +92,7 @@ export function addOrder(
   let testOrder = createOrder(newOrder);
   products.forEach((item) => {
     let delivered = item.delivered ? 1 : 0;
-    createOrderProductEntity(newOrder.id, item.id, item.amount, delivered);
+    createOrderProductEntity(newOrder.id, item.id, item.quantity, delivered);
   });
 
   return testOrder;

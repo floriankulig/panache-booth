@@ -1,5 +1,6 @@
 export interface IOrderProduct {
   orderId: string;
   productId: string;
-  amount: number;
+  quantity: number;
+  delivered: boolean;
 }
