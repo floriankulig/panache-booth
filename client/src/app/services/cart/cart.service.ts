@@ -84,9 +84,6 @@ export class CartService {
   }
 
   addToCart(product: Product, quantity = 1) {
-    if (quantity < 1) {
-      return;
-    }
     const existingItem = this.cartItems().find(
       (item) => item.id === product.id,
     );
@@ -101,6 +98,31 @@ export class CartService {
     }
     this.notificationService.addNotification({
       message: `${product.name} added to cart`,
+      duration: 1500,
+    });
+  }
+
+  setItemQuantity(item: CartProduct, quantity: number) {
+    if (quantity < 1) {
+      return;
+    }
+    this.cartItems.update((prev) => {
+      const existingItem = prev.find((i) => i.id === item.id);
+      if (existingItem) {
+        existingItem.quantity = quantity;
+        return [...prev.filter((i) => i.id !== existingItem.id), existingItem];
+      } else {
+        return [...prev, { id: item.id, quantity }];
+      }
+    });
+  }
+
+  removeItem(item: CartProduct) {
+    this.cartItems.update((prev) => prev.filter((i) => i.id !== item.id));
+    this.notificationService.addNotification({
+      icon: "trash",
+      type: "error",
+      message: `${item.name} removed from cart`,
       duration: 1500,
     });
   }

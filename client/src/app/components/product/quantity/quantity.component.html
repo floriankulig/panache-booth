@@ -1,0 +1,28 @@
+<div class="quantity-input">
+  <div
+    [class]="{ 'quantity-input__button': true, disabled: value <= min }"
+    (click)="decrement()"
+  >
+    <i-feather name="minus"></i-feather>
+  </div>
+  <div class="quantity-input__field">
+    <label class="quantity-input__field-label">{{ label || "Quantity" }}</label>
+    <input
+      class="quantity-input__input"
+      type="number"
+      positiveNumber
+      [value]="value"
+      (change)="onChange($event)"
+      (blur)="onChange($event)"
+    />
+  </div>
+  <div
+    [class]="{
+      'quantity-input__button': true,
+      disabled: !!max ? value >= max : false
+    }"
+    (click)="increment()"
+  >
+    <i-feather name="plus"></i-feather>
+  </div>
+</div>

@@ -30,6 +30,7 @@ import {
   Home,
   CreditCard,
   Truck,
+  Minus,
   Check,
   LogOut,
 } from "angular-feather/icons";
@@ -64,6 +65,7 @@ const icons = {
   CheckCircle,
   AlertCircle,
   Truck,
+  Minus,
   Check,
   AlertTriangle,
 };

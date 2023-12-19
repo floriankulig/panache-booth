@@ -287,6 +287,12 @@
       background-color: darken($error, 5);
     }
   }
+
+  &:disabled {
+    color: $textSecondary;
+    background: #c7c7c7;
+    pointer-events: none;
+  }
 }
 
 @mixin border-transition($height) {

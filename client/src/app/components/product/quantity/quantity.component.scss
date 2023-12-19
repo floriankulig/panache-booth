@@ -1,0 +1,68 @@
+@use "variables.scss" as *;
+
+.quantity-input {
+  display: flex;
+  align-items: flex-end;
+  gap: grid();
+
+  $inputHeight: grid(5);
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: grid(0.5);
+  }
+
+  &__input {
+    height: $inputHeight;
+    appearance: textfield;
+    padding-inline: grid(2);
+    background: #e7e7e7;
+    font-weight: 600;
+    border: none;
+    border-radius: grid(1);
+    max-width: 100px;
+    z-index: 2;
+    position: relative;
+    font-family: "Urbanist", sans-serif;
+  }
+
+  &__button {
+    cursor: pointer;
+    height: $inputHeight;
+    aspect-ratio: 1;
+    padding: 0;
+    border-radius: grid(1);
+    display: grid;
+    place-items: center;
+    background: #e7e7e7;
+    background: $primary;
+    color: $textPrimary;
+    border: none;
+    transition: all 0.15s ease;
+
+    &.disabled {
+      pointer-events: none;
+      scale: 0.7;
+      opacity: 0;
+      translate: -100%;
+    }
+
+    &:first-of-type:is(.disabled) {
+      translate: 100%;
+    }
+
+    i-feather {
+      width: grid(2);
+      height: grid(2);
+    }
+
+    &:hover {
+      background: darken($primary, 5);
+    }
+
+    &:active {
+      scale: 0.95;
+    }
+  }
+}

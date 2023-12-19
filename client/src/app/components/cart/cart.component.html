@@ -1,4 +1,93 @@
-<section class="list"></section>
+<section class="items">
+  @for (vendorItems of itemsByVendor(); track vendorItems.vendor.id) {
+  <div class="items__vendor">
+    <div class="items__vendor--header">
+      <div class="icon">
+        <i-feather name="user"></i-feather>
+      </div>
+      <div class="rows">
+        <div class="row">
+          <h4 class="items__vendor--name">
+            {{ vendorItems.vendor.userName }}
+          </h4>
+          <span class="items__vendor--total">
+            {{ vendorItems.total.toFixed(2) }}€
+          </span>
+        </div>
+        <div class="row items__vendor--shipping">
+          <span
+            >{{ vendorItems.items.length }}
+            {{ vendorItems.items.length > 1 ? "Items" : "Item" }}
+            @if (vendorItems.total < (vendorItems.vendor.shippingFreeFrom || 0)
+            ) {
+            <span>&bull;</span>
+            <span class="items__vendor--shippingFreeFrom">
+              {{ vendorItems.vendor.shippingFreeFrom?.toFixed(2) }}€ for free
+              shipping
+            </span>
+            }
+          </span>
+          <span class="items__vendor--shipping-amount">
+            <i-feather name="truck"></i-feather>
+            {{
+              vendorItems.vendor.shippingCost &&
+              vendorItems.total < (vendorItems.vendor.shippingFreeFrom || 0)
+                ? vendorItems.vendor.shippingCost.toFixed(2) + "€"
+                : "Free"
+            }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <ul class="items__vendor--items">
+      @for (item of vendorItems.items; track item.id) {
+      <li class="items__vendor--items-item">
+        <div>
+          <h5 class="items__vendor--items-item-name">
+            {{ item.name }}
+          </h5>
+          <span class="items__vendor--items-item-total">
+            @if (item.discount) {
+
+            <div class="items__vendor--items-item-total--discount">
+              -{{ (item.discount * 100).toFixed() }}%
+            </div>
+            }
+            {{ (discounted(item) * item.quantity).toFixed(2) }}€
+          </span>
+        </div>
+        <div></div>
+        <div>
+          <div>
+            <div class="chip-list"></div>
+            <p class="items__vendor--items-item-description">
+              {{ item.description }}
+            </p>
+          </div>
+          <div class="items__vendor--items-item-quantity">
+            <pb-quantity
+              [value]="item.quantity"
+              [min]="1"
+              [max]="item.inventory"
+              (valueChange)="onQuantityChange(item, $event)"
+            ></pb-quantity>
+          </div>
+          <div
+            class="items__vendor--items-item-delete"
+            (click)="onRemoveItem(item)"
+            role="button"
+            [ariaLabel]="'Remove Item' + item.name"
+          >
+            <i-feather name="trash-2"></i-feather>
+          </div>
+        </div>
+      </li>
+
+      }
+    </ul>
+  </div>
+  }
+</section>
 <section class="summary">
   <div class="summary__title">
     <h2 class="summary__title--label">Summary</h2>
@@ -88,7 +177,7 @@
         of {{ (cartTotal * 0.19).toFixed(2) }}€</span
       >
     </div>
-    <button [disabled]="itemsCount > 0">
+    <button [disabled]="itemsCount <= 0">
       <i-feather name="shopping-bag"></i-feather>
       Checkout
     </button>

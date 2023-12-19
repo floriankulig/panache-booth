@@ -3,11 +3,12 @@ import { CartService } from "../../services";
 import { CartProduct, User } from "../../../models";
 import { IconsModule } from "../../icons/icons.module";
 import { getDiscountedPrice } from "../../../helpers";
+import { QuantityComponent } from "../product/quantity/quantity.component";
 
 @Component({
   selector: "pb-cart",
   standalone: true,
-  imports: [IconsModule],
+  imports: [IconsModule, QuantityComponent],
   templateUrl: "./cart.component.html",
   styleUrl: "./cart.component.scss",
 })
@@ -86,6 +87,15 @@ export class CartComponent {
   onClearCart() {
     this.cartService.clearCart();
   }
+
+  onRemoveItem(product: CartProduct) {
+    this.cartService.removeItem(product);
+  }
+
+  onQuantityChange(product: CartProduct, quantity: number) {
+    this.cartService.setItemQuantity(product, quantity);
+  }
+
   floor(num: number) {
     return Math.floor(num);
   }
