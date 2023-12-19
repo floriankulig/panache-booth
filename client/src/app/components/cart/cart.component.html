@@ -18,8 +18,9 @@
           <span
             >{{ vendorItems.items.length }}
             {{ vendorItems.items.length > 1 ? "Items" : "Item" }}
-            @if (vendorHasFreeShipping(vendorItems.vendor) && vendorItems.total
-            < (vendorItems.vendor.shippingFreeFrom)) {
+            @if ((vendorItems.vendor.shippingCost || 0) > 0 &&
+            vendorHasFreeShipping(vendorItems.vendor) && vendorItems.total <
+            (vendorItems.vendor.shippingFreeFrom)) {
             <span>&bull;</span>
             <span class="items__vendor--shippingFreeFrom">
               {{ vendorItems.vendor.shippingFreeFrom.toFixed(2) }}€ for free
@@ -145,7 +146,8 @@
           <i-feather name="user"> </i-feather>
           {{ entry.vendor.userName }}</span
         >
-        @if(vendorHasFreeShipping(entry.vendor) && entry.total >
+        @if((entry.vendor.shippingCost || 0) > 0 &&
+        vendorHasFreeShipping(entry.vendor) && entry.total >
         (entry.vendor.shippingFreeFrom)){
         <span class="summary__list-item--value">
           <span class="wrong"

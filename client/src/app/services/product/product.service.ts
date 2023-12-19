@@ -1,15 +1,20 @@
-import { Injectable, WritableSignal, signal } from "@angular/core";
+import { Injectable, WritableSignal, effect, signal } from "@angular/core";
 import axios, { AxiosError } from "axios";
 import { APIProduct, API_URL, FormProduct, Product } from "../../../models";
 import { categoryById } from "../../../helpers";
+import { AuthService } from "../auth/auth.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class ProductService {
   products: WritableSignal<Product[]> = signal([]);
-  constructor() {
+  constructor(private authService: AuthService) {
     this.getProducts();
+    effect(() => {
+      const user = this.authService.user();
+      this.getProducts();
+    });
   }
 
   async createProduct(product: FormProduct, vendorId: string) {
@@ -19,6 +24,7 @@ export class ProductService {
         vendorId,
       });
       this.products.update((products) => [...products, res.data]);
+      this.getProducts();
       return this.synthesize<Product>(res.data);
     } catch (error) {
       throw error as AxiosError;
@@ -32,7 +38,7 @@ export class ProductService {
       }`;
       const res = await axios.get<APIProduct[]>(url);
       const products = this.synthesize<Product[]>(res.data);
-      this.products.set(products);
+      if (!vendorId) this.products.set(products);
       return products;
     } catch (error) {
       throw error as AxiosError;
@@ -48,6 +54,7 @@ export class ProductService {
         ...res.data,
         category: categoryById(res.data.category),
       } as Product;
+      this.getProducts();
       return productData;
     } catch (error) {
       throw error as AxiosError;
@@ -60,6 +67,7 @@ export class ProductService {
       this.products.update((products) =>
         products.filter((product) => product.id !== id),
       );
+      this.getProducts();
     } catch (error) {
       throw error as AxiosError;
     }

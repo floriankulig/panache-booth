@@ -21,7 +21,7 @@ export class CartComponent {
         uniqueVendors.push(product.vendor);
       }
     });
-    return uniqueVendors;
+    return uniqueVendors.sort((a, b) => a.userName.localeCompare(b.userName));
   });
   itemsByVendor = computed(() => {
     return this.vendors().map((vendor) => {
