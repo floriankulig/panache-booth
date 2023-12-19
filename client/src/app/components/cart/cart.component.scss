@@ -145,6 +145,7 @@
           &-actions {
             flex: 1;
             display: flex;
+            max-width: 400px;
             align-items: flex-end;
             justify-content: space-between;
             gap: grid(1.5);
@@ -186,6 +187,7 @@
   .summary {
     position: relative;
     width: clamp(280px, 30%, 300px);
+    height: fit-content;
     & > * {
       padding: grid(3);
     }
