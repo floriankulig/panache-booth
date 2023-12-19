@@ -29,8 +29,7 @@ export function createOrder(order: IOrder) {
     order.createdAt,
     order.updatedAt,
     order.userId,
-    order.price,
-    order.delivered
+    order.price
   );
   return getOrderById(order.id);
 }
@@ -59,7 +58,7 @@ export function getAllOrdersByUserId(id: string) {
 
 export function getAllOrdersWithVendorProducts(vendorId: string) {
   let orders = database.prepare(
-    "select orders.id, orders.price, orders.delivered, orders.createdAt, orders.updatedAt " +
+    "select orders.id, orders.price, orders.createdAt, orders.updatedAt " +
     "from orders join orderProduct on orders.id = orderProduct.orderId join product on orderProduct.productId = product.id " +
     "where product.vendorId = ?;"
   ).all(vendorId);

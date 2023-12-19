@@ -42,7 +42,6 @@ const createOrderTable =
   "id varchar(36) not null primary key, " +
   "userId varchar(36), " +
   "price decimal(10,2), " +
-  "delivered integer, " +
   "createdAt varchar(255) not null, " +
   "updatedAt varchar(255) not null);";
 

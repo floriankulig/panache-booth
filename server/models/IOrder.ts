@@ -6,5 +6,4 @@ export interface IOrder {
   updatedAt: string;
   userId: string;
   price: number;
-  delivered: boolean;
 }
