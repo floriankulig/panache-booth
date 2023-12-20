@@ -25,7 +25,7 @@ const createProductTable =
   "create table if not exists product (" +
   "id varchar(36) not null primary key, " +
   "name varchar(255) not null, " +
-  "description varchar(200) not null, " +
+  "description varchar(300) not null, " +
   "category varchar(36), " +
   "discount decimal(3,2), " +
   "price decimal(10,2), " +

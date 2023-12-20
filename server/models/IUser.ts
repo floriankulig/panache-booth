@@ -1,17 +1,17 @@
 export interface IUser {
   userId: string;
-  userName: string;
-  email: string;
-  password: string;
-  street: string;
-  houseNumber: string;
-  postcode: string;
-  isVendor: boolean;
-  city: string;
-  iban: string;
-  bic: string;
-  shippingCost: number;
-  shippingFreeFrom: number;
+  userName: string | undefined;
+  email: string | undefined;
+  password: string | undefined;
+  street: string | undefined;
+  houseNumber: string | undefined;
+  postcode: string | undefined;
+  isVendor: boolean | undefined;
+  city: string | undefined;
+  iban?: string;
+  bic?: string;
+  shippingCost?: number;
+  shippingFreeFrom?: number;
   createdAt: string;
   updatedAt: string;
 }

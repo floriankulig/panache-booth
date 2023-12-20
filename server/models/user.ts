@@ -50,14 +50,9 @@ export function getAllUsers() {
 }
 
 export function createUser(user: IUser) {
-  let isVendorNumeric = null;
-  if (user.isVendor) {
-    isVendorNumeric = 1;
-  } else {
-    isVendorNumeric = 0;
-  }
+  let isVendorNumeric = user.isVendor ? 1 : 0;
 
-  const stmt = database.prepare(
+  const sql = database.prepare(
     "insert into user " +
       "(id, userName, email, password, isVendor, postcode, city, street, houseNumber, " +
       "iban, bic, shippingCost, shippingFreeFrom, " +
@@ -65,7 +60,7 @@ export function createUser(user: IUser) {
       "values " +
       "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
   );
-  const info = stmt.run(
+  const info = sql.run(
     user.userId,
     user.userName,
     user.email,
@@ -85,23 +80,25 @@ export function createUser(user: IUser) {
   return getUserById(user.userId);
 }
 
-export function updateUserById(userChanges: Map<string, string>, id: string) {
+export function updateUserById(id: string, user: Omit<IUser, "userId" | "createdAt">) {
   let sqlString = "update user set";
 
-  userChanges.forEach((value: string, key: string) => {
-    if (key === "isVendor") {
-      if (value === "true") {
-        sqlString += ` ${key} = '1',`;
+  type test<T> = [keyof T, T[keyof T]];
+  for(const [key, value] of Object.entries(user) as test<IUser>[]) {
+    if (value !== undefined) {
+      if (key === "isVendor") {
+        if (value === "true") {
+          sqlString += ` ${key} = '1',`;
+        } else {
+          sqlString += ` ${key} = '0',`;
+        }
       } else {
-        sqlString += ` ${key} = '0',`;
+        sqlString += ` ${key} = \'${value}\',`;
       }
-    } else {
-      sqlString += ` ${key} = \'${value}\',`;
     }
-  });
-
-  const currentTimestamp = new Date().toISOString();
-  sqlString += `updatedAt = '${currentTimestamp}' where id = '${id}';`;
+  }
+  sqlString = sqlString.slice(0, -1);
+  sqlString += ` where id = '${id}';`;
   database.prepare(sqlString).run();
   return getUserById(id);
 }
