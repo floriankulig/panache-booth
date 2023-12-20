@@ -21,10 +21,10 @@ export const buildUserFromFormValues = (
     ...address,
     isVendor: formType === "vendor",
     ...paymentInformation,
-    shippingCost: shippingCost ? shippingCost.toString() : "0",
+    shippingCost: shippingCost ? Number(shippingCost) : 0,
     shippingFreeFrom: shippingFreeFrom.toString().trim()
-      ? shippingFreeFrom.toString()
-      : "-1",
+      ? Number(shippingFreeFrom)
+      : -1,
   };
 
   console.log(user);

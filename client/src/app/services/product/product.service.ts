@@ -19,13 +19,13 @@ export class ProductService {
 
   async createProduct(product: FormProduct, vendorId: string) {
     try {
-      const res = await axios.post(`${API_URL}/product`, {
+      const res = await axios.post<Product>(`${API_URL}/product`, {
         ...product,
         vendorId,
       });
       this.products.update((products) => [...products, res.data]);
       this.getProducts();
-      return this.synthesize<Product>(res.data);
+      return res.data;
     } catch (error) {
       throw error as AxiosError;
     }
@@ -37,7 +37,7 @@ export class ProductService {
         vendorId ? `?vendorId=${vendorId}` : ""
       }`;
       const res = await axios.get<APIProduct[]>(url);
-      const products = this.synthesize<Product[]>(res.data);
+      const products = res.data;
       if (!vendorId) this.products.set(products);
       return products;
     } catch (error) {
@@ -50,10 +50,7 @@ export class ProductService {
       const res = await axios.put(`${API_URL}/product/${product.id}`, {
         ...product,
       });
-      const productData = {
-        ...res.data,
-        category: categoryById(res.data.category),
-      } as Product;
+      const productData = res.data as Product;
       this.getProducts();
       return productData;
     } catch (error) {
@@ -70,20 +67,6 @@ export class ProductService {
       this.getProducts();
     } catch (error) {
       throw error as AxiosError;
-    }
-  }
-
-  private synthesize<T>(data: APIProduct | APIProduct[]) {
-    if (Array.isArray(data)) {
-      return data.map((product) => ({
-        ...product,
-        category: categoryById(product.category),
-      })) as T;
-    } else {
-      return {
-        ...data,
-        category: categoryById(data.category),
-      } as T;
     }
   }
 }

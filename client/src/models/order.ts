@@ -1,11 +1,15 @@
-import { Product } from "./product";
+import { CartProduct, Product } from "./product";
 
 interface Order {
   createdAt: string;
   updatedAt: string;
-  amount: number;
+  userId: string;
+  price: number;
   id: string;
-  products: Product[];
+  products: CartProduct[];
 }
 
+type CartOrder = Omit<Order, "id" | "createdAt" | "updatedAt">;
+
+export type { CartOrder };
 export { Order };

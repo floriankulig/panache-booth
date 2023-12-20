@@ -36,14 +36,13 @@ export class WarehouseComponent {
       this.ownedProducts().map((product) => ({
         ...product,
         vendorName: product.vendor.userName,
-        categoryName: product.category.displayValue,
       })),
       this.searchFilter(),
       {
-        include: ["name", "vendorName", "categoryName", "description", "price"],
+        include: ["name", "vendorName", "category", "description", "price"],
       },
     ).map((prod) => {
-      const { vendorName, categoryName, ...product } = prod;
+      const { vendorName, ...product } = prod;
       return product;
     }) as Product[];
   });

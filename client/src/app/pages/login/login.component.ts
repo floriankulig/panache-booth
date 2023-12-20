@@ -45,7 +45,9 @@ export class LoginComponent {
   goBack() {
     if (this.activatedRoute.snapshot.queryParams["redirect"]) {
       this.router.navigate([
-        this.activatedRoute.snapshot.queryParams["redirect"],
+        this.router.parseUrl(
+          this.activatedRoute.snapshot.queryParams["redirect"],
+        ),
       ]);
     } else {
       if (this.router.navigated) {

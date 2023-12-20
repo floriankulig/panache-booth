@@ -1,9 +1,15 @@
 import { Component, Signal, computed, effect } from "@angular/core";
-import { CartService } from "../../services";
+import {
+  AuthService,
+  CartService,
+  NotificationService,
+  OrderService,
+} from "../../services";
 import { CartProduct, User } from "../../../models";
 import { IconsModule } from "../../icons/icons.module";
 import { getDiscountedPrice } from "../../../helpers";
 import { QuantityComponent } from "../product/quantity/quantity.component";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: "pb-cart",
@@ -14,6 +20,8 @@ import { QuantityComponent } from "../product/quantity/quantity.component";
 })
 export class CartComponent {
   cartProducts = computed(() => this.cartService.cartProducts());
+  submitting = false;
+  showPayments = false;
   vendors: Signal<User[]> = computed(() => {
     const uniqueVendors: User[] = [];
     this.cartProducts().forEach((product) => {
@@ -36,7 +44,14 @@ export class CartComponent {
     });
   });
 
-  constructor(private cartService: CartService) {
+  constructor(
+    private cartService: CartService,
+    private orderService: OrderService,
+    private notificiationService: NotificationService,
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {
     effect(() => {
       console.log(this.vendors());
       console.log(this.itemsByVendor());
@@ -89,6 +104,7 @@ export class CartComponent {
 
   onClearCart() {
     this.cartService.clearCart();
+    this.cartService.setCartOpen(false);
   }
 
   onRemoveItem(product: CartProduct) {
@@ -100,7 +116,7 @@ export class CartComponent {
   }
 
   floor(num: number) {
-    return Math.floor(num);
+    return Math.round(num);
   }
   discounted(product: CartProduct) {
     return getDiscountedPrice(product);
@@ -114,5 +130,33 @@ export class CartComponent {
     return this.cartProducts().sort((a, b) => {
       return a.discount - b.discount;
     });
+  }
+
+  get buttonPrimaryText() {
+    return this.authService.user() ? "Checkout" : "Login to Checkout";
+  }
+
+  async onCheckout() {
+    if (this.submitting || this.cartProducts().length <= 0) {
+      return;
+    }
+    const hasUser = await this.authService.isLoggedIn();
+    if (!hasUser) {
+      console.log(this.router.url);
+      this.router.navigate(["/login"], {
+        queryParams: { redirect: `${this.router.url}` },
+      });
+      return;
+    }
+    this.submitting = true;
+    try {
+      await this.orderService.createOrder({
+        userId: this.authService.user()!.id,
+        price: this.cartTotal,
+        products: this.cartProducts(),
+      });
+      this.showPayments = true;
+    } catch (error) {}
+    this.submitting = false;
   }
 }

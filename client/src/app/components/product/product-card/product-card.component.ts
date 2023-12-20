@@ -21,7 +21,7 @@ import { ClickOutsideDirective } from "../../../directives/click-outside.directi
 import { ModalComponent } from "../../modal/modal.component";
 import { DeleteConfirmComponent } from "../../delete-confirm/delete-confirm.component";
 import { AddProductComponent } from "../add-product/add-product.component";
-import { getDiscountedPrice } from "../../../../helpers";
+import { categoryById, getDiscountedPrice } from "../../../../helpers";
 import { SwitchComponent } from "../../switch/switch.component";
 
 @Component({
@@ -76,7 +76,6 @@ export class ProductCardComponent {
     try {
       await this.productService.updateProduct({
         ...this.product,
-        category: this.product.category.id,
         isVisible: !this.product.isVisible,
       });
       // this.notificationService.addNotification({
@@ -104,6 +103,10 @@ export class ProductCardComponent {
     ) {
       return;
     }
+  }
+
+  get category() {
+    return categoryById(this.product.category);
   }
 
   onClickCTA() {
