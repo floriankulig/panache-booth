@@ -26,9 +26,9 @@ import {
 import { v4 as uuidv4 } from "uuid";
 
 export function userById(reqParams: any) {
-  let userId = reqParams.userId
-  let user = getUserById(userId)
-  if (user !== undefined){
+  let userId = reqParams.userId;
+  let user = getUserById(userId);
+  if (user !== undefined) {
     return user;
   } else {
     throw new UserNotExistingError();
@@ -51,26 +51,42 @@ export function addUser(reqBody: any) {
   const currentTimestamp = new Date().toISOString();
   let user: IUser = {
     userId: uuidv4(),
-    userName: reqBody.userName ? validateUserNameFormat(reqBody.userName) : (() => {throw new UserNameFormatError();})(),
-    email: reqBody.email ? validateEmailFormat(reqBody.email) : (() => {throw new EmailFormatError();})(),
-    street: reqBody.street ? validateStreetFormat(reqBody.street) : (() => {throw new StreetFormatError();})(),
-    houseNumber: reqBody.houseNumber ? validateHouseNumberFormat(reqBody.houseNumber) : (() => {throw new HouseNumberFormatError();})(),
-    postcode: reqBody.postcode ? validatePostcodeFormat(reqBody.postcode) : (() => {throw new PostcodeFormatError();})(),
-    city: reqBody.city ? validateCityFormat(reqBody.city) : (() => {throw new CityFormatError();})(),
-    password: reqBody.password ? validatePasswordFormat(reqBody.password) : (() => {throw new PasswordFormatError();})(),
-    isVendor: reqBody.isVendor.toString() ? validateIsVendorFormat(reqBody.isVendor) : (() => {throw new IsVendorFormatError();})(),
+    userName: reqBody.userName ? validateUserNameFormat(reqBody.userName) : (() => {
+      throw new UserNameFormatError();
+    })(),
+    email: reqBody.email ? validateEmailFormat(reqBody.email) : (() => {
+      throw new EmailFormatError();
+    })(),
+    street: reqBody.street ? validateStreetFormat(reqBody.street) : (() => {
+      throw new StreetFormatError();
+    })(),
+    houseNumber: reqBody.houseNumber ? validateHouseNumberFormat(reqBody.houseNumber) : (() => {
+      throw new HouseNumberFormatError();
+    })(),
+    postcode: reqBody.postcode ? validatePostcodeFormat(reqBody.postcode) : (() => {
+      throw new PostcodeFormatError();
+    })(),
+    city: reqBody.city ? validateCityFormat(reqBody.city) : (() => {
+      throw new CityFormatError();
+    })(),
+    password: reqBody.password ? validatePasswordFormat(reqBody.password) : (() => {
+      throw new PasswordFormatError();
+    })(),
+    isVendor: reqBody.isVendor.toString() ? validateIsVendorFormat(reqBody.isVendor) : (() => {
+      throw new IsVendorFormatError();
+    })(),
     iban: reqBody.isVendor ? validateIbanFormat(reqBody.iban) : undefined,
     bic: reqBody.isVendor ? validateBicFormat(reqBody.bic) : undefined,
-    shippingCost: reqBody.isVendor ? validateShippingCostFormat(reqBody.shippingCost) :  undefined,
+    shippingCost: reqBody.isVendor ? validateShippingCostFormat(reqBody.shippingCost) : undefined,
     shippingFreeFrom: reqBody.isVendor ? validateShippingFreeFromFormat(reqBody.shippingFreeFrom) : undefined,
     createdAt: currentTimestamp,
-    updatedAt: currentTimestamp
+    updatedAt: currentTimestamp,
   };
 
   return createUser(user);
 }
 
-export function updateUser(reqParams:any, reqBody: any) {
+export function updateUser(reqParams: any, reqBody: any) {
   let userId = reqParams.userId;
   if (!getUserById(userId)) {
     throw new UserNotExistingError();
@@ -79,9 +95,9 @@ export function updateUser(reqParams:any, reqBody: any) {
   const currentTimestamp = new Date().toISOString();
   let user: Omit<IUser, "userId" | "createdAt"> = {
     userName: reqBody.userName ? validateUserNameFormat(reqBody.userName) : undefined,
-    email: reqBody.email ? validateEmailFormat(reqBody.email) :  undefined,
-    street: reqBody.street ? validateStreetFormat(reqBody.street) :  undefined,
-    houseNumber: reqBody.houseNumber ? validateHouseNumberFormat(reqBody.houseNumber) :  undefined,
+    email: reqBody.email ? validateEmailFormat(reqBody.email) : undefined,
+    street: reqBody.street ? validateStreetFormat(reqBody.street) : undefined,
+    houseNumber: reqBody.houseNumber ? validateHouseNumberFormat(reqBody.houseNumber) : undefined,
     postcode: reqBody.postcode ? validatePostcodeFormat(reqBody.postcode) : undefined,
     city: reqBody.city ? validateCityFormat(reqBody.city) : undefined,
     password: reqBody.password ? validatePasswordFormat(reqBody.password) : undefined,
@@ -90,14 +106,14 @@ export function updateUser(reqParams:any, reqBody: any) {
     bic: reqBody.isVendor ? validateBicFormat(reqBody.bic) : undefined,
     shippingCost: reqBody.isVendor ? validateShippingCostFormat(reqBody.shippingCost) : undefined,
     shippingFreeFrom: reqBody.isVendor ? validateShippingFreeFromFormat(reqBody.shippingFreeFrom) : undefined,
-    updatedAt: currentTimestamp
-  }
+    updatedAt: currentTimestamp,
+  };
   return updateUserById(userId, user);
 }
 
 export function deleteUser(reqParams: any) {
-  let userId = reqParams.userId
-  if (userById(userId) !== undefined){
+  let userId = reqParams.userId;
+  if (userById(userId) !== undefined) {
     return deleteUserById(userId);
   } else {
     throw new UserNotExistingError();
@@ -115,14 +131,14 @@ export function loginUser(reqBody: any) {
 }
 
 function validateShippingCostFormat(shippingCost: any): number {
-  if (typeof shippingCost !== 'number') {
+  if (typeof shippingCost !== "number") {
     throw new ShippingCostFormatError();
   }
   return shippingCost;
 }
 
 function validateShippingFreeFromFormat(shippingFreeForm: any): number {
-  if (typeof shippingFreeForm !== 'number') {
+  if (typeof shippingFreeForm !== "number") {
     throw new ShippingFreeFromFormatError() ;
   }
   return shippingFreeForm;
@@ -153,7 +169,7 @@ function validateEmailFormat(email: any): string {
   if (email === undefined || email.length > 255) {
     throw new EmailFormatError();
   } else {
-    if (!checkEmailFormat(email)){
+    if (!checkEmailFormat(email)) {
       throw new EmailFormatError();
     }
   }
@@ -187,7 +203,7 @@ function validatePostcodeFormat(postcode: any): string {
 }
 
 function validateIsVendorFormat(isVendor: any): boolean {
-  if (typeof isVendor !== 'boolean') {
+  if (typeof isVendor !== "boolean") {
     throw new IsVendorFormatError();
   }
   return isVendor;

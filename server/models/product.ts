@@ -1,67 +1,44 @@
 import { database } from "./databases";
 import { IProduct } from "./IProduct";
-import { v4 as uuidv4 } from "uuid";
 
 export function getArticleById(id: string) {
-  try {
-    let product = database
-      .prepare("select * from product where id = ?")
-      .get(id);
-    if (product != undefined) {
-      // @ts-ignore
-      product["isVisible"] = product["isVisible"] !== 0;
-      return product;
-    } else {
-      return undefined;
-    }
-  } catch (e: unknown) {
-    return e;
+  let product: any = database
+    .prepare("select * from product where id = ?")
+    .get(id);
+  if (product != undefined) {
+    product["isVisible"] = product["isVisible"] !== 0;
+    return product;
   }
 }
 
 export function getAllArticles() {
   let products = database.prepare("select * from product;").all();
-
-  products.forEach((key) => {
-    // @ts-ignore
+  products.forEach((key: any) => {
     key["isVisible"] = key["isVisible"] !== 0;
   });
   return products;
 }
 
 export function getAllVendorProducts(id: string) {
-  let products = database.prepare("select * from product where vendorId = ?").all(id)
-  console.log(products)
-  products.forEach((key) => {
-    // @ts-ignore
+  let products = database.prepare("select * from product where vendorId = ?").all(id);
+  products.forEach((key: any) => {
     key["isVisible"] = key["isVisible"] !== 0;
   });
-
   return products;
 }
 
 export function createArticle(product: IProduct) {
-  product.id = uuidv4();
-  const currentTimestamp = new Date().toISOString();
-  product.createdAt = currentTimestamp;
-  product.updatedAt = currentTimestamp;
+  let isVisibleNumeric = product.isVisible ? 1 : 0;
 
-  let isArticleVisble = null;
-  if (product.isVisible) {
-    isArticleVisble = 1;
-  } else {
-    isArticleVisble = 0;
-  }
-
-  const stmt = database.prepare(
+  const sql = database.prepare(
     "insert into product " +
-      "(id, name, description, category, discount, price, vendorId, purchases, " +
-      "inventory, isVisible, createdAt, updatedAt) " +
-      "values " +
-      "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    "(id, name, description, category, discount, price, vendorId, purchases, " +
+    "inventory, isVisible, createdAt, updatedAt) " +
+    "values " +
+    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
   );
 
-  const info = stmt.run(
+  const info = sql.run(
     product.id,
     product.name,
     product.description,
@@ -71,34 +48,37 @@ export function createArticle(product: IProduct) {
     product.vendorId,
     product.purchases,
     product.inventory,
-    isArticleVisble,
+    isVisibleNumeric,
     product.createdAt,
     product.updatedAt,
   );
+  //return info;
   return getArticleById(product.id);
 }
 
 export function updateArticleById(
-  articleChanges: Map<string, string>,
+  product: Omit<IProduct, "id" | "createdAt" | "purchases">,
   id: string,
 ) {
-  console.log(articleChanges)
   let sqlString = "update product set";
 
-  articleChanges.forEach((value: string, key: string) => {
-    if (key === "isVisible") {
-      if (value === "true") {
-        sqlString += ` ${key} = '1',`;
+  type test<T> = [keyof T, T[keyof T]];
+  for (const [key, value] of Object.entries(product) as test<IProduct>[]) {
+    if (value !== undefined) {
+      if (key === "isVisible") {
+        if (value === "true") {
+          sqlString += ` ${key} = '1',`;
+        } else {
+          sqlString += ` ${key} = '0',`;
+        }
       } else {
-        sqlString += ` ${key} = '0',`;
+        sqlString += ` ${key} = \'${value}\',`;
       }
-    } else {
-      sqlString += ` ${key} = \'${value}\',`;
     }
-  });
+  }
 
-  const currentTimestamp = new Date().toISOString();
-  sqlString += ` updatedAt = '${currentTimestamp}' where id = '${id}';`;
+  sqlString = sqlString.slice(0, -1);
+  sqlString += ` where id = '${id}';`;
   database.prepare(sqlString).run();
   return getArticleById(id);
 }

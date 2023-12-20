@@ -3,14 +3,13 @@ import { IUser } from "./IUser";
 
 export function getUserById(id: string) {
   try {
-    let user = database
+    let user: any = database
       .prepare(
         "select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
-          "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where id = ?"
+        "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where id = ?",
       )
       .get(id);
     if (user != undefined) {
-      // @ts-ignore
       user["isVendor"] = user["isVendor"] !== 0;
       return user;
     } else {
@@ -25,7 +24,7 @@ export function getUserByEmail(email: string) {
   try {
     let user = database
       .prepare(
-        "select * from user where email = ?"
+        "select * from user where email = ?",
       )
       .get(email);
     if (user != undefined) {
@@ -44,7 +43,7 @@ export function getAllUsers() {
   return database
     .prepare(
       "select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
-      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user"
+      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user",
     )
     .all();
 }
@@ -54,11 +53,11 @@ export function createUser(user: IUser) {
 
   const sql = database.prepare(
     "insert into user " +
-      "(id, userName, email, password, isVendor, postcode, city, street, houseNumber, " +
-      "iban, bic, shippingCost, shippingFreeFrom, " +
-      "createdAt, updatedAt) " +
-      "values " +
-      "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    "(id, userName, email, password, isVendor, postcode, city, street, houseNumber, " +
+    "iban, bic, shippingCost, shippingFreeFrom, " +
+    "createdAt, updatedAt) " +
+    "values " +
+    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
   );
   const info = sql.run(
     user.userId,
@@ -75,7 +74,7 @@ export function createUser(user: IUser) {
     user.shippingCost,
     user.shippingFreeFrom,
     user.createdAt,
-    user.updatedAt
+    user.updatedAt,
   );
   return getUserById(user.userId);
 }
@@ -84,7 +83,7 @@ export function updateUserById(id: string, user: Omit<IUser, "userId" | "created
   let sqlString = "update user set";
 
   type test<T> = [keyof T, T[keyof T]];
-  for(const [key, value] of Object.entries(user) as test<IUser>[]) {
+  for (const [key, value] of Object.entries(user) as test<IUser>[]) {
     if (value !== undefined) {
       if (key === "isVendor") {
         if (value === "true") {

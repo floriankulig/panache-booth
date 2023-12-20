@@ -8,19 +8,18 @@ import {
   deleteArticle,
   updateArticle,
 } from "../services/product";
-import { ProductNotExisting } from "../util/customProductErrors";
+import { ProductError } from "../util/customProductErrors";
+import { SqliteError } from "better-sqlite3";
+
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const id = req.query["vendorId"];
     if (req.query.vendorId) {
-      // @ts-ignore
-      console.log(id);
-      // @ts-ignore
-      res.status(200).json(await allVendorProducts(id));
+      res.status(200).json(allVendorProducts(req.query));
     } else {
-      res.status(200).json(await allArticles());
+      console.log("dd");
+      res.status(200).json(allArticles());
     }
   } catch (error) {
     res.status(500).send("Internal server error!");
@@ -29,69 +28,38 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const article: IProduct = {
-      name: req.body.name,
-      description: req.body.description,
-      category: req.body.category,
-      discount: req.body.discount,
-      price: req.body.price,
-      vendorId: req.body.vendorId,
-      purchases: 0,
-      inventory: req.body.inventory,
-      isVisible: req.body.isVisible,
-    };
-    res.status(200).json(await addArticle(article));
+    res.status(200).json(await addArticle(req.body));
   } catch (error) {
-    res.status(500).send("Internal server error!");
+    if (error instanceof ProductError) {
+      res.status(400).send(error.message);
+    } else if (error instanceof SqliteError) {
+      res.status(400).send("Database error!");
+    } else {
+      res.status(500).send("Internal server error!");
+    }
   }
 });
 
 router.put("/:productId", async (req, res) => {
   try {
-    const articleId = req.params.productId;
-    const article = await articleById(articleId);
-    if (article != undefined) {
-      const articleMap = new Map<string, string>();
-      console.log(req.body)
-      for (let key in req.body) {
-        if (req.body.hasOwnProperty(key)) {
-          if (key === "isVisible") {
-            let temp = req.body[key];
-            articleMap.set(key, temp.toString());
-          } else if (key === "vendor") {
-            articleMap.set("vendorId", req.body.vendor.id);
-          } else {
-            console.log(key)
-            articleMap.set(key, req.body[key]);
-          }
-        }
-      }
-      console.log(articleMap)
-      res.status(200).json(await updateArticle(articleMap, articleId));
-    } else {
-      throw new ProductNotExisting();
-    }
+    res.status(200).json(await updateArticle(req.params, req.body));
   } catch (error) {
-    if (error instanceof ProductNotExisting) {
+    if (error instanceof ProductError) {
       res.status(400).send(error.message);
+    } else if (error instanceof SqliteError) {
+      res.status(400).send("Database error!");
     } else {
-      console.log(error)
       res.status(500).send("Internal server error!");
     }
   }
 });
 
 router.delete("/:productId", async (req, res) => {
-  const articleId = req.params.productId;
   try {
-    if (articleById(articleId) !== undefined) {
-      const user = await deleteArticle(articleId);
-      res.sendStatus(200);
-    } else {
-      throw new ProductNotExisting();
-    }
+    deleteArticle(req.params);
+    res.sendStatus(200);
   } catch (error) {
-    if (error instanceof ProductNotExisting) {
+    if (error instanceof ProductError) {
       res.status(400).send(error.message);
     } else {
       res.status(500).send("Internal server error! Product was not deleted!");
@@ -100,18 +68,12 @@ router.delete("/:productId", async (req, res) => {
 });
 
 router.get("/:productId", async (req, res) => {
-  const articleId = req.params.productId;
   try {
-    if (articleById(articleId) !== undefined) {
-      res.status(200).json(await articleById(articleId));
-    } else {
-      throw new ProductNotExisting();
-    }
+    res.status(200).json(await articleById(req.params));
   } catch (error) {
-    if (error instanceof ProductNotExisting) {
+    if (error instanceof ProductError) {
       res.status(400).send(error.message);
     } else {
-      console.log(error)
       res.status(500).send("Internal server error!");
     }
   }

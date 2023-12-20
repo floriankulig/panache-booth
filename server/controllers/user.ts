@@ -44,7 +44,7 @@ router.post("/", async (req, res) => {
     res.status(200).json(await addUser(req.body));
   } catch (error: unknown) {
     if (error instanceof UserError) {
-      res.status(401).send(error.message);
+      res.status(400).send(error.message);
     } else if (error instanceof SqliteError && error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
       res.status(400).send("Email already existing!");
     } else if (error instanceof SqliteError) {
