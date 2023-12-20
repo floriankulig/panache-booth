@@ -32,8 +32,6 @@ export class QuantityComponent {
 
   onChange(event: Event) {
     let newValue = (event.target as HTMLInputElement).valueAsNumber;
-    console.log("blur");
-    console.log(newValue);
     if (!newValue || isNaN(newValue)) {
       newValue = this.min;
     }

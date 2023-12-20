@@ -15,6 +15,5 @@ export const buildProductFromFormValues = (
     isVisible,
   };
 
-  console.log(product);
   return product;
 };

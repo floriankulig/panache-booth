@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Signal, computed, effect } from "@angular/core";
+import { Component, OnDestroy, Signal, computed } from "@angular/core";
 import {
   AuthService,
   CartService,
@@ -58,12 +58,7 @@ export class CartComponent implements OnDestroy {
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
-  ) {
-    effect(() => {
-      console.log(this.vendors());
-      console.log(this.itemsByVendor());
-    });
-  }
+  ) {}
 
   ngOnDestroy() {
     if (this.showPayments) this.cartService.clearCart();
@@ -153,7 +148,6 @@ export class CartComponent implements OnDestroy {
     }
     const hasUser = await this.authService.isLoggedIn();
     if (!hasUser) {
-      console.log(this.router.url);
       this.router.navigate(["/login"], {
         queryParams: { redirect: `${this.router.url}` },
       });
