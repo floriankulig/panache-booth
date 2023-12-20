@@ -8,7 +8,7 @@ import {
 } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { filter, map } from "rxjs";
-import { CartProduct, Product } from "../../../models";
+import { CartOrder, CartProduct, Product } from "../../../models";
 import { ProductService } from "../product/product.service";
 import { NotificationService } from "../notification/notification.service";
 

@@ -1,3 +1,5 @@
+@if (!showPayments) {
+
 <section class="items">
   @for (vendorItems of itemsByVendor(); track vendorItems.vendor.id) {
   <div class="items__vendor">
@@ -182,9 +184,12 @@
         of {{ (cartTotal * 0.19).toFixed(2) }}€</span
       >
     </div>
-    <button [disabled]="itemsCount <= 0">
+    <button [disabled]="itemsCount <= 0" (click)="onCheckout()">
+      @if (!submitting) {
       <i-feather name="shopping-bag"></i-feather>
-      Checkout
+      }
+      {{ submitting ? "loading..." : buttonPrimaryText }}
     </button>
   </div>
 </section>
+} @else { make payments }

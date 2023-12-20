@@ -11,7 +11,7 @@ interface Product {
   name: string;
   price: number;
   description: string;
-  category: Category;
+  category: CategoryID;
   purchases: number;
   inventory?: number;
   isVisible: boolean;

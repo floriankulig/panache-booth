@@ -8,7 +8,8 @@ import {
   getAllOrdersByUserId,
   getAllOrdersWithVendorProducts,
   getOrderById,
-  getProductsOfOrder, getProductsOfOrderVendor,
+  getProductsOfOrder,
+  getProductsOfOrderVendor,
   updateOrderById,
 } from "../models/order";
 import { getUserById } from "../models/user";
@@ -29,13 +30,13 @@ export function allUserOrdersById(id: string) {
       let vendorInfo: any = getUserById(product.vendorId);
       const combinedProduct = {
         ...product,
-        vendor: vendorInfo
-      }
+        vendor: vendorInfo,
+      };
       productsNew.push(combinedProduct);
     }
     const combinedObject = {
       ...order,
-      products: [...productsNew]
+      products: [...productsNew],
     };
     newArray.push(combinedObject);
     productsNew = [];
@@ -49,21 +50,25 @@ export function allVendorOrdersById(vendorId: string) {
   let productsNew = [];
 
   for (const order of orders) {
-    console.log(order.id)
-    let orderProductsVendor: any[] = getProductsOfOrderVendor(order.id, vendorId)
-    console.log(orderProductsVendor)
+    console.log(order.id);
+    let orderProductsVendor: any[] = getProductsOfOrderVendor(
+      order.id,
+      vendorId,
+    );
+    console.log(orderProductsVendor);
     for (const orderProductVendor of orderProductsVendor) {
-      let vendorInfo: any = getUserById(orderProductVendor.vendorId)
-      orderProductVendor.delivered = orderProductVendor.delivered === 1 ? true : false;
+      let vendorInfo: any = getUserById(orderProductVendor.vendorId);
+      orderProductVendor.delivered =
+        orderProductVendor.delivered === 1 ? true : false;
       const combinedProduct = {
         ...orderProductVendor,
-        vendor: vendorInfo
-      }
+        vendor: vendorInfo,
+      };
       productsNew.push(combinedProduct);
     }
     const combinedObject = {
       ...order,
-      products: [...productsNew]
+      products: [...productsNew],
     };
     newArray.push(combinedObject);
     productsNew = [];
@@ -76,8 +81,8 @@ export function allOrders() {
 }
 
 export function addOrder(
-  order: Omit<IOrder, "id" | "createdAt" | "updatedAt" | "price">,
-  products: any[]
+  order: Omit<IOrder, "id" | "createdAt" | "updatedAt">,
+  products: any[],
 ) {
   const currentTimestamp = new Date().toISOString();
 
@@ -86,13 +91,12 @@ export function addOrder(
     createdAt: currentTimestamp,
     updatedAt: currentTimestamp,
     userId: order.userId,
-    price: 45.5
+    price: order.price,
   };
 
   let testOrder = createOrder(newOrder);
   products.forEach((item) => {
-    let delivered = item.delivered ? 1 : 0;
-    createOrderProductEntity(newOrder.id, item.id, item.quantity, delivered);
+    createOrderProductEntity(newOrder.id, item.id, item.quantity, 0);
   });
 
   return testOrder;

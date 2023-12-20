@@ -57,9 +57,7 @@
       }
       <div class="category-chip">
         <div class="category-chip-bg"></div>
-        <span class="category-chip-text">
-          {{ product.category.displayValue }}</span
-        >
+        <span class="category-chip-text"> {{ category?.displayValue }}</span>
       </div>
       @if (product.inventory && amountLeft(product) <= 10) {
       <div

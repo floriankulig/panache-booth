@@ -11,7 +11,7 @@
   }
 </ul>
 
-@if (cartService.cartOpen()){
+@if (showLayout) { @if (cartService.cartOpen()){
 <pb-modal
   [heading]="'Cart (' + cartService.cartProducts().length + ')'"
   (close)="cartService.setCartOpen(false)"
@@ -21,4 +21,4 @@
 } @if (orderService.ordersOpen()){
 <pb-modal heading="Your Orders" (close)="orderService.ordersOpen.set(false)">
 </pb-modal>
-}
+} }
