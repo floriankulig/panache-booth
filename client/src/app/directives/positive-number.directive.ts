@@ -21,7 +21,6 @@ export class PositiveNumberDirective {
     target: HTMLInputElement;
   }) {
     let initialValue: string = event.target?.value;
-    console.log(typeof Number(initialValue));
     if (!initialValue) {
       this.el.nativeElement.value = "";
       return;

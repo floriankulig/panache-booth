@@ -192,4 +192,35 @@
     </button>
   </div>
 </section>
-} @else { make payments }
+} @else {
+<div class="payments">
+  <h3 class="make-payments">Make Payments</h3>
+  <ul class="grid">
+    @for (entry of itemsByVendor(); track entry.vendor.id) {
+    <li class="payment">
+      <div class="payment__header">
+        <div class="icon">
+          <i-feather name="user"></i-feather>
+        </div>
+        <h3>
+          {{ entry.vendor.userName }}
+        </h3>
+      </div>
+      <div class="payment__info">
+        <div class="payment__info--item">
+          <span class="label">IBAN</span>
+          <span class="value">{{ entry.vendor.iban }}</span>
+        </div>
+        <div class="payment__info--item">
+          <span class="label">BIC</span>
+          <span class="value">{{ entry.vendor.bic }}</span>
+        </div>
+        <div class="payment__info--amount">
+          {{ entry.totalWithShipping.toFixed(2) }}€
+        </div>
+      </div>
+    </li>
+    }
+  </ul>
+</div>
+}

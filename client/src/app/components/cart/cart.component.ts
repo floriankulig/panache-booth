@@ -1,4 +1,4 @@
-import { Component, Signal, computed, effect } from "@angular/core";
+import { Component, OnDestroy, Signal, computed } from "@angular/core";
 import {
   AuthService,
   CartService,
@@ -18,7 +18,7 @@ import { ActivatedRoute, Router } from "@angular/router";
   templateUrl: "./cart.component.html",
   styleUrl: "./cart.component.scss",
 })
-export class CartComponent {
+export class CartComponent implements OnDestroy {
   cartProducts = computed(() => this.cartService.cartProducts());
   submitting = false;
   showPayments = false;
@@ -36,9 +36,16 @@ export class CartComponent {
       const vendorItems = this.cartService
         .cartProducts()
         .filter((product) => product.vendor.id === vendor.id);
+      const itemTotal = this.costOfCartProducts(vendorItems);
       return {
         vendor,
-        total: this.costOfCartProducts(vendorItems),
+        total: itemTotal,
+        totalWithShipping:
+          (vendor.shippingCost || 0) > 0 &&
+          this.vendorHasFreeShipping(vendor) &&
+          itemTotal > vendor.shippingFreeFrom
+            ? itemTotal
+            : itemTotal + Number(vendor.shippingCost),
         items: vendorItems,
       };
     });
@@ -51,11 +58,10 @@ export class CartComponent {
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
-  ) {
-    effect(() => {
-      console.log(this.vendors());
-      console.log(this.itemsByVendor());
-    });
+  ) {}
+
+  ngOnDestroy() {
+    if (this.showPayments) this.cartService.clearCart();
   }
 
   private costOfCartProducts(
@@ -142,7 +148,6 @@ export class CartComponent {
     }
     const hasUser = await this.authService.isLoggedIn();
     if (!hasUser) {
-      console.log(this.router.url);
       this.router.navigate(["/login"], {
         queryParams: { redirect: `${this.router.url}` },
       });
@@ -156,7 +161,14 @@ export class CartComponent {
         products: this.cartProducts(),
       });
       this.showPayments = true;
-    } catch (error) {}
-    this.submitting = false;
+      this.notificiationService.addNotification({
+        message: "Order placed successfully",
+        type: "success",
+        duration: 5000,
+      });
+    } catch (error) {
+    } finally {
+      this.submitting = false;
+    }
   }
 }
