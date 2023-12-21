@@ -16,7 +16,7 @@ import {
 import { getUserById } from "../models/user";
 import { userById } from "./user";
 import { IsVendorFormatError, UserNotExistingError } from "../util/customUserErrors";
-import { getArticleById, updateInventoryAndPurchases } from "../models/product";
+import { getProductById, updateInventoryAndPurchases } from "../models/product";
 import {
   InvalidUserError, NoProductsInOrderError,
   OrderNotExistingError,
@@ -25,7 +25,7 @@ import {
 } from "../util/customOrderErrors";
 import { ProductNotExistingError, ProductOutOfStockError, ProductPriceFormatError } from "../util/customProductErrors";
 import { IOrderProduct } from "../models/IOrderProduct";
-import { articleById } from "./product";
+import { productById } from "./product";
 import { validateDecimalNumber } from "../util/util";
 
 export function orderById(id: string) {
@@ -190,7 +190,7 @@ export function updateOrder(reqParams: any, reqBody: any) {
     throw new OrderNotExistingError();
   }
   for (let product of products) {
-    if (!getArticleById(product.id)) {
+    if (!getProductById(product.id)) {
       throw new ProductNotExistingError();
     }
     if (!checkIfProductIsInOrder(product.id, orderId)) {
@@ -249,7 +249,7 @@ function validateOrderUser(userId: any): string {
 }
 
 function validateProductId(productId: string) {
-  if (getArticleById(productId) === undefined) {
+  if (getProductById(productId) === undefined) {
     throw new ProductNotExistingError();
   }
 }
@@ -272,7 +272,7 @@ function validateOrderQuantity(quantity: any): number {
 }
 
 function checkOutOfStock(productId: string, quantity: number) {
-  let product = getArticleById(productId);
+  let product = getProductById(productId);
   if (product.inventory < quantity) {
     throw new ProductOutOfStockError();
   }
