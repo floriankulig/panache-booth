@@ -1,4 +1,4 @@
-import { CartProduct, Product } from "./product";
+import { CartProduct } from "./product";
 
 interface Order {
   createdAt: string;

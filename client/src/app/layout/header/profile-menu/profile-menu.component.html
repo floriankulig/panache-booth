@@ -1,5 +1,5 @@
 <div class="menu-wrapper">
-  <div class="icon-wrapper" (click)="toggleMenu()">
+  <div class="icon-wrapper" tabindex="0" (click)="toggleMenu()">
     <i-feather name="user"></i-feather>
   </div>
   @if (open()) {
@@ -12,11 +12,11 @@
     <div class="divider"></div>
     }
     <ul class="profile-menu__actions">
-      <li class="profile-menu__actions-item" (click)="openCart()">
+      <li class="profile-menu__actions-item" tabindex="0" (click)="openCart()">
         <i-feather name="shopping-cart"></i-feather> Cart
       </li>
       @if (user()) {
-      <li class="profile-menu__actions-item" (click)="openOrders()">
+      <li class="profile-menu__actions-item" tabindex="0" (click)="openOrders()">
         <i-feather name="shopping-bag"></i-feather> Orders
       </li>
       }
@@ -33,10 +33,11 @@
         class="profile-menu__actions-item"
         routerLink="/profile"
         (click)="open.set(false)"
+        tabindex="0"
       >
         <i-feather name="smile"></i-feather> My Profile
       </li>
-      <li class="profile-menu__actions-item" (click)="logout()">
+      <li class="profile-menu__actions-item" tabindex="0" (click)="logout()">
         <i-feather name="log-out"></i-feather> Log out
       </li>
       }

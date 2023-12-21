@@ -1,7 +1,6 @@
 import { Injectable, WritableSignal, effect, signal } from "@angular/core";
 import axios, { AxiosError } from "axios";
 import { APIProduct, API_URL, FormProduct, Product } from "../../../models";
-import { categoryById } from "../../../helpers";
 import { AuthService } from "../auth/auth.service";
 
 @Injectable({

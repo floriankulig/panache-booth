@@ -1,4 +1,4 @@
-<div class="card" (click)="onCardClick($event)">
+<div class="card" tabindex="0" (click)="onCardClick($event)">
   @if (!!product.discount) {
   <div class="discount">-{{ product.discount * 100 }}%</div>
   }
@@ -9,6 +9,7 @@
       }}</span>
       @if (isOwnProduct()) {
       <div
+        tabindex="0"
         class="vendor-actions"
         #menu
         role="button"
@@ -18,7 +19,7 @@
         <i-feather name="more-vertical" class="trigger"></i-feather>
         @if (optionsOpen()) {
         <ul class="actions">
-          <li class="switch" (click)="toggleVisibility()">
+          <li class="switch" tabindex="0" (click)="toggleVisibility()">
             <pb-switch [value]="product.isVisible">
               <span class="label-menu">
                 {{ product.isVisible ? "Visible" : "Hidden" }}
@@ -26,10 +27,10 @@
             </pb-switch>
           </li>
           <div class="div"></div>
-          <li (click)="editModalOpen.set(true)">
+          <li tabindex="0" (click)="editModalOpen.set(true)">
             <i-feather name="edit-3"></i-feather> Edit
           </li>
-          <li class="delete" (click)="deleteModalOpen.set(true)">
+          <li class="delete" tabindex="0" (click)="deleteModalOpen.set(true)">
             <i-feather name="trash"></i-feather>Delete
           </li>
         </ul>
@@ -42,6 +43,7 @@
       @if (isOwnProduct()) {
 
       <div
+        tabindex="0"
         #visibility
         [class]="{ visibility: true, hidden: !product.isVisible }"
         (click)="toggleVisibility()"
@@ -95,6 +97,7 @@
     </div>
     @if (product.isVisible) {
     <div
+      tabindex="0"
       [class]="{
         card__cta: true,
         disabled: product.inventory && amountLeft(product) <= 0

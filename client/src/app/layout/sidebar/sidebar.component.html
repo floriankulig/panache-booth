@@ -1,5 +1,5 @@
 <div class="header-logo">
-  <div class="burger" role="button" (click)="onCloseSidebar()">
+  <div class="burger" role="button" tabindex="0" (click)="onCloseSidebar()">
     <i-feather name="x"></i-feather>
   </div>
   <pb-logo routerLink="/"></pb-logo>
@@ -17,6 +17,7 @@
       [class]="{ 'menu-item': true, active: currentUrl === link.url }"
       [routerLink]="link.url"
       (click)="onCloseSidebar()"
+      tabindex="0"
     >
       <i-feather [name]="link.icon"></i-feather>
       <span class="label">{{ link.name }}</span>
