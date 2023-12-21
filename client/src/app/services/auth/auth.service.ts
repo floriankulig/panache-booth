@@ -99,7 +99,7 @@ export class AuthService {
     } catch (error) {
       if (
         ((error as AxiosError).response?.data as string).includes(
-          "User does not exist",
+          "User is not existing!", //Was eine scheiß Fehlermeldung
         )
       ) {
         localStorage.removeItem("uid");
