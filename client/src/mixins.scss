@@ -135,17 +135,7 @@
 
   input,
   textarea {
-    width: 100%;
-    background: rgba($bgPrimary, 0.5);
-    border: none;
-    border-radius: $grid;
-    padding: grid(2);
-    color: $textPrimary;
-    font-size: 1rem;
-    font-weight: 500;
-    appearance: textfield;
-    font-family: "Urbanist", sans-serif;
-
+    @include text-input;
     &:is(textarea) {
       resize: vertical;
       min-height: grid(10);
@@ -166,6 +156,19 @@
     opacity: 0.6;
     pointer-events: none;
   }
+}
+
+@mixin text-input {
+  width: 100%;
+  background: rgba($bgPrimary, 0.5);
+  border: none;
+  border-radius: $grid;
+  padding: grid(2);
+  color: $textPrimary;
+  font-size: 1rem;
+  font-weight: 500;
+  appearance: textfield;
+  font-family: "Urbanist", sans-serif;
 }
 
 @mixin form {

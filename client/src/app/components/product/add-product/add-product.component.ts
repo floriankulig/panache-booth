@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import { Product } from "../../../../models";
+import { CATEGORIES, Category, CategoryID, Product } from "../../../../models";
 import { PositiveNumberDirective } from "../../../directives/positive-number.directive";
 import { of } from "rxjs";
 import { IconsModule } from "../../../icons/icons.module";
@@ -19,6 +19,7 @@ import {
 import { AxiosError } from "axios";
 import { buildProductFromFormValues } from "../../../../helpers";
 import { SwitchComponent } from "../../switch/switch.component";
+import { TypedDropdownComponent } from "../../typed-dropdown/typed-dropdown.component";
 
 @Component({
   selector: "pb-add-product",
@@ -28,6 +29,7 @@ import { SwitchComponent } from "../../switch/switch.component";
     IconsModule,
     ReactiveFormsModule,
     PositiveNumberDirective,
+    TypedDropdownComponent,
     SwitchComponent,
   ],
   templateUrl: "./add-product.component.html",
@@ -58,19 +60,36 @@ export class AddProductComponent {
 
   private initValues() {
     this.formGroup = this.formBuilder.group({
-      name: [this.initialValues?.name || "", Validators.required],
-      description: [this.initialValues?.description || "", Validators.required],
+      name: [this.initialValues?.name || "test", Validators.required],
+      description: [
+        this.initialValues?.description || "test",
+        Validators.required,
+      ],
       price: [
-        this.initialValues?.price || "",
+        this.initialValues?.price || "23",
         Validators.required,
         (control: AbstractControl<number>) => {
           return Number(control.value) <= 0 ? of({ negative: true }) : of(null);
         },
       ],
+      category: [this.initialValues?.category || "", Validators.required],
       inventory: [this.initialValues?.inventory || ""],
       discount: [(this.initialValues?.discount || 0) * 100 || ""],
     });
     this.isVisible = signal(this.initialValues?.isVisible || true);
+  }
+
+  get categoryValue(): CategoryID {
+    return this.formGroup.get("category")?.value;
+  }
+  get categoryValues(): Readonly<Category[]> {
+    return CATEGORIES;
+  }
+
+  onCategoryChange(category: CategoryID) {
+    this.formGroup.patchValue({ category });
+    this.formGroup.get("category")?.markAsTouched();
+    console.log("category change", category);
   }
 
   onCancel() {
@@ -88,23 +107,34 @@ export class AddProductComponent {
   async onSubmit(e?: SubmitEvent) {
     e?.preventDefault();
     this.formGroup.markAllAsTouched();
+    console.log(this.formGroup);
+    console.log(this.formGroup.status);
+    console.log(this.formGroup.valid);
+    console.log(this.formGroup.invalid);
     if (!this.formGroup.valid) {
       return;
     }
     this.submitting = true;
     this.errorMessage = "";
+    console.log("test");
     if (!this.authService.user()?.isVendor) {
       this.errorMessage = "You must be a vendor to create/edit a product.";
       this.submitting = false;
       return;
     }
+    console.log("test2");
     try {
       let product: Product;
       if (!!this.initialValues) {
+        console.log("update 1");
         product = (await this.updateProduct()) as Product;
+        console.log("update 2");
       } else {
+        console.log("create 1");
         product = await this.createProduct();
+        console.log("create 2");
       }
+      console.log("made request");
       this.create.emit(product);
     } catch (e) {
       this.errorMessage = (e as AxiosError).response?.data as string;
@@ -114,12 +144,14 @@ export class AddProductComponent {
   }
 
   private async createProduct() {
+    console.log("create product");
     const product = await this.productService.createProduct(
       {
         ...buildProductFromFormValues(this.formGroup, this.isVisible()),
       },
       this.authService.user()!.id,
     );
+    console.log("created product");
     this.notificationService.addNotification({
       type: "success",
       duration: 5000,

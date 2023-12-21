@@ -1,0 +1,102 @@
+@use "variables.scss" as *;
+@use "mixins.scss" as *;
+
+:host {
+  display: block;
+  position: relative;
+  width: 100%;
+  & > .click-contain {
+    position: relative;
+    width: 100%;
+  }
+
+  .input {
+    @include text-input;
+    display: flex;
+    padding: 0;
+    align-items: center;
+    padding-right: grid(0.75);
+    input {
+      padding: grid(2);
+      background: transparent;
+      border: none;
+      flex: 1;
+      color: $textPrimary;
+      font-size: 1rem;
+      font-weight: 500;
+      appearance: textfield;
+      font-family: "Urbanist", sans-serif;
+    }
+
+    .open-icon {
+      height: grid(5);
+      aspect-ratio: 1;
+      cursor: pointer;
+      &__inner {
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        display: grid;
+        scale: 0.9;
+        place-items: center;
+        transition: all 0.2s ease;
+        i-feather {
+          stroke-width: 1.75px;
+          color: $textSecondaryDark;
+          transition: all 0.2s ease;
+          &.opened {
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      &:hover {
+        .open-icon__inner {
+          background: rgba($bgSecondaryDark, 0.1);
+          scale: 1;
+          i-feather {
+            color: rgba($textPrimary, 0.8);
+          }
+        }
+      }
+    }
+  }
+
+  .dropdown {
+    position: absolute;
+    z-index: 99;
+    top: calc(100% + grid(0.5));
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 2px 3px 10px rgba($bgPrimaryDark, 0.1);
+    background: rgba($bgPrimary, 0.5);
+    backdrop-filter: blur(grid(1.5)) saturate(180%);
+    border-radius: grid(1);
+
+    &__list {
+      height: 100%;
+      max-height: 300px;
+      scrollbar-color: $textSecondary $bgSecondary;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+    li {
+      padding: grid(2);
+      &:not(.no-result) {
+        cursor: pointer;
+        &:hover {
+          background: rgba($bgSecondaryDark, 0.02);
+        }
+      }
+      transition: all 0.2s ease;
+      display: flex;
+      gap: grid(1);
+      align-items: center;
+
+      i-feather {
+        width: grid(2);
+        height: grid(2);
+      }
+    }
+  }
+}
