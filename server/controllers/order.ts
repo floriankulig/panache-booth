@@ -11,6 +11,7 @@ import { deleteOrderById } from "../models/order";
 import { SqliteError } from "better-sqlite3";
 import { UserError } from "../util/customUserErrors";
 import { OrderError } from "../util/customOrderErrors";
+import { ProductError } from "../util/customProductErrors";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -49,9 +50,7 @@ router.post("/", async (req, res) => {
     res.status(200).json(await addOrder(req.body));
   } catch (error) {
     console.log(error)
-    if (error instanceof UserError) {
-      res.status(400).send(error.message);
-    } else if (error instanceof OrderError) {
+    if (error instanceof UserError || error instanceof OrderError || error instanceof ProductError) {
       res.status(400).send(error.message);
     } else if (error instanceof SqliteError) {
       res.status(400).send("Database error!");

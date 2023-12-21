@@ -19,6 +19,13 @@ export class ProductNameFormatError extends ProductError {
   }
 }
 
+export class ProductOutOfStockError extends ProductError {
+  constructor() {
+    super("Product is out of stock!");
+    this.name = "ProductOutOfStockError";
+  }
+}
+
 export class ProductDescriptionFormatError extends ProductError {
   constructor() {
     super("Description format is wrong!");

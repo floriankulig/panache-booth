@@ -23,8 +23,9 @@ import {
   OrderPriceFormatError,
   OrderQuantityFormatError, ProductNotInOrderError,
 } from "../util/customOrderErrors";
-import { ProductNotExistingError, ProductPriceFormatError } from "../util/customProductErrors";
+import { ProductNotExistingError, ProductOutOfStockError, ProductPriceFormatError } from "../util/customProductErrors";
 import { IOrderProduct } from "../models/IOrderProduct";
+import { articleById } from "./product";
 
 export function orderById(id: string) {
   return getOrderById(id);
@@ -113,7 +114,7 @@ export function allOrders() {
 
     for (let product of products) {
       let vendorInfo: any = getUserById(product.vendorId);
-      let statusOrder: any = getQuantityAndDeliveredStatusOfOrder(order.id, product.id)
+      let statusOrder: any = getQuantityAndDeliveredStatusOfOrder(order.id, product.id);
       let productDelivered = statusOrder.delivered === 1 ? true : false;
       product.isVisible = product.isVisible === 1 ? true : false;
       const combinedProduct = {
@@ -146,10 +147,12 @@ export function addOrder(reqBody: any) {
     })(),
     price: reqBody.price ? validateOrderPrice(reqBody.price) : (() => {
       throw new OrderPriceFormatError();
-    })()
+    })(),
   };
   products.forEach((item: { id: string; quantity: number; }) => {
+    validateProductId(item.id);
     validateOrderQuantity(item.quantity);
+    checkOutOfStock(item.id, item.quantity);
   });
   let createdOrder = createOrder(order);
 
@@ -160,8 +163,8 @@ export function addOrder(reqBody: any) {
       quantity: item.quantity,
       delivered: false,
       updatedAt: currentTimestamp,
-      createdAt: currentTimestamp
-    }
+      createdAt: currentTimestamp,
+    };
     createOrderProductEntity(orderProductEntity);
     updateInventoryAndPurchases(item.id, item.quantity);
   });
@@ -178,35 +181,35 @@ export function updateOrder(reqParams: any, reqBody: any) {
     if (!getArticleById(product.id)) {
       throw new ProductNotExistingError();
     }
-    if (!checkIfProductIsInOrder(product.id, orderId)){
+    if (!checkIfProductIsInOrder(product.id, orderId)) {
       throw new ProductNotInOrderError();
     }
   }
   const currentTimestamp = new Date().toISOString();
   let order: Pick<IOrder, "updatedAt"> = {
-    updatedAt: currentTimestamp
-  }
+    updatedAt: currentTimestamp,
+  };
   updateOrderById(order, orderId);
 
   for (let product of products) {
-    console.log(product)
+    console.log(product);
     let orderProduct: Omit<IOrderProduct, "quantity" | "createdAt"> = {
       orderId: orderId,
       productId: product.id,
       delivered: product.delivered,
-      updatedAt: currentTimestamp
-    }
-    console.log(orderProduct.delivered)
+      updatedAt: currentTimestamp,
+    };
+    console.log(orderProduct.delivered);
     updateOrderProductEntity(orderProduct);
   }
   let newOrder: any = getOrderById(orderId);
-  let productsOfOrder: any = getProductsOfOrder(orderId)
+  let productsOfOrder: any = getProductsOfOrder(orderId);
 
   let productsNew = [];
 
   for (let product of productsOfOrder) {
     let vendorInfo: any = getUserById(product.vendorId);
-    let statusOrder: any = getQuantityAndDeliveredStatusOfOrder(orderId, product.id)
+    let statusOrder: any = getQuantityAndDeliveredStatusOfOrder(orderId, product.id);
     let productDelivered = statusOrder.delivered === 1 ? true : false;
     const combinedProduct = {
       ...product,
@@ -216,7 +219,7 @@ export function updateOrder(reqParams: any, reqBody: any) {
     };
     productsNew.push(combinedProduct);
   }
-  return   {
+  return {
     ...newOrder,
     products: [...productsNew],
   };
@@ -234,8 +237,14 @@ function validateOrderUser(userId: any): string {
   return userId;
 }
 
+function validateProductId(productId: string) {
+  if (getArticleById(productId) === undefined) {
+    throw new ProductNotExistingError();
+  }
+}
+
 function validateOrderPrice(price: any): number {
-  console.log(price)
+  console.log(price);
   if (typeof price !== "number" && !checkForTwoDecimalPlaces(price)) {
     throw new ProductPriceFormatError() ;
   }
@@ -247,6 +256,14 @@ function validateOrderQuantity(quantity: any): number {
     throw new OrderQuantityFormatError() ;
   }
   return quantity;
+}
+
+function checkOutOfStock(productId: string, quantity: number) {
+  let product = getArticleById(productId);
+  console.log(product)
+  if (product.inventory < quantity) {
+    throw new ProductOutOfStockError();
+  }
 }
 
 function checkForTwoDecimalPlaces(value: number): boolean {
