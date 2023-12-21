@@ -1,14 +1,13 @@
 import express from "express";
 import {
-  addArticle,
-  allArticles,
+  addProduct,
+  allProducts,
   allVendorProducts,
-  articleById,
-  deleteArticle,
-  updateArticle,
+  productById,
+  deleteProduct,
+  updateProduct,
 } from "../services/product";
 import { ProductError } from "../util/customProductErrors";
-import { SqliteError } from "better-sqlite3";
 import { UserError } from "../util/customUserErrors";
 
 const router = express.Router();
@@ -18,7 +17,7 @@ router.get("/", async (req, res) => {
     if (req.query.vendorId) {
       res.status(200).json(allVendorProducts(req.query));
     } else {
-      res.status(200).json(allArticles());
+      res.status(200).json(allProducts());
     }
   } catch (error) {
     res.status(500).send("Internal server error!");
@@ -27,8 +26,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    console.log("add")
-    res.status(200).json(await addArticle(req.body));
+    res.status(200).json(await addProduct(req.body));
   } catch (error) {
     if (error instanceof ProductError || error instanceof UserError) {
       res.status(400).send(error.message);
@@ -40,7 +38,7 @@ router.post("/", async (req, res) => {
 
 router.put("/:productId", async (req, res) => {
   try {
-    res.status(200).json(await updateArticle(req.params, req.body));
+    res.status(200).json(await updateProduct(req.params, req.body));
   } catch (error) {
     if (error instanceof ProductError) {
       res.status(400).send(error.message);
@@ -52,7 +50,7 @@ router.put("/:productId", async (req, res) => {
 
 router.delete("/:productId", async (req, res) => {
   try {
-    deleteArticle(req.params);
+    deleteProduct(req.params);
     res.sendStatus(200);
   } catch (error) {
     if (error instanceof ProductError) {
@@ -65,7 +63,7 @@ router.delete("/:productId", async (req, res) => {
 
 router.get("/:productId", async (req, res) => {
   try {
-    res.status(200).json(await articleById(req.params));
+    res.status(200).json(await productById(req.params));
   } catch (error) {
     if (error instanceof ProductError) {
       res.status(400).send(error.message);

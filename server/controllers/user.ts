@@ -9,7 +9,6 @@ import {
 } from "../services/user";
 import { UserError } from "../util/customUserErrors";
 import { SqliteError } from "better-sqlite3";
-import { customAuth } from "../util/customAuth";
 
 const router = express.Router();
 

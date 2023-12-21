@@ -4,7 +4,6 @@ import {
   checkIfProductIsInOrder,
   createOrder,
   createOrderProductEntity,
-  deleteOrderById,
   getAllOrders,
   getAllOrdersByUserId,
   getAllOrdersWithVendorProducts,
@@ -14,9 +13,8 @@ import {
   updateOrderById, updateOrderProductEntity,
 } from "../models/order";
 import { getUserById } from "../models/user";
-import { userById } from "./user";
 import { IsVendorFormatError, UserNotExistingError } from "../util/customUserErrors";
-import { getArticleById, updateInventoryAndPurchases } from "../models/product";
+import { getProductById, updateInventoryAndPurchases } from "../models/product";
 import {
   InvalidUserError, NoProductsInOrderError,
   OrderNotExistingError,
@@ -25,7 +23,6 @@ import {
 } from "../util/customOrderErrors";
 import { ProductNotExistingError, ProductOutOfStockError, ProductPriceFormatError } from "../util/customProductErrors";
 import { IOrderProduct } from "../models/IOrderProduct";
-import { articleById } from "./product";
 import { validateDecimalNumber } from "../util/util";
 
 export function orderById(id: string) {
@@ -190,7 +187,7 @@ export function updateOrder(reqParams: any, reqBody: any) {
     throw new OrderNotExistingError();
   }
   for (let product of products) {
-    if (!getArticleById(product.id)) {
+    if (!getProductById(product.id)) {
       throw new ProductNotExistingError();
     }
     if (!checkIfProductIsInOrder(product.id, orderId)) {
@@ -236,11 +233,6 @@ export function updateOrder(reqParams: any, reqBody: any) {
   };
 }
 
-export function deleteOrder(id: string) {
-  return deleteOrderById(id);
-}
-
-
 function validateOrderUser(userId: any): string {
   if (getUserById(userId) === undefined) {
     throw new InvalidUserError();
@@ -249,7 +241,7 @@ function validateOrderUser(userId: any): string {
 }
 
 function validateProductId(productId: string) {
-  if (getArticleById(productId) === undefined) {
+  if (getProductById(productId) === undefined) {
     throw new ProductNotExistingError();
   }
 }
@@ -272,7 +264,7 @@ function validateOrderQuantity(quantity: any): number {
 }
 
 function checkOutOfStock(productId: string, quantity: number) {
-  let product = getArticleById(productId);
+  let product = getProductById(productId);
   if (product.inventory < quantity) {
     throw new ProductOutOfStockError();
   }

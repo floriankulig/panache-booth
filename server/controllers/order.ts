@@ -1,14 +1,11 @@
 import express from "express";
-import { IOrder } from "../models/IOrder";
 import {
   addOrder,
   allOrders,
   allUserOrdersById,
   allVendorOrdersById,
-  deleteOrder, updateOrder,
+  updateOrder
 } from "../services/order";
-import { deleteOrderById } from "../models/order";
-import { SqliteError } from "better-sqlite3";
 import { UserError } from "../util/customUserErrors";
 import { OrderError } from "../util/customOrderErrors";
 import { ProductError } from "../util/customProductErrors";
@@ -54,16 +51,6 @@ router.post("/", async (req, res) => {
 router.put("/:orderId", async (req, res) => {
   try {
     res.status(200).json(await updateOrder(req.params, req.body));
-  } catch (error) {
-    res.status(500).send("Internal server error!");
-  }
-});
-
-router.delete("/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    await deleteOrder(id);
-    res.sendStatus(200);
   } catch (error) {
     res.status(500).send("Internal server error!");
   }
