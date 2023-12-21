@@ -78,19 +78,27 @@ export function allVendorOrdersById(reqParams: any) {
         order.id,
         vendorId,
       );
+      let vendorInfo: any = getUserById(vendorId);
       for (const orderProductVendor of orderProductsVendor) {
-        let vendorInfo: any = getUserById(orderProductVendor.vendorId);
+
         orderProductVendor.delivered =
           orderProductVendor.delivered === 1 ? true : false;
         orderProductVendor.isVisible = orderProductVendor.isVisible === 1 ? true : false;
-        vendorPrice += orderProductVendor.price;
+        vendorPrice += orderProductVendor.price - orderProductVendor.price * orderProductVendor.discount;
         const combinedProduct = {
           ...orderProductVendor,
           vendor: vendorInfo,
         };
         productsNew.push(combinedProduct);
       }
-      order.price = vendorPrice;
+      console.log(vendorPrice)
+      console.log(vendorInfo)
+      if (vendorPrice < vendorInfo.shippingFreeFrom) {
+        order.price = vendorPrice + vendorInfo.shippingCost;
+      } else {
+        order.price = vendorPrice;
+      }
+      console.log(order.price)
       const combinedObject = {
         ...order,
         products: [...productsNew],
