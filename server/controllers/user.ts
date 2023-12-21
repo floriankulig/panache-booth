@@ -20,6 +20,18 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:userId", async (req, res) => {
+  try {
+    res.status(200).json(userById(req.params));
+  } catch (error) {
+    if (error instanceof UserError) {
+      res.status(400).send(error.message);
+    } else {
+      res.status(500).send("Internal server error!");
+    }
+  }
+});
+
 router.post("/login", async (req, res) => {
   try {
     res.status(200).json(await loginUser(req.body));
@@ -72,16 +84,5 @@ router.delete("/:userId", async (req, res) => {
   }
 });
 
-router.get("/:userId", async (req, res) => {
-  try {
-    res.status(200).json(userById(req.params));
-  } catch (error) {
-    if (error instanceof UserError) {
-      res.status(400).send(error.message);
-    } else {
-      res.status(500).send("Internal server error!");
-    }
-  }
-});
 
 export { router as userController };

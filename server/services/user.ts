@@ -28,8 +28,9 @@ import { validateDecimalNumber } from "../util/util";
 
 export function userById(reqParams: any) {
   let userId = reqParams.userId;
-  let user = getUserById(userId);
+  let user: any = getUserById(userId);
   if (user !== undefined) {
+    user.isVendor = user.isVendor === 1;
     return user;
   } else {
     throw new UserNotExistingError();
@@ -37,12 +38,12 @@ export function userById(reqParams: any) {
 }
 
 export function userByEmail(email: string) {
+
   return getUserByEmail(email);
 }
 
 export function allUsers() {
   let users: any[] = getAllUsers();
-  console.log(users)
   users.forEach((key) => {
     key["isVendor"] = key["isVendor"] !== 0;
   });

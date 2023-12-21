@@ -2,40 +2,23 @@ import { database } from "./databases";
 import { IUser } from "./IUser";
 
 export function getUserById(id: string) {
-  try {
-    let user: any = database
-      .prepare(
-        "select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
-        "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where id = ?",
-      )
-      .get(id);
-    if (user != undefined) {
-      user["isVendor"] = user["isVendor"] !== 0;
-      return user;
-    } else {
-      return undefined;
-    }
-  } catch (e: unknown) {
-    return e;
-  }
+  return database
+    .prepare(
+      "select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
+      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where id = ?",
+    ).get(id);
 }
 
 export function getUserByEmail(email: string) {
-  try {
-    let user = database
-      .prepare(
-        "select * from user where email = ?",
-      )
-      .get(email);
-    if (user != undefined) {
-      // @ts-ignore
-      user["isVendor"] = user["isVendor"] !== 0;
-      return user;
-    } else {
-      return undefined;
-    }
-  } catch (e: unknown) {
-    return e;
+  let user: any = database
+    .prepare(
+      "select * from user where email = ?",
+    ).get(email);
+  if (user != undefined) {
+    user["isVendor"] = user["isVendor"] !== 0;
+    return user;
+  } else {
+    return undefined;
   }
 }
 
@@ -44,46 +27,32 @@ export function getAllUsers() {
     .prepare(
       "select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
       "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user",
-    )
-    .all();
+    ).all();
 }
 
 export function createUser(user: IUser) {
   let isVendorNumeric = user.isVendor ? 1 : 0;
 
-  const sql = database.prepare(
+  database.prepare(
     "insert into user " +
     "(id, userName, email, password, isVendor, postcode, city, street, houseNumber, " +
     "iban, bic, shippingCost, shippingFreeFrom, " +
     "createdAt, updatedAt) " +
     "values " +
     "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-  );
-  const info = sql.run(
-    user.userId,
-    user.userName,
-    user.email,
-    user.password,
-    isVendorNumeric,
-    user.postcode,
-    user.city,
-    user.street,
-    user.houseNumber,
-    user.iban,
-    user.bic,
-    user.shippingCost,
-    user.shippingFreeFrom,
-    user.createdAt,
-    user.updatedAt,
-  );
+  ).run(
+    user.userId, user.userName, user.email, user.password, isVendorNumeric,
+    user.postcode, user.city, user.street, user.houseNumber, user.iban,
+    user.bic, user.shippingCost, user.shippingFreeFrom, user.createdAt,
+    user.updatedAt);
   return getUserById(user.userId);
 }
 
 export function updateUserById(id: string, user: Omit<IUser, "userId" | "createdAt">) {
   let sqlString = "update user set";
 
-  type test<T> = [keyof T, T[keyof T]];
-  for (const [key, value] of Object.entries(user) as test<IUser>[]) {
+  type obj<T> = [keyof T, T[keyof T]];
+  for (const [key, value] of Object.entries(user) as obj<IUser>[]) {
     if (value !== undefined) {
       if (key === "isVendor") {
         if (value === "true") {
