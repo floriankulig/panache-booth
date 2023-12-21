@@ -24,6 +24,7 @@ import {
   UserNotExistingError,
 } from "../util/customUserErrors";
 import { v4 as uuidv4 } from "uuid";
+import { validateDecimalNumber } from "../util/util";
 
 export function userById(reqParams: any) {
   let userId = reqParams.userId;
@@ -135,12 +136,18 @@ function validateShippingCostFormat(shippingCost: any): number {
   if (typeof shippingCost !== "number") {
     throw new ShippingCostFormatError();
   }
+  if (!validateDecimalNumber(shippingCost)) {
+    throw new ShippingCostFormatError();
+  }
   return shippingCost;
 }
 
 function validateShippingFreeFromFormat(shippingFreeForm: any): number {
   if (typeof shippingFreeForm !== "number") {
     throw new ShippingFreeFromFormatError() ;
+  }
+  if (!validateDecimalNumber(shippingFreeForm)) {
+    throw new ShippingFreeFromFormatError();
   }
   return shippingFreeForm;
 }
@@ -160,7 +167,7 @@ function validateBicFormat(bic: any): string {
 }
 
 function validateUserNameFormat(userName: any): string {
-  if (userName === undefined || userName.length < 1 || userName.length > 32) {
+  if (userName === undefined || userName.length < 4 || userName.length > 32) {
     throw new UserNameFormatError();
   }
   return userName;
@@ -183,14 +190,14 @@ function checkEmailFormat(email: string): boolean {
 }
 
 function validateStreetFormat(street: any): string {
-  if (street === undefined || street.length > 255) {
+  if (street === undefined || street.length < 1 || street.length > 255) {
     throw new StreetFormatError();
   }
   return street;
 }
 
 function validateHouseNumberFormat(houseNumber: any): string {
-  if (houseNumber === undefined || houseNumber.length > 10 || houseNumber.length < 1) {
+  if (houseNumber === undefined || houseNumber.length > 3 || houseNumber.length < 1) {
     throw new HouseNumberFormatError();
   }
   return houseNumber;
@@ -211,7 +218,7 @@ function validateIsVendorFormat(isVendor: any): boolean {
 }
 
 function validateCityFormat(city: any): string {
-  if (city === undefined || city.length > 50) {
+  if (city === undefined || city.length < 1 || city.length > 50) {
     throw new CityFormatError();
   }
   return city;

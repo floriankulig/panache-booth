@@ -18,7 +18,7 @@ import { userById } from "./user";
 import { IsVendorFormatError, UserNotExistingError } from "../util/customUserErrors";
 import { getArticleById, updateInventoryAndPurchases } from "../models/product";
 import {
-  InvalidUserError,
+  InvalidUserError, NoProductsInOrderError,
   OrderNotExistingError,
   OrderPriceFormatError,
   OrderQuantityFormatError, ProductNotInOrderError,
@@ -26,6 +26,7 @@ import {
 import { ProductNotExistingError, ProductOutOfStockError, ProductPriceFormatError } from "../util/customProductErrors";
 import { IOrderProduct } from "../models/IOrderProduct";
 import { articleById } from "./product";
+import { validateDecimalNumber } from "../util/util";
 
 export function orderById(id: string) {
   return getOrderById(id);
@@ -146,6 +147,9 @@ export function allOrders() {
 export function addOrder(reqBody: any) {
   const currentTimestamp = new Date().toISOString();
   let products = reqBody.products;
+  if (products === undefined || products.length === 0) {
+    throw new NoProductsInOrderError();
+  }
   let order: IOrder = {
     id: uuidv4(),
     createdAt: currentTimestamp,
@@ -251,8 +255,11 @@ function validateProductId(productId: string) {
 }
 
 function validateOrderPrice(price: any): number {
-  if (typeof price !== "number" && !checkForTwoDecimalPlaces(price)) {
+  if (typeof price !== "number") {
     throw new ProductPriceFormatError() ;
+  }
+  if (!validateDecimalNumber(price)) {
+    throw new ProductPriceFormatError();
   }
   return price;
 }
@@ -269,11 +276,6 @@ function checkOutOfStock(productId: string, quantity: number) {
   if (product.inventory < quantity) {
     throw new ProductOutOfStockError();
   }
-}
-
-function checkForTwoDecimalPlaces(value: number): boolean {
-  const decimalRegex = /^\d+(\.\d{1,2})?$/;
-  return decimalRegex.test(value.toString());
 }
 
 function validateDeliveredFormat(delivered: any) {

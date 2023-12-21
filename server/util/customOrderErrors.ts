@@ -13,6 +13,13 @@ export class OrderNotExistingError extends OrderError {
   }
 }
 
+export class NoProductsInOrderError extends OrderError {
+  constructor() {
+    super("No products in order!");
+    this.name = "NoProductsInOrderError";
+  }
+}
+
 export class ProductNotInOrderError extends OrderError {
   constructor() {
     super("Product not in order!");

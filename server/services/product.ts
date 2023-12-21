@@ -21,6 +21,7 @@ import {
   ProductIsVisibleFormatError, ProductNameFormatError, ProductNotExistingError,
   ProductPriceFormatError,
 } from "../util/customProductErrors";
+import { validateDecimalNumber } from "../util/util";
 
 export function articleById(reqParams: any) {
   let productId = reqParams.productId;
@@ -156,17 +157,24 @@ function validateCategory(category: any): string {
 }
 
 function validateDiscount(discount: any): number {
-  console.log("ddfd")
-  console.log(discount)
-  if (typeof discount !== "number" && !checkForTwoDecimalPlaces(discount)) {
+  if (typeof discount !== "number" ) {
     throw new ProductDiscountFormatError() ;
+  }
+  const discountRegExp: RegExp = /^(0(\.\d{1,2})?|1(\.0{1,2})?)$/;
+  if (!discountRegExp.test(discount.toString())) {
+    throw new ProductDiscountFormatError();
   }
   return discount;
 }
 
+
+
 function validatePrice(price: any): number {
-  if (typeof price !== "number" && !checkForTwoDecimalPlaces(price)) {
+  if (typeof price !== "number") {
     throw new ProductPriceFormatError() ;
+  }
+  if (!validateDecimalNumber(price)) {
+    throw new ProductPriceFormatError();
   }
   return price;
 }
@@ -178,13 +186,8 @@ function validateVendorId(vendorId: any): string {
   return vendorId;
 }
 
-function checkForTwoDecimalPlaces(value: number): boolean {
-  const decimalRegex = /^\d+(\.\d+)?$/;
-  return decimalRegex.test(value.toString());
-}
-
 function validateInventory(inventory: any): number {
-  if (typeof inventory !== "number") {
+  if (typeof inventory !== "number" || inventory < 0) {
     throw new ProductInventoryFormatError() ;
   }
   return inventory;
