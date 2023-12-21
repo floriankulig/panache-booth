@@ -60,20 +60,17 @@ export class AddProductComponent {
 
   private initValues() {
     this.formGroup = this.formBuilder.group({
-      name: [this.initialValues?.name || "test", Validators.required],
-      description: [
-        this.initialValues?.description || "test",
-        Validators.required,
-      ],
+      name: [this.initialValues?.name || "", Validators.required],
+      description: [this.initialValues?.description || "", Validators.required],
       price: [
-        this.initialValues?.price || "23",
+        this.initialValues?.price || "",
         Validators.required,
         (control: AbstractControl<number>) => {
           return Number(control.value) <= 0 ? of({ negative: true }) : of(null);
         },
       ],
       category: [this.initialValues?.category || "", Validators.required],
-      inventory: [this.initialValues?.inventory || ""],
+      inventory: [this.initialValues?.inventory || "", Validators.required],
       discount: [(this.initialValues?.discount || 0) * 100 || ""],
     });
     this.isVisible = signal(this.initialValues?.isVisible || true);
@@ -89,7 +86,6 @@ export class AddProductComponent {
   onCategoryChange(category: CategoryID) {
     this.formGroup.patchValue({ category });
     this.formGroup.get("category")?.markAsTouched();
-    console.log("category change", category);
   }
 
   onCancel() {
@@ -107,34 +103,23 @@ export class AddProductComponent {
   async onSubmit(e?: SubmitEvent) {
     e?.preventDefault();
     this.formGroup.markAllAsTouched();
-    console.log(this.formGroup);
-    console.log(this.formGroup.status);
-    console.log(this.formGroup.valid);
-    console.log(this.formGroup.invalid);
     if (!this.formGroup.valid) {
       return;
     }
     this.submitting = true;
     this.errorMessage = "";
-    console.log("test");
     if (!this.authService.user()?.isVendor) {
       this.errorMessage = "You must be a vendor to create/edit a product.";
       this.submitting = false;
       return;
     }
-    console.log("test2");
     try {
       let product: Product;
       if (!!this.initialValues) {
-        console.log("update 1");
         product = (await this.updateProduct()) as Product;
-        console.log("update 2");
       } else {
-        console.log("create 1");
         product = await this.createProduct();
-        console.log("create 2");
       }
-      console.log("made request");
       this.create.emit(product);
     } catch (e) {
       this.errorMessage = (e as AxiosError).response?.data as string;
@@ -144,14 +129,12 @@ export class AddProductComponent {
   }
 
   private async createProduct() {
-    console.log("create product");
     const product = await this.productService.createProduct(
       {
         ...buildProductFromFormValues(this.formGroup, this.isVisible()),
       },
       this.authService.user()!.id,
     );
-    console.log("created product");
     this.notificationService.addNotification({
       type: "success",
       duration: 5000,

@@ -80,7 +80,13 @@
   <div class="input-row">
     <div class="input">
       <div>
-        <span>Stock/Inventory</span>
+        <span>Stock/Inventory*</span>
+        @if (formGroup.get("inventory")?.errors &&
+        formGroup.get("inventory")?.touched) {
+        <span class="input-error">
+          @if (formGroup.get("inventory")?.errors?.["required"]) { Required }
+        </span>
+        }
       </div>
       <input
         positiveNumber
