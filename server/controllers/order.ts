@@ -1,5 +1,4 @@
 import express from "express";
-import { IOrder } from "../models/IOrder";
 import {
   addOrder,
   allOrders,
@@ -7,8 +6,6 @@ import {
   allVendorOrdersById,
   deleteOrder, updateOrder,
 } from "../services/order";
-import { deleteOrderById } from "../models/order";
-import { SqliteError } from "better-sqlite3";
 import { UserError } from "../util/customUserErrors";
 import { OrderError } from "../util/customOrderErrors";
 import { ProductError } from "../util/customProductErrors";

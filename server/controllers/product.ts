@@ -8,7 +8,6 @@ import {
   updateProduct,
 } from "../services/product";
 import { ProductError } from "../util/customProductErrors";
-import { SqliteError } from "better-sqlite3";
 import { UserError } from "../util/customUserErrors";
 
 const router = express.Router();
