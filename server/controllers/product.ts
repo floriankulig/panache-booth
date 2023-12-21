@@ -9,6 +9,7 @@ import {
 } from "../services/product";
 import { ProductError } from "../util/customProductErrors";
 import { SqliteError } from "better-sqlite3";
+import { UserError } from "../util/customUserErrors";
 
 const router = express.Router();
 
@@ -29,7 +30,8 @@ router.post("/", async (req, res) => {
   try {
     res.status(200).json(await addArticle(req.body));
   } catch (error) {
-    if (error instanceof ProductError) {
+    console.log(error)
+    if (error instanceof ProductError ||error instanceof UserError) {
       res.status(400).send(error.message);
     } else if (error instanceof SqliteError) {
       res.status(400).send("Database error!");
