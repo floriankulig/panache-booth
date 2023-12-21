@@ -60,23 +60,19 @@ export function updateArticleById(
   product: Omit<IProduct, "id" | "createdAt" | "purchases">,
   id: string,
 ) {
+  let isVisibleNumeric = product.isVisible ? 1 : 0;
   let sqlString = "update product set";
 
   type test<T> = [keyof T, T[keyof T]];
   for (const [key, value] of Object.entries(product) as test<IProduct>[]) {
     if (value !== undefined) {
       if (key === "isVisible") {
-        if (value === "true") {
-          sqlString += ` ${key} = '1',`;
-        } else {
-          sqlString += ` ${key} = '0',`;
-        }
+        sqlString += ` isVisible = ${isVisibleNumeric},`;
       } else {
         sqlString += ` ${key} = \'${value}\',`;
       }
     }
   }
-
   sqlString = sqlString.slice(0, -1);
   sqlString += ` where id = '${id}';`;
   database.prepare(sqlString).run();

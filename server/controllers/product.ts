@@ -27,6 +27,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
+    console.log("add")
     res.status(200).json(await addArticle(req.body));
   } catch (error) {
     if (error instanceof ProductError || error instanceof UserError) {
