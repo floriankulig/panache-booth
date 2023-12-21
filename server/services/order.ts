@@ -193,14 +193,12 @@ export function updateOrder(reqParams: any, reqBody: any) {
   updateOrderById(order, orderId);
 
   for (let product of products) {
-    console.log(product);
     let orderProduct: Omit<IOrderProduct, "quantity" | "createdAt"> = {
       orderId: orderId,
       productId: product.id,
       delivered: product.delivered,
       updatedAt: currentTimestamp,
     };
-    console.log(orderProduct.delivered);
     updateOrderProductEntity(orderProduct);
   }
   let newOrder: any = getOrderById(orderId);
@@ -245,7 +243,6 @@ function validateProductId(productId: string) {
 }
 
 function validateOrderPrice(price: any): number {
-  console.log(price);
   if (typeof price !== "number" && !checkForTwoDecimalPlaces(price)) {
     throw new ProductPriceFormatError() ;
   }
@@ -261,7 +258,6 @@ function validateOrderQuantity(quantity: any): number {
 
 function checkOutOfStock(productId: string, quantity: number) {
   let product = getArticleById(productId);
-  console.log(product);
   if (product.inventory < quantity) {
     throw new ProductOutOfStockError();
   }

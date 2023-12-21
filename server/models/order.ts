@@ -43,7 +43,6 @@ export function updateOrderById(order: Pick<IOrder, "updatedAt">, orderId: strin
 
 export function updateOrderProductEntity(orderProduct: Omit<IOrderProduct, "quantity" | "createdAt">) {
   let isDeliveredNumeric = orderProduct.delivered ? 1 : 0;
-  console.log(isDeliveredNumeric)
   return database.prepare(
     "update orderProduct set delivered = ?, updatedAt = ? where orderId = ? and productId = ?;",
   ).run(isDeliveredNumeric, orderProduct.updatedAt, orderProduct.orderId, orderProduct.productId);

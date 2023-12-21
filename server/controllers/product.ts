@@ -18,7 +18,6 @@ router.get("/", async (req, res) => {
     if (req.query.vendorId) {
       res.status(200).json(allVendorProducts(req.query));
     } else {
-      console.log("dd");
       res.status(200).json(allArticles());
     }
   } catch (error) {
@@ -30,8 +29,7 @@ router.post("/", async (req, res) => {
   try {
     res.status(200).json(await addArticle(req.body));
   } catch (error) {
-    console.log(error)
-    if (error instanceof ProductError ||error instanceof UserError) {
+    if (error instanceof ProductError || error instanceof UserError) {
       res.status(400).send(error.message);
     } else if (error instanceof SqliteError) {
       res.status(400).send("Database error!");

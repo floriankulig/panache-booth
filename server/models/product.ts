@@ -87,9 +87,6 @@ export function updateInventoryAndPurchases(productId: string, purchases: number
   let productData: any = getInventoryAndPurchases(productId);
   let inventoryNew = productData.inventory - purchases;
   let purchasesNew = productData.purchases + purchases;
-  console.log(productData)
-  console.log(inventoryNew)
-  console.log(purchasesNew)
   database.prepare(`update product
                     set inventory = ${inventoryNew},
                         purchases = ${purchasesNew}

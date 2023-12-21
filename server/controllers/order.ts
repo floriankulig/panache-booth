@@ -12,13 +12,13 @@ import { SqliteError } from "better-sqlite3";
 import { UserError } from "../util/customUserErrors";
 import { OrderError } from "../util/customOrderErrors";
 import { ProductError } from "../util/customProductErrors";
+
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
     res.status(200).json(await allOrders());
   } catch (error) {
-    console.log(error)
     if (error instanceof SqliteError) {
       res.status(400).send("Database error!");
     } else {
@@ -49,7 +49,6 @@ router.post("/", async (req, res) => {
   try {
     res.status(200).json(await addOrder(req.body));
   } catch (error) {
-    console.log(error)
     if (error instanceof UserError || error instanceof OrderError || error instanceof ProductError) {
       res.status(400).send(error.message);
     } else if (error instanceof SqliteError) {
@@ -64,7 +63,6 @@ router.put("/:orderId", async (req, res) => {
   try {
     res.status(200).json(await updateOrder(req.params, req.body));
   } catch (error) {
-    console.log(error)
     res.status(500).send("Internal server error!");
   }
 });

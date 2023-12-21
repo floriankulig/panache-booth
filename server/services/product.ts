@@ -141,7 +141,6 @@ function validateName(name: any): string {
 }
 
 function validateDescription(description: any): string {
-  console.log("fdf");
   if (description.length > 300 || description.length < 1) {
     throw new ProductDescriptionFormatError();
   }

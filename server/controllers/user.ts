@@ -31,7 +31,8 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     if (error instanceof UserError) {
       res.status(401).send(error.message);
-    } if (error instanceof SqliteError) {
+    }
+    if (error instanceof SqliteError) {
       res.status(400).send("Database error!");
     } else {
       res.status(500).send("Internal server error!");
@@ -45,7 +46,7 @@ router.post("/", async (req, res) => {
   } catch (error: unknown) {
     if (error instanceof UserError) {
       res.status(400).send(error.message);
-    } else if (error instanceof SqliteError && error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+    } else if (error instanceof SqliteError && error.code === "SQLITE_CONSTRAINT_UNIQUE") {
       res.status(400).send("Email already existing!");
     } else if (error instanceof SqliteError) {
       res.status(400).send("Database error!");
@@ -57,7 +58,7 @@ router.post("/", async (req, res) => {
 
 router.put("/:userId", async (req, res) => {
   try {
-      res.status(200).json(await updateUser(req.params, req.body));
+    res.status(200).json(await updateUser(req.params, req.body));
   } catch (error) {
     if (error instanceof UserError) {
       res.status(400).send(error.message);
@@ -71,7 +72,7 @@ router.put("/:userId", async (req, res) => {
 
 router.delete("/:userId", async (req, res) => {
   try {
-    deleteUser(req.params)
+    deleteUser(req.params);
     res.sendStatus(200);
   } catch (error) {
     if (error instanceof UserError) {
