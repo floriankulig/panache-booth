@@ -3,7 +3,7 @@ import { IProduct } from "./IProduct";
 
 export function getArticleById(id: string) {
   let product: any = database
-    .prepare("select * from product where id = ?")
+    .prepare("select * from product where id = ? and archived = 0")
     .get(id);
   if (product != undefined) {
     product["isVisible"] = product["isVisible"] !== 0;
@@ -12,7 +12,7 @@ export function getArticleById(id: string) {
 }
 
 export function getAllArticles() {
-  let products = database.prepare("select * from product;").all();
+  let products = database.prepare("select * from product where archived = 0;").all();
   products.forEach((key: any) => {
     key["isVisible"] = key["isVisible"] !== 0;
   });
@@ -20,7 +20,7 @@ export function getAllArticles() {
 }
 
 export function getAllVendorProducts(id: string) {
-  let products = database.prepare("select * from product where vendorId = ?").all(id);
+  let products = database.prepare("select * from product where vendorId = ? and archived = 0").all(id);
   products.forEach((key: any) => {
     key["isVisible"] = key["isVisible"] !== 0;
   });
@@ -97,9 +97,10 @@ export function updateInventoryAndPurchases(productId: string, purchases: number
 }
 
 export function deleteArticleById(id: string) {
-  return database.prepare("delete from product where id = ?;").run(id);
+  //return database.prepare("delete from product where id = ?;").run(id);
+  database.prepare("update product set archived = 1 where id = ?").run(id);
 }
 
 function getInventoryAndPurchases(productId: string) {
-  return database.prepare("select inventory, purchases from product where id = ?;").get(productId);
+  return database.prepare("select inventory, purchases from product where id = ? and archived = 0;").get(productId);
 }

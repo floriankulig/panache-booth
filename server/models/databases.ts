@@ -33,6 +33,7 @@ const createProductTable =
   "purchases integer, " +
   "inventory integer not null, " +
   "isVisible integer not null, " +
+  "archived integer default 0," +
   "createdAt varchar(255) not null, " +
   "updatedAt varchar(255) not null" +
   ");";

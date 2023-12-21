@@ -127,7 +127,7 @@ export function updateArticle(reqParams: any, reqBody: any) {
 export function deleteArticle(reqParams: any) {
   let productId = reqParams.productId;
   if (getArticleById(productId) !== undefined) {
-    return deleteArticleById(productId);
+    deleteArticleById(productId);
   } else {
     throw new ProductNotExistingError();
   }

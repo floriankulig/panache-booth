@@ -1,5 +1,4 @@
 import express from "express";
-import { IProduct } from "../models/IProduct";
 import {
   addArticle,
   allArticles,
