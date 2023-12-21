@@ -4,7 +4,6 @@ import {
   checkIfProductIsInOrder,
   createOrder,
   createOrderProductEntity,
-  deleteOrderById,
   getAllOrders,
   getAllOrdersByUserId,
   getAllOrdersWithVendorProducts,
@@ -14,7 +13,6 @@ import {
   updateOrderById, updateOrderProductEntity,
 } from "../models/order";
 import { getUserById } from "../models/user";
-import { userById } from "./user";
 import { IsVendorFormatError, UserNotExistingError } from "../util/customUserErrors";
 import { getProductById, updateInventoryAndPurchases } from "../models/product";
 import {
@@ -25,7 +23,6 @@ import {
 } from "../util/customOrderErrors";
 import { ProductNotExistingError, ProductOutOfStockError, ProductPriceFormatError } from "../util/customProductErrors";
 import { IOrderProduct } from "../models/IOrderProduct";
-import { productById } from "./product";
 import { validateDecimalNumber } from "../util/util";
 
 export function orderById(id: string) {
@@ -235,11 +232,6 @@ export function updateOrder(reqParams: any, reqBody: any) {
     products: [...productsNew],
   };
 }
-
-export function deleteOrder(id: string) {
-  return deleteOrderById(id);
-}
-
 
 function validateOrderUser(userId: any): string {
   if (getUserById(userId) === undefined) {

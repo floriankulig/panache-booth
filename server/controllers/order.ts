@@ -4,7 +4,7 @@ import {
   allOrders,
   allUserOrdersById,
   allVendorOrdersById,
-  deleteOrder, updateOrder,
+  updateOrder
 } from "../services/order";
 import { UserError } from "../util/customUserErrors";
 import { OrderError } from "../util/customOrderErrors";
@@ -51,16 +51,6 @@ router.post("/", async (req, res) => {
 router.put("/:orderId", async (req, res) => {
   try {
     res.status(200).json(await updateOrder(req.params, req.body));
-  } catch (error) {
-    res.status(500).send("Internal server error!");
-  }
-});
-
-router.delete("/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    await deleteOrder(id);
-    res.sendStatus(200);
   } catch (error) {
     res.status(500).send("Internal server error!");
   }

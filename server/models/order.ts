@@ -48,10 +48,6 @@ export function updateOrderProductEntity(orderProduct: Omit<IOrderProduct, "quan
   ).run(isDeliveredNumeric, orderProduct.updatedAt, orderProduct.orderId, orderProduct.productId);
 }
 
-export function deleteOrderById(id: string) {
-  return database.prepare("delete from orders where id = ?;").run(id);
-}
-
 export function getAllOrdersByUserId(id: string) {
   return database.prepare("select * from orders where userId = ?").all(id);
 }
