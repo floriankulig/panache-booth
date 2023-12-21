@@ -17,11 +17,7 @@ router.get("/", async (req, res) => {
   try {
     res.status(200).json(allUsers());
   } catch (error) {
-    if (error instanceof SqliteError) {
-      res.status(400).send("Database error!");
-    } else {
-      res.status(500).send("Internal server error!");
-    }
+    res.status(500).send("Internal server error!");
   }
 });
 
@@ -30,13 +26,9 @@ router.post("/login", async (req, res) => {
     res.status(200).json(await loginUser(req.body));
   } catch (error) {
     if (error instanceof UserError) {
-      res.status(401).send(error.message);
+      res.status(400).send(error.message);
     }
-    if (error instanceof SqliteError) {
-      res.status(400).send("Database error!");
-    } else {
-      res.status(500).send("Internal server error!");
-    }
+    res.status(500).send("Internal server error!");
   }
 });
 
@@ -48,8 +40,6 @@ router.post("/", async (req, res) => {
       res.status(400).send(error.message);
     } else if (error instanceof SqliteError && error.code === "SQLITE_CONSTRAINT_UNIQUE") {
       res.status(400).send("Email already existing!");
-    } else if (error instanceof SqliteError) {
-      res.status(400).send("Database error!");
     } else {
       res.status(500).send("Internal server error!");
     }
@@ -62,8 +52,8 @@ router.put("/:userId", async (req, res) => {
   } catch (error) {
     if (error instanceof UserError) {
       res.status(400).send(error.message);
-    } else if (error instanceof SqliteError) {
-      res.status(400).send("Database error!");
+    } else if (error instanceof SqliteError && error.code === "SQLITE_CONSTRAINT_UNIQUE") {
+      res.status(400).send("Email already existing!");
     } else {
       res.status(500).send("Internal server error!");
     }
@@ -77,8 +67,6 @@ router.delete("/:userId", async (req, res) => {
   } catch (error) {
     if (error instanceof UserError) {
       res.status(400).send(error.message);
-    } else if (error instanceof SqliteError) {
-      res.status(400).send("Database error!");
     } else {
       res.status(500).send("Internal server error!");
     }
@@ -91,8 +79,6 @@ router.get("/:userId", async (req, res) => {
   } catch (error) {
     if (error instanceof UserError) {
       res.status(400).send(error.message);
-    } else if (error instanceof SqliteError) {
-      res.status(400).send("Database error!");
     } else {
       res.status(500).send("Internal server error!");
     }

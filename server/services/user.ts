@@ -41,6 +41,7 @@ export function userByEmail(email: string) {
 
 export function allUsers() {
   let users: any[] = getAllUsers();
+  console.log(users)
   users.forEach((key) => {
     key["isVendor"] = key["isVendor"] !== 0;
   });

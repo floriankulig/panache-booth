@@ -32,8 +32,6 @@ router.post("/", async (req, res) => {
   } catch (error) {
     if (error instanceof ProductError || error instanceof UserError) {
       res.status(400).send(error.message);
-    } else if (error instanceof SqliteError) {
-      res.status(400).send("Database error!");
     } else {
       res.status(500).send("Internal server error!");
     }
@@ -46,8 +44,6 @@ router.put("/:productId", async (req, res) => {
   } catch (error) {
     if (error instanceof ProductError) {
       res.status(400).send(error.message);
-    } else if (error instanceof SqliteError) {
-      res.status(400).send("Database error!");
     } else {
       res.status(500).send("Internal server error!");
     }
@@ -62,7 +58,7 @@ router.delete("/:productId", async (req, res) => {
     if (error instanceof ProductError) {
       res.status(400).send(error.message);
     } else {
-      res.status(500).send("Internal server error! Product was not deleted!");
+      res.status(500).send("Internal server error!");
     }
   }
 });
