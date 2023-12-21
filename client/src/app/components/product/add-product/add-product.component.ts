@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import { Product } from "../../../../models";
+import { CATEGORIES, Category, CategoryID, Product } from "../../../../models";
 import { PositiveNumberDirective } from "../../../directives/positive-number.directive";
 import { of } from "rxjs";
 import { IconsModule } from "../../../icons/icons.module";
@@ -19,6 +19,7 @@ import {
 import { AxiosError } from "axios";
 import { buildProductFromFormValues } from "../../../../helpers";
 import { SwitchComponent } from "../../switch/switch.component";
+import { TypedDropdownComponent } from "../../typed-dropdown/typed-dropdown.component";
 
 @Component({
   selector: "pb-add-product",
@@ -28,6 +29,7 @@ import { SwitchComponent } from "../../switch/switch.component";
     IconsModule,
     ReactiveFormsModule,
     PositiveNumberDirective,
+    TypedDropdownComponent,
     SwitchComponent,
   ],
   templateUrl: "./add-product.component.html",
@@ -67,10 +69,23 @@ export class AddProductComponent {
           return Number(control.value) <= 0 ? of({ negative: true }) : of(null);
         },
       ],
-      inventory: [this.initialValues?.inventory || ""],
+      category: [this.initialValues?.category || "", Validators.required],
+      inventory: [this.initialValues?.inventory || "", Validators.required],
       discount: [(this.initialValues?.discount || 0) * 100 || ""],
     });
-    this.isVisible = signal(this.initialValues?.isVisible || true);
+    this.isVisible.set(this.initialValues?.isVisible === false ? false : true);
+  }
+
+  get categoryValue(): CategoryID {
+    return this.formGroup.get("category")?.value;
+  }
+  get categoryValues(): Readonly<Category[]> {
+    return CATEGORIES;
+  }
+
+  onCategoryChange(category: CategoryID) {
+    this.formGroup.patchValue({ category });
+    this.formGroup.get("category")?.markAsTouched();
   }
 
   onCancel() {

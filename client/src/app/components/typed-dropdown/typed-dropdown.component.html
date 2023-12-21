@@ -1,0 +1,31 @@
+<div class="click-contain" (onClickOutside)="clickOutside()">
+  <div class="input">
+    <input
+      type="text"
+      [placeholder]="placeholder || 'Type to browse'"
+      #input
+      (input)="filterValues($event)"
+      (keypress)="onKeyPress($event)"
+      (focus)="onInputFocus()"
+    />
+    <div class="open-icon" (click)="toggleDropdown()">
+      <div class="open-icon__inner">
+        <i-feather
+          name="chevron-down"
+          [class]="{ opened: dropdownOpen }"
+        ></i-feather>
+      </div>
+    </div>
+  </div>
+  @if (dropdownOpen) {
+  <div class="dropdown">
+    <ul class="dropdown__list">
+      @if (displayedValues.length === 0) {
+      <li class="no-result"><i-feather name="frown"></i-feather> No results</li>
+      } @else { @for (item of displayedValues; track item.id) {
+      <li (click)="onSelectValue(item)">{{ item.displayValue }}</li>
+      }}
+    </ul>
+  </div>
+  }
+</div>

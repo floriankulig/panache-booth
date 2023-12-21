@@ -39,29 +39,54 @@
       {{ formGroup.get("description")?.value?.length || 0 }}/300
     </div>
   </div>
-  <div class="input">
-    <div>
-      <span>Price* (€)</span>
-      @if (formGroup.get("price")?.errors && formGroup.get("price")?.touched) {
-      <span class="input-error">
-        @if (formGroup.get("price")?.errors?.["required"]) { Required } @else if
-        (formGroup.get("price")?.errors?.["negative"]) { Must be a positive
-        value }
-      </span>
-      }
+  <div class="input-row">
+    <div class="input">
+      <div>
+        <span>Price* (€)</span>
+        @if (formGroup.get("price")?.errors && formGroup.get("price")?.touched)
+        {
+        <span class="input-error">
+          @if (formGroup.get("price")?.errors?.["required"]) { Required } @if
+          (formGroup.get("price")?.errors?.["negative"]) { Must be a positive
+          value }
+        </span>
+        }
+      </div>
+      <input
+        required
+        positiveNumber
+        [allowDecimal]="true"
+        formControlName="price"
+        placeholder="Product price in EUR"
+      />
     </div>
-    <input
-      required
-      positiveNumber
-      [allowDecimal]="true"
-      formControlName="price"
-      placeholder="Product price in EUR"
-    />
+    <div class="input">
+      <div>
+        <span>Category*</span>
+        @if (formGroup.get("category")?.errors &&
+        formGroup.get("category")?.touched) {
+        <span class="input-error">
+          @if (formGroup.get("category")?.errors?.["required"]) { Required }
+        </span>
+        }
+      </div>
+      <pb-typed-dropdown
+        [value]="categoryValue"
+        [values]="categoryValues"
+        (changedValue)="onCategoryChange($event)"
+      ></pb-typed-dropdown>
+    </div>
   </div>
   <div class="input-row">
     <div class="input">
       <div>
-        <span>Stock/Inventory</span>
+        <span>Stock/Inventory*</span>
+        @if (formGroup.get("inventory")?.errors &&
+        formGroup.get("inventory")?.touched) {
+        <span class="input-error">
+          @if (formGroup.get("inventory")?.errors?.["required"]) { Required }
+        </span>
+        }
       </div>
       <input
         positiveNumber

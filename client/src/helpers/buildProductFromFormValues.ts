@@ -6,12 +6,10 @@ export const buildProductFromFormValues = (
   isVisible: boolean = true,
 ): FormProduct => {
   const product: FormProduct = {
-    ...(formValues.value as Pick<
-      Product,
-      "name" | "price" | "description" | "discount" | "inventory" | "category"
-    >),
+    ...(formValues.value as Pick<Product, "name" | "description" | "category">),
     discount: Number((formValues.value.discount / 100).toFixed(2)),
-    category: "electronics" as CategoryID,
+    price: Number(Number(formValues.value.price).toFixed(2)),
+    inventory: Number(formValues.value.inventory),
     isVisible,
   };
 
