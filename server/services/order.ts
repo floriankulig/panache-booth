@@ -70,6 +70,7 @@ export function allVendorOrdersById(reqParams: any) {
     let orders: any[] = getAllOrdersWithVendorProducts(vendorId);
     let newArray = [];
     let productsNew = [];
+    let vendorPrice = 0;
 
     for (const order of orders) {
       let orderProductsVendor: any[] = getProductsOfOrderVendor(
@@ -81,12 +82,14 @@ export function allVendorOrdersById(reqParams: any) {
         orderProductVendor.delivered =
           orderProductVendor.delivered === 1 ? true : false;
         orderProductVendor.isVisible = orderProductVendor.isVisible === 1 ? true : false;
+        vendorPrice += orderProductVendor.price;
         const combinedProduct = {
           ...orderProductVendor,
           vendor: vendorInfo,
         };
         productsNew.push(combinedProduct);
       }
+      order.price = vendorPrice;
       const combinedObject = {
         ...order,
         products: [...productsNew],
