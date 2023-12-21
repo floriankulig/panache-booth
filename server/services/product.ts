@@ -85,14 +85,14 @@ export function addArticle(reqBody: any) {
     discount: reqBody.discount !== undefined ? validateDiscount(reqBody.discount) : (() => {
       throw new ProductDiscountFormatError();
     })(),
-    price: reqBody.price ? validatePrice(reqBody.price) : (() => {
+    price: reqBody.price !== undefined ? validatePrice(reqBody.price) : (() => {
       throw new ProductPriceFormatError();
     })(),
     vendorId: reqBody.vendorId ? validateVendorId(reqBody.vendorId) : (() => {
       throw new IsVendorFormatError();
     })(),
     purchases: 0,
-    inventory: reqBody.inventory ? validateInventory(reqBody.inventory) : (() => {
+    inventory: reqBody.inventory !== undefined ? validateInventory(reqBody.inventory) : (() => {
       throw new ProductInventoryFormatError();
     })(),
     isVisible: reqBody.isVisible.toString() ? validateIsVisible(reqBody.isVisible) : (() => {
