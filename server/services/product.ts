@@ -70,6 +70,7 @@ export function allVendorProducts(reqQuery: any) {
 
 export function addArticle(reqBody: any) {
   const currentTimestamp = new Date().toISOString();
+  console.log(reqBody)
   let product: IProduct = {
     id: uuidv4(),
     name: reqBody.name ? validateName(reqBody.name) : (() => {
@@ -81,7 +82,7 @@ export function addArticle(reqBody: any) {
     category: reqBody.category ? validateCategory(reqBody.category) : (() => {
       throw new ProductCategoryFormatError();
     })(),
-    discount: reqBody.discount ? validateDiscount(reqBody.discount) : (() => {
+    discount: reqBody.discount !== undefined ? validateDiscount(reqBody.discount) : (() => {
       throw new ProductDiscountFormatError();
     })(),
     price: reqBody.price ? validatePrice(reqBody.price) : (() => {
@@ -155,6 +156,8 @@ function validateCategory(category: any): string {
 }
 
 function validateDiscount(discount: any): number {
+  console.log("ddfd")
+  console.log(discount)
   if (typeof discount !== "number" && !checkForTwoDecimalPlaces(discount)) {
     throw new ProductDiscountFormatError() ;
   }
@@ -176,7 +179,7 @@ function validateVendorId(vendorId: any): string {
 }
 
 function checkForTwoDecimalPlaces(value: number): boolean {
-  const decimalRegex = /^\d+(\.\d{1,2})?$/;
+  const decimalRegex = /^\d+(\.\d+)?$/;
   return decimalRegex.test(value.toString());
 }
 
