@@ -73,7 +73,7 @@ export class AddProductComponent {
       inventory: [this.initialValues?.inventory || "", Validators.required],
       discount: [(this.initialValues?.discount || 0) * 100 || ""],
     });
-    this.isVisible = signal(this.initialValues?.isVisible || true);
+    this.isVisible.set(this.initialValues?.isVisible === false ? false : true);
   }
 
   get categoryValue(): CategoryID {
