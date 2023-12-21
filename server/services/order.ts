@@ -15,7 +15,7 @@ import {
 } from "../models/order";
 import { getUserById } from "../models/user";
 import { userById } from "./user";
-import { UserNotExistingError } from "../util/customUserErrors";
+import { IsVendorFormatError, UserNotExistingError } from "../util/customUserErrors";
 import { getArticleById, updateInventoryAndPurchases } from "../models/product";
 import {
   InvalidUserError,
@@ -184,6 +184,7 @@ export function updateOrder(reqParams: any, reqBody: any) {
     if (!checkIfProductIsInOrder(product.id, orderId)) {
       throw new ProductNotInOrderError();
     }
+    validateDeliveredFormat(product.delivered);
   }
   const currentTimestamp = new Date().toISOString();
   let order: Pick<IOrder, "updatedAt"> = {
@@ -260,7 +261,7 @@ function validateOrderQuantity(quantity: any): number {
 
 function checkOutOfStock(productId: string, quantity: number) {
   let product = getArticleById(productId);
-  console.log(product)
+  console.log(product);
   if (product.inventory < quantity) {
     throw new ProductOutOfStockError();
   }
@@ -269,4 +270,10 @@ function checkOutOfStock(productId: string, quantity: number) {
 function checkForTwoDecimalPlaces(value: number): boolean {
   const decimalRegex = /^\d+(\.\d{1,2})?$/;
   return decimalRegex.test(value.toString());
+}
+
+function validateDeliveredFormat(delivered: any) {
+  if (typeof delivered !== "boolean") {
+    throw new IsVendorFormatError();
+  }
 }
