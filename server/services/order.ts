@@ -148,10 +148,12 @@ export function addOrder(reqBody: any) {
       throw new OrderPriceFormatError();
     })()
   };
-
-  let testOrder = createOrder(order);
   products.forEach((item: { id: string; quantity: number; }) => {
     validateOrderQuantity(item.quantity);
+  });
+  let createdOrder = createOrder(order);
+
+  products.forEach((item: { id: string; quantity: number; }) => {
     let orderProductEntity: IOrderProduct = {
       orderId: order.id,
       productId: item.id,
@@ -163,7 +165,7 @@ export function addOrder(reqBody: any) {
     createOrderProductEntity(orderProductEntity);
     updateInventoryAndPurchases(item.id, item.quantity);
   });
-  return testOrder;
+  return createdOrder;
 }
 
 export function updateOrder(reqParams: any, reqBody: any) {
