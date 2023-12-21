@@ -1,4 +1,11 @@
-import { Component, OnInit, computed, effect, signal } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  WritableSignal,
+  computed,
+  effect,
+  signal,
+} from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { AuthService, NotificationService } from "../../services";
 import { User } from "../../../models";
@@ -17,10 +24,17 @@ import { DeleteConfirmComponent } from "../../components/delete-confirm/delete-c
   styleUrl: "./profile.component.scss",
 })
 export class ProfileComponent implements OnInit {
-  profile?: User;
-  joinDate?: string;
+  profile: WritableSignal<User | undefined> = signal(undefined);
+  joinDate = computed(() => {
+    if (this.profile()?.createdAt) {
+      console.log(this.profile()?.createdAt);
+      return format(new Date(this.profile()?.createdAt || ""), "dd.MM.yyyy");
+    } else {
+      return "";
+    }
+  });
   isOwnProfile = computed(
-    () => this.profile?.id === this.authService.user()?.id,
+    () => this.profile()?.id === this.authService.user()?.id,
   );
 
   deleteModalOpen = signal(false);
@@ -32,7 +46,11 @@ export class ProfileComponent implements OnInit {
     private authService: AuthService,
   ) {
     effect(() => {
-      if (!!this.profile && !this.profile.isVendor && !this.isOwnProfile()) {
+      if (
+        !!this.profile() &&
+        !this.profile()?.isVendor &&
+        !this.isOwnProfile()
+      ) {
         this.router.navigate(["/"]);
       }
     });
@@ -45,7 +63,7 @@ export class ProfileComponent implements OnInit {
 
       if (id && !isOwnProfile) {
         try {
-          this.profile = await this.authService.getUser(id);
+          this.profile?.set(await this.authService.getUser(id));
         } catch (error) {
           if (
             ((error as AxiosError).response?.data as string).includes(
@@ -64,13 +82,8 @@ export class ProfileComponent implements OnInit {
         if (!this.authService.user()) {
           this.router.navigate(["/"]);
         }
-        this.profile = this.authService.user() || undefined;
+        this.profile.set(this.authService.user() || undefined);
       }
-
-      this.joinDate =
-        (this.profile &&
-          format(new Date(this.profile.createdAt), "dd.MM.yyyy")) ||
-        undefined;
     });
   }
 
