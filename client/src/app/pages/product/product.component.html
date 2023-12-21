@@ -1,0 +1,107 @@
+@if (product && product.isVisible) {
+<div class="content-inner product">
+  <div class="product-info">
+    <span class="date">
+      <i-feather name="calendar"></i-feather>{{ lastUpdated }}
+    </span>
+    <h1>{{ product.name }}</h1>
+    <div class="chiplist">
+      <span
+        class="clickable"
+        tabindex="0"
+        (click)="navigateTo('/profile?id=' + product.vendor.id)"
+        ><i-feather name="user"></i-feather
+        >{{ isOwnProduct() ? "You" : product.vendor.userName }}</span
+      >
+      <span class=""
+        ><i-feather name="grid"></i-feather>{{ productCategory }}</span
+      >
+      @if (product.purchases) {
+      <span class=""
+        ><i-feather name="shopping-bag"></i-feather>Purchased
+        {{ product.purchases }} times</span
+      >
+      }
+    </div>
+    <div class="description">
+      <span>Description</span>
+      <p class="description--text">{{ product.description }}</p>
+    </div>
+  </div>
+  <div class="action-bar">
+    <div class="price">
+      <span class="price--value">{{ product.price.toFixed(2) }}€</span>
+      <span class="price--currency"
+        >per item
+        <div>&bull;</div>
+        <p>{{ maxProductQuantity > 99 ? "99+" : maxProductQuantity }} left</p>
+      </span>
+    </div>
+    <div class="div"></div>
+    <div class="vendor-info">
+      <div class="vendor-info--name">
+        <span>{{ product.vendor.userName }}</span>
+      </div>
+      <div>
+        <span class="vendor-info--value"
+          >{{ product.vendor.street }} {{ product.vendor.houseNumber }}</span
+        >
+        <span class="vendor-info--label">Street, Nr.</span>
+      </div>
+      <div>
+        <span class="vendor-info--value"
+          >{{ product.vendor.postcode }} {{ product.vendor.city }}</span
+        >
+        <span class="vendor-info--label">Zipcode, City </span>
+      </div>
+      <div>
+        <span class="vendor-info--value"
+          >{{ product.vendor.shippingCost.toFixed(2) }}€
+        </span>
+        @if (product.vendor.shippingFreeFrom >= 0 &&
+        product.vendor.shippingCost) {
+        <span class="vendor-info--label"
+          >Shipping - Free from
+          {{ product.vendor.shippingFreeFrom.toFixed(2) }}€</span
+        >
+        } @else {
+        <span class="vendor-info--label">Shipping Cost</span>
+        }
+      </div>
+    </div>
+    <div class="div"></div>
+    <div class="actions">
+      <pb-quantity
+        [value]="addToCartQuantity"
+        [min]="1"
+        [max]="maxProductQuantity"
+        (valueChange)="addToCartQuantity = $event"
+      ></pb-quantity>
+      <button (click)="addToCart()">Add {{ addToCartQuantity }} to cart</button>
+    </div>
+  </div>
+</div>
+@if (moreProducts().length) {
+
+<div class="suggestions content-inner">
+  <h2 class="page-title">More from {{ product.vendor.userName }}</h2>
+  <div class="grid">
+    @for (product of moreProducts(); track product.id) {
+    <pb-product-card [product]="product"> </pb-product-card>
+    }
+  </div>
+</div>
+} } @else { @if (product?.isVisible === false && isOwnProduct()) {
+<div class="notvisible-wrapper">
+  <div class="content">
+    <i-feather name="eye-off"></i-feather>
+    <h1>Product is not visible</h1>
+    <button (click)="toggleVisibility()">Show</button>
+  </div>
+</div>
+}@else {
+
+<div class="content-inner">
+  <h1>Product does not exist</h1>
+</div>
+} }

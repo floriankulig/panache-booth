@@ -35,9 +35,9 @@ export class HeaderComponent {
     const activeTabGroup = SIDEBAR_TABS.find((tab) =>
       tab.links.find((link) => link.url === url),
     );
-    return (
-      activeTabGroup?.links.find((link) => link.url === url)?.name || "Home"
-    );
+    return url.startsWith("/product")
+      ? "Product"
+      : activeTabGroup?.links.find((link) => link.url === url)?.name || "Home";
   }
 
   openCart() {

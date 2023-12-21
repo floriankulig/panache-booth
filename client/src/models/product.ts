@@ -13,7 +13,7 @@ interface Product {
   description: string;
   category: CategoryID;
   purchases: number;
-  inventory?: number;
+  inventory: number;
   isVisible: boolean;
   vendor: User;
   vendorId: string;
