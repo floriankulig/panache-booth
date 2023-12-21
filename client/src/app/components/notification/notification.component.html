@@ -2,7 +2,12 @@
 <div [class]="classes">
   <i-feather [name]="iconName"></i-feather>
   <p>{{ notification.message }}</p>
-  <div class="notification-close" role="button" (click)="removeNotification()">
+  <div
+    class="notification-close"
+    role="button"
+    (click)="removeNotification()"
+    tabindex="0"
+  >
     <i-feather name="x"></i-feather>
   </div>
   <div

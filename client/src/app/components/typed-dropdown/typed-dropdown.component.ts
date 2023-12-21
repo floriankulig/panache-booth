@@ -1,12 +1,8 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
   EventEmitter,
-  HostBinding,
-  HostListener,
   Input,
-  OnInit,
   Output,
   ViewChild,
 } from "@angular/core";

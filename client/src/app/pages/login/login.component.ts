@@ -1,13 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { Location } from "@angular/common";
 import { AxiosError } from "axios";
 import { IconsModule } from "../../icons/icons.module";
-import {
-  ActivatedRoute,
-  ActivatedRouteSnapshot,
-  Router,
-  RouterModule,
-} from "@angular/router";
+import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import {
   FormBuilder,
   FormGroup,

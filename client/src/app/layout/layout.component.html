@@ -1,6 +1,6 @@
 <pb-sidebar
   [class]="{ open: sidebarOpen() }"
-  (close)="closeSidebar()"
+  (closeSidebar)="closeSidebar()"
 ></pb-sidebar>
 <main>
   <pb-header (openSidebar)="sidebarOpen.set(true)"></pb-header>

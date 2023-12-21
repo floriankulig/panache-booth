@@ -167,6 +167,11 @@ export class CartComponent implements OnDestroy {
         duration: 5000,
       });
     } catch (error) {
+      this.notificiationService.addNotification({
+        message: "Order could not be placed",
+        type: "error",
+        duration: 5000,
+      });
     } finally {
       this.submitting = false;
     }

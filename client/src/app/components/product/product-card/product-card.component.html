@@ -13,7 +13,7 @@
         #menu
         role="button"
         (click)="optionsOpen.set(true)"
-        (onClickOutside)="optionsOpen.set(false)"
+        (pbClickOutside)="optionsOpen.set(false)"
       >
         <i-feather name="more-vertical" class="trigger"></i-feather>
         @if (optionsOpen()) {
@@ -110,14 +110,17 @@
 </div>
 
 @if (deleteModalOpen()) {
-<pb-modal (close)="deleteModalOpen.set(false)">
+<pb-modal (modalClose)="deleteModalOpen.set(false)">
   <pb-delete-confirm
     [product]="product"
     (delete)="onDeleteSuccess()"
   ></pb-delete-confirm>
 </pb-modal>
 } @if (editModalOpen()) {
-<pb-modal (close)="editModalOpen.set(false)" [heading]="'Edit ' + product.name">
+<pb-modal
+  (modalClose)="editModalOpen.set(false)"
+  [heading]="'Edit ' + product.name"
+>
   <pb-add-product
     [initialValues]="product"
     (cancel)="editModalOpen.set(false)"

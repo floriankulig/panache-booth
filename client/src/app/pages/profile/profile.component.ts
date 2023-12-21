@@ -10,7 +10,6 @@ import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { AuthService, NotificationService } from "../../services";
 import { User } from "../../../models";
 import { AxiosError } from "axios";
-import { Location } from "@angular/common";
 import { format } from "date-fns";
 import { IconsModule } from "../../icons/icons.module";
 import { ModalComponent } from "../../components/modal/modal.component";

@@ -6,11 +6,11 @@
     <i-feather name="minus"></i-feather>
   </div>
   <div class="quantity-input__field">
-    <label class="quantity-input__field-label">{{ label || "Quantity" }}</label>
+    <div class="quantity-input__field-label">{{ label || "Quantity" }}</div>
     <input
       class="quantity-input__input"
       type="number"
-      positiveNumber
+      pbPositiveNumber
       [value]="value"
       (change)="onChange($event)"
       (blur)="onChange($event)"

@@ -6,10 +6,9 @@ import {
   Output,
   ViewChild,
   computed,
-  effect,
   signal,
 } from "@angular/core";
-import { CartProduct, Product } from "../../../../models";
+import { Product } from "../../../../models";
 import { IconsModule } from "../../../icons/icons.module";
 import {
   AuthService,

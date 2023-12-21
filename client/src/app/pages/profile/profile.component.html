@@ -58,7 +58,7 @@
   }
 </div>
 } @if (deleteModalOpen()) {
-<pb-modal (close)="deleteModalOpen.set(false)">
+<pb-modal (modalClose)="deleteModalOpen.set(false)">
   <pb-delete-confirm
     [user]="profile()"
     (delete)="deleteModalOpen.set(false)"
