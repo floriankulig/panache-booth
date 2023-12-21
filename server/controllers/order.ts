@@ -5,42 +5,67 @@ import {
   allOrders,
   allUserOrdersById,
   allVendorOrdersById,
-  deleteOrder,
+  deleteOrder, updateOrder,
 } from "../services/order";
 import { deleteOrderById } from "../models/order";
+import { SqliteError } from "better-sqlite3";
+import { UserError } from "../util/customUserErrors";
+import { OrderError } from "../util/customOrderErrors";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
     res.status(200).json(await allOrders());
   } catch (error) {
-    res.status(500).send("Internal server error!");
-  }
-});
-
-router.post("/", async (req, res) => {
-  try {
-    const order: Omit<IOrder, "id" | "createdAt" | "updatedAt"> = {
-      userId: req.body.userId,
-      price: req.body.price,
-    };
-    res.status(200).json(await addOrder(order, req.body.products));
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Internal server error!");
+    console.log(error)
+    if (error instanceof SqliteError) {
+      res.status(400).send("Database error!");
+    } else {
+      res.status(500).send("Internal server error!");
+    }
   }
 });
 
 router.get("/:id", async (req, res) => {
   try {
-    const id = req.params.id;
     if (req.query.isVendor === "false") {
-      res.status(200).json(await allUserOrdersById(id));
+      res.status(200).json(await allUserOrdersById(req.params));
     } else {
-      res.status(200).json(await allVendorOrdersById(id));
+      res.status(200).json(await allVendorOrdersById(req.params));
     }
   } catch (error) {
-    console.log(error);
+    if (error instanceof UserError) {
+      res.status(400).send(error.message);
+    } else if (error instanceof SqliteError) {
+      res.status(400).send("Database error!");
+    } else {
+      res.status(500).send("Internal server error!");
+    }
+  }
+});
+
+router.post("/", async (req, res) => {
+  try {
+    res.status(200).json(await addOrder(req.body));
+  } catch (error) {
+    console.log(error)
+    if (error instanceof UserError) {
+      res.status(400).send(error.message);
+    } else if (error instanceof OrderError) {
+      res.status(400).send(error.message);
+    } else if (error instanceof SqliteError) {
+      res.status(400).send("Database error!");
+    } else {
+      res.status(500).send("Internal server error!");
+    }
+  }
+});
+
+router.put("/:orderId", async (req, res) => {
+  try {
+    res.status(200).json(await updateOrder(req.params, req.body));
+  } catch (error) {
+    console.log(error)
     res.status(500).send("Internal server error!");
   }
 });

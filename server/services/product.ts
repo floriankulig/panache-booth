@@ -109,8 +109,6 @@ export function updateArticle(reqParams: any, reqBody: any) {
   if (!getArticleById(productId)) {
     throw new ProductNotExistingError();
   }
-  console.log("TTTT");
-  console.log(reqBody);
   const currentTimestamp = new Date().toISOString();
   let product: Omit<IProduct, "id" | "createdAt" | "purchases"> = {
     name: reqBody.name !== undefined ? validateName(reqBody.name) : undefined,
@@ -123,7 +121,6 @@ export function updateArticle(reqParams: any, reqBody: any) {
     isVisible: reqBody.isVisible !== undefined ? validateIsVisible(reqBody.isVisible) : undefined,
     updatedAt: currentTimestamp,
   };
-  console.log(product);
   return updateArticleById(product, productId);
 }
 

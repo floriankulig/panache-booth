@@ -50,7 +50,9 @@ const createOrderProductTable =
   "orderId varchar(36) not null, " +
   "productId varchar(36) not null, " +
   "quantity integer not null, " +
-  "delivered integer not null, " +
+  "delivered integer not null," +
+  "createdAt varchar(255) not null, " +
+  "updatedAt varchar(255) not null, " +
   "primary key(orderId, productId), " +
   "foreign key(orderId) references orders(id), " +
   "foreign key(productId) references product(id));";
