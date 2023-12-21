@@ -1,7 +1,6 @@
 import { Injectable, WritableSignal, effect, signal } from "@angular/core";
 import axios, { AxiosError } from "axios";
-import { APIProduct, API_URL, FormProduct, Product } from "../../../models";
-import { categoryById } from "../../../helpers";
+import { Product, API_URL, FormProduct } from "../../../models";
 import { AuthService } from "../auth/auth.service";
 
 @Injectable({
@@ -12,6 +11,7 @@ export class ProductService {
   constructor(private authService: AuthService) {
     this.getProducts();
     effect(() => {
+      // We need to trigger this to run the effect every time the user changes
       const user = this.authService.user();
       this.getProducts();
     });
@@ -36,7 +36,7 @@ export class ProductService {
       const url = `${API_URL}/product${
         vendorId ? `?vendorId=${vendorId}` : ""
       }`;
-      const res = await axios.get<APIProduct[]>(url);
+      const res = await axios.get<Product[]>(url);
       const products = res.data;
       if (!vendorId) this.products.set(products);
       return products;
@@ -45,7 +45,16 @@ export class ProductService {
     }
   }
 
-  async updateProduct(product: APIProduct) {
+  async getProduct(productId: string) {
+    try {
+      const res = await axios.get<Product>(`${API_URL}/product/${productId}`);
+      return res.data;
+    } catch (error) {
+      throw error as AxiosError;
+    }
+  }
+
+  async updateProduct(product: Product) {
     try {
       const res = await axios.put(`${API_URL}/product/${product.id}`, {
         ...product,

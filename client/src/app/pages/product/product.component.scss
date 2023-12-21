@@ -1,0 +1,192 @@
+@use "variables.scss" as *;
+
+.product {
+  display: flex;
+  gap: grid(3);
+  margin-top: grid(2);
+
+  &-info {
+    flex: 1;
+
+    .date {
+      display: flex;
+      align-items: center;
+      gap: grid(1.5);
+      margin-bottom: grid(2);
+      color: $textSecondary;
+
+      i-feather {
+        width: grid(2.5);
+        height: grid(2.5);
+      }
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 4rem);
+      font-weight: 700;
+      margin-bottom: grid(3);
+    }
+
+    .chiplist {
+      display: flex;
+      flex-wrap: wrap;
+      gap: grid(1);
+      margin-bottom: grid(2);
+
+      & > span {
+        display: flex;
+        align-items: center;
+        gap: grid(1);
+        font-size: clamp(1rem, 2vw, 1.1rem);
+        font-weight: 500;
+        background: $bgSecondary;
+        padding: grid(1) grid(2);
+        border-radius: grid(6);
+
+        &.clickable {
+          cursor: pointer;
+          transition: all 0.2s ease-in-out;
+
+          &:hover {
+            background: darken($bgSecondary, 3);
+          }
+
+          &:active {
+            scale: 0.95;
+          }
+        }
+
+        i-feather {
+          width: grid(2.5);
+          height: grid(2.5);
+        }
+      }
+    }
+
+    .description {
+      margin-block: grid(3);
+      span {
+        font-size: 0.9rem;
+        display: inline-block;
+        text-transform: uppercase;
+        color: $textSecondary;
+        margin-bottom: grid(0.5);
+      }
+
+      p {
+        font-size: clamp(1.05rem, 2vw, 1.15rem);
+        line-height: 1.2;
+        max-width: 70ch;
+      }
+    }
+  }
+  .action-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: clamp(250px, 30%, 300px);
+    border-radius: grid(2);
+    background: $bgSecondary;
+
+    & > * {
+      padding: grid(2);
+    }
+    .price {
+      display: flex;
+      flex-direction: column;
+      margin-block: grid(1);
+
+      &--value {
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 700;
+      }
+
+      &--currency {
+        color: $textSecondary;
+        display: flex;
+        align-items: center;
+        gap: grid(1);
+      }
+    }
+
+    .div {
+      width: 100%;
+      height: 1px;
+      padding: 0;
+      background: darken($bgSecondary, 5);
+    }
+
+    .vendor-info {
+      &--name {
+        font-size: clamp(1.1rem, 2vw, 1.2rem);
+        font-weight: 500;
+        margin-bottom: grid(0.5);
+      }
+
+      &,
+      & > div {
+        display: flex;
+        flex-direction: column;
+        & > * {
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          word-break: break-all;
+          line-height: 1.2;
+        }
+      }
+      gap: grid(1);
+
+      &--label {
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+        color: $textSecondary;
+      }
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: grid(2);
+      align-items: center;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+
+    .action-bar {
+      width: 100%;
+    }
+  }
+}
+
+.suggestions {
+  margin-top: grid(6);
+  padding-block: grid(5);
+  background-color: $bgSecondary;
+  h2 {
+    padding-bottom: grid(5);
+  }
+}
+
+.notvisible-wrapper {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  width: 100%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    darken($bgSecondary, 5) 10%,
+    rgba($bgSecondary, 0.01) 40%
+  );
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: grid(2);
+  }
+}

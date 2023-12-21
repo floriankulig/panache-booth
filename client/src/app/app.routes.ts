@@ -7,10 +7,12 @@ import { UserGuard } from "./guards/user.guard";
 import { WarehouseComponent } from "./pages/warehouse/warehouse.component";
 import { VendorGuard } from "./guards/vendor.guard";
 import { HomeComponent } from "./pages/home/home.component";
+import { ProductComponent } from "./pages/product/product.component";
 
 export const routes: Routes = [
   { path: "", component: HomeComponent },
   { path: "categories", component: HomeComponent },
+  { path: "product/:id", component: ProductComponent },
   { path: "login", component: LoginComponent, canActivate: [AuthGuard] },
   { path: "register", component: RegisterComponent, canActivate: [AuthGuard] },
   {
