@@ -83,6 +83,7 @@ export function allVendorOrdersById(reqParams: any) {
     let vendorPrice = 0;
 
     for (const order of orders) {
+      console.log(order)
       let orderProductsVendor: any[] = getProductsOfOrderVendor(
         order.id,
         vendorId,
@@ -90,7 +91,6 @@ export function allVendorOrdersById(reqParams: any) {
       let vendorInfo: any = getUserById(vendorId);
       for (const orderProductVendor of orderProductsVendor) {
         let statusOrder: any = getStatusOfOrder(order.id, orderProductVendor.id);
-        console.log(statusOrder)
         vendorInfo.shippingCost = statusOrder.vendorShippingCost;
         vendorInfo.shippingFreeFrom = statusOrder.vendorShippingFreeFrom;
         orderProductVendor.price = statusOrder.priceProduct;
@@ -105,16 +105,17 @@ export function allVendorOrdersById(reqParams: any) {
         };
         productsNew.push(combinedProduct);
       }
-      console.log(vendorPrice);
-      console.log(vendorInfo);
       if (vendorPrice < vendorInfo.shippingFreeFrom) {
         order.price = vendorPrice + vendorInfo.shippingCost;
       } else {
         order.price = vendorPrice;
       }
       console.log(order.price);
+      let user = getUserById(order.userId)
+      console.log(user)
       const combinedObject = {
         ...order,
+        user: user,
         products: [...productsNew],
       };
       newArray.push(combinedObject);
