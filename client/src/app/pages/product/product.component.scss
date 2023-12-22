@@ -77,6 +77,7 @@
         font-size: clamp(1.05rem, 2vw, 1.15rem);
         line-height: 1.2;
         max-width: 70ch;
+        white-space: pre;
       }
     }
   }
@@ -121,10 +122,18 @@
         font-size: clamp(1.1rem, 2vw, 1.2rem);
         font-weight: 500;
         margin-bottom: grid(0.5);
+
+        display: flex;
+        align-items: center;
+        gap: grid(1);
+        i-feather {
+          width: grid(2.5);
+          height: grid(2.5);
+        }
       }
 
       &,
-      & > div {
+      & > div:not(:first-child) {
         display: flex;
         flex-direction: column;
         & > * {
