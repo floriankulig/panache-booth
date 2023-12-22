@@ -41,7 +41,7 @@ export function updateOrderById(order: Pick<IOrder, "updatedAt">, orderId: strin
   ).run(order.updatedAt, orderId);
 }
 
-export function updateOrderProductEntity(orderProduct: Omit<IOrderProduct, "quantity" | "createdAt">) {
+export function updateOrderProductEntity(orderProduct: Omit<IOrderProduct, "quantity" | "createdAt" | "priceProduct" | "discountProduct" | "vendorShippingCost" | "vendorShippingFreeFrom">) {
   let isDeliveredNumeric = orderProduct.delivered ? 1 : 0;
   return database.prepare(
     "update orderProduct set delivered = ?, updatedAt = ? where orderId = ? and productId = ?;",
@@ -63,20 +63,23 @@ export function getAllOrdersWithVendorProducts(vendorId: string) {
   return orders;
 }
 
-export function getQuantityAndDeliveredStatusOfOrder(orderId: string, productId: string) {
-  return database.prepare("select quantity, delivered from orderProduct where orderId = ? and productId = ?").get(orderId, productId);
+export function getStatusOfOrder(orderId: string, productId: string) {
+  return database.prepare("select quantity, delivered, priceProduct, discountProduct, vendorShippingCost, vendorShippingFreeFrom" +
+    " from orderProduct where orderId = ? and productId = ?").get(orderId, productId);
 }
 
 export function createOrderProductEntity(orderProduct: IOrderProduct) {
   let isDeliveredNumeric = orderProduct.delivered ? 1 : 0;
+  console.log(orderProduct)
   database
     .prepare(
       "insert into orderProduct " +
-      "(orderId, productId, quantity, delivered, createdAt, updatedAt) " +
+      "(orderId, productId, quantity, delivered, createdAt, updatedAt, priceProduct, discountProduct, vendorShippingCost, vendorShippingFreeFrom) " +
       "values " +
-      "(?, ?, ?, ?, ?, ?);",
-    )
-    .run(orderProduct.orderId, orderProduct.productId, orderProduct.quantity, isDeliveredNumeric, orderProduct.createdAt, orderProduct.updatedAt);
+      "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    ).run(orderProduct.orderId, orderProduct.productId, orderProduct.quantity, isDeliveredNumeric,
+    orderProduct.createdAt, orderProduct.updatedAt, orderProduct.priceProduct, orderProduct.discountProduct,
+    orderProduct.vendorShippingCost, orderProduct.vendorShippingFreeFrom);
 }
 
 export function getProductsOfOrder(orderId: string) {

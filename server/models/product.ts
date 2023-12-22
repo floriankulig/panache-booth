@@ -92,6 +92,15 @@ export function deleteProductById(id: string) {
   database.prepare("update product set archived = 1 where id = ?").run(id);
 }
 
+export function getPriceOfProduct(productId: string) {
+  return database.prepare("select price from product where id = ? and archived = 0;").get(productId);
+}
+
+export function getDiscountOfProduct(productId: string) {
+  return database.prepare("select discount from product where id = ? and archived = 0;").get(productId);
+}
+
 function getInventoryAndPurchases(productId: string) {
   return database.prepare("select inventory, purchases from product where id = ? and archived = 0;").get(productId);
 }
+

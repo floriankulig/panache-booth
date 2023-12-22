@@ -47,6 +47,7 @@ export function allUsers() {
   users.forEach((key) => {
     key["isVendor"] = key["isVendor"] !== 0;
   });
+  console.log(users)
   return users;
 }
 
@@ -95,6 +96,11 @@ export function updateUser(reqParams: any, reqBody: any) {
     throw new UserNotExistingError();
   }
 
+  let existingUser: any = getUserById(userId);
+  console.log("exis")
+  console.log(existingUser.isVendor)
+  console.log(reqBody.shippingCost)
+
   const currentTimestamp = new Date().toISOString();
   let user: Omit<IUser, "userId" | "createdAt"> = {
     userName: reqBody.userName ? validateUserNameFormat(reqBody.userName) : undefined,
@@ -105,12 +111,13 @@ export function updateUser(reqParams: any, reqBody: any) {
     city: reqBody.city ? validateCityFormat(reqBody.city) : undefined,
     password: reqBody.password ? validatePasswordFormat(reqBody.password) : undefined,
     isVendor: reqBody.isVendor !== undefined ? validateIsVendorFormat(reqBody.isVendor) : undefined,
-    iban: reqBody.isVendor ? validateIbanFormat(reqBody.iban) : undefined,
-    bic: reqBody.isVendor ? validateBicFormat(reqBody.bic) : undefined,
-    shippingCost: reqBody.isVendor ? validateShippingCostFormat(reqBody.shippingCost) : undefined,
-    shippingFreeFrom: reqBody.isVendor ? validateShippingFreeFromFormat(reqBody.shippingFreeFrom) : undefined,
+    iban: reqBody.iban !== undefined && existingUser.isVendor === 1 ? validateIbanFormat(reqBody.iban) : undefined,
+    bic: reqBody.bic !== undefined && existingUser.isVendor === 1  ? validateBicFormat(reqBody.bic) : undefined,
+    shippingCost: reqBody.shippingCost !== undefined && existingUser.isVendor === 1 ? validateShippingCostFormat(reqBody.shippingCost) : 200,
+    shippingFreeFrom: reqBody.shippingFreeFrom !== undefined && existingUser.isVendor === 1 ? validateShippingFreeFromFormat(reqBody.shippingFreeFrom) : undefined,
     updatedAt: currentTimestamp,
   };
+  console.log(user)
   return updateUserById(userId, user);
 }
 

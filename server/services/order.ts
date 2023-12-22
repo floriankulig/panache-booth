@@ -9,12 +9,17 @@ import {
   getAllOrdersWithVendorProducts,
   getOrderById,
   getProductsOfOrder,
-  getProductsOfOrderVendor, getQuantityAndDeliveredStatusOfOrder,
+  getProductsOfOrderVendor, getStatusOfOrder,
   updateOrderById, updateOrderProductEntity,
 } from "../models/order";
-import { getUserById } from "../models/user";
+import { getUserById, getVendorShippingCost, getVendorShippingFreeFrom } from "../models/user";
 import { IsVendorFormatError, UserNotExistingError } from "../util/customUserErrors";
-import { getProductById, updateInventoryAndPurchases } from "../models/product";
+import {
+  getDiscountOfProduct,
+  getPriceOfProduct,
+  getProductById,
+  updateInventoryAndPurchases,
+} from "../models/product";
 import {
   InvalidUserError, NoProductsInOrderError,
   OrderNotExistingError,
@@ -24,6 +29,7 @@ import {
 import { ProductNotExistingError, ProductOutOfStockError, ProductPriceFormatError } from "../util/customProductErrors";
 import { IOrderProduct } from "../models/IOrderProduct";
 import { validateDecimalNumber } from "../util/util";
+import { it } from "node:test";
 
 export function orderById(id: string) {
   return getOrderById(id);
@@ -41,6 +47,11 @@ export function allUserOrdersById(reqParams: any) {
 
       for (let product of products) {
         let vendorInfo: any = getUserById(product.vendorId);
+        let statusOrder: any = getStatusOfOrder(order.orderId, product.vendorId);
+        product.price = statusOrder.price;
+        product.discount = statusOrder.discount;
+        vendorInfo.vendorShippingCost = statusOrder.shippingCost;
+        vendorInfo.vendorShippingFreeFrom = statusOrder.shippingFreeFrom;
         product.delivered =
           product.delivered === 1 ? true : false;
         product.isVisible = product.isVisible === 1 ? true : false;
@@ -77,8 +88,13 @@ export function allVendorOrdersById(reqParams: any) {
         vendorId,
       );
       let vendorInfo: any = getUserById(vendorId);
+      let statusOrder: any = getStatusOfOrder(order.orderId, vendorId);
+      vendorInfo.vendorShippingCost = statusOrder.shippingCost;
+      vendorInfo.vendorShippingFreeFrom = statusOrder.shippingFreeFrom;
       for (const orderProductVendor of orderProductsVendor) {
 
+        orderProductVendor.price = statusOrder.price;
+        orderProductVendor.discount = statusOrder.discount;
         orderProductVendor.delivered =
           orderProductVendor.delivered === 1 ? true : false;
         orderProductVendor.isVisible = orderProductVendor.isVisible === 1 ? true : false;
@@ -89,14 +105,14 @@ export function allVendorOrdersById(reqParams: any) {
         };
         productsNew.push(combinedProduct);
       }
-      console.log(vendorPrice)
-      console.log(vendorInfo)
+      console.log(vendorPrice);
+      console.log(vendorInfo);
       if (vendorPrice < vendorInfo.shippingFreeFrom) {
         order.price = vendorPrice + vendorInfo.shippingCost;
       } else {
         order.price = vendorPrice;
       }
-      console.log(order.price)
+      console.log(order.price);
       const combinedObject = {
         ...order,
         products: [...productsNew],
@@ -119,10 +135,16 @@ export function allOrders() {
     let products: any[] = getProductsOfOrder(order.id);
 
     for (let product of products) {
+      console.log(product)
       let vendorInfo: any = getUserById(product.vendorId);
-      let statusOrder: any = getQuantityAndDeliveredStatusOfOrder(order.id, product.id);
+      let statusOrder: any = getStatusOfOrder(order.id, product.id);
+      console.log(statusOrder)
       let productDelivered = statusOrder.delivered === 1 ? true : false;
       product.isVisible = product.isVisible === 1 ? true : false;
+      product.price = statusOrder.priceProduct;
+      product.discount = statusOrder.discountProduct;
+      vendorInfo.shippingCost = statusOrder.vendorShippingCost;
+      vendorInfo.shippingFreeFrom = statusOrder.vendorShippingFreeFrom;
       const combinedProduct = {
         ...product,
         quantity: statusOrder.quantity,
@@ -165,7 +187,11 @@ export function addOrder(reqBody: any) {
   });
   let createdOrder = createOrder(order);
 
-  products.forEach((item: { id: string; quantity: number; }) => {
+  products.forEach((item: { id: string; quantity: number; vendorId: string; }) => {
+    let productPrice: any = getPriceOfProduct(item.id);
+    let productDiscount: any = getDiscountOfProduct(item.id);
+    let vendorShippingCost: any = getVendorShippingCost(item.vendorId);
+    let vendorShippingFreeFrom: any = getVendorShippingFreeFrom(item.vendorId);
     let orderProductEntity: IOrderProduct = {
       orderId: order.id,
       productId: item.id,
@@ -173,6 +199,10 @@ export function addOrder(reqBody: any) {
       delivered: false,
       updatedAt: currentTimestamp,
       createdAt: currentTimestamp,
+      priceProduct: productPrice.price,
+      discountProduct: productDiscount.discount,
+      vendorShippingCost: vendorShippingCost.shippingCost,
+      vendorShippingFreeFrom: vendorShippingFreeFrom.shippingFreeFrom,
     };
     createOrderProductEntity(orderProductEntity);
     updateInventoryAndPurchases(item.id, item.quantity);
@@ -203,7 +233,7 @@ export function updateOrder(reqParams: any, reqBody: any) {
   updateOrderById(order, orderId);
 
   for (let product of products) {
-    let orderProduct: Omit<IOrderProduct, "quantity" | "createdAt"> = {
+    let orderProduct: Omit<IOrderProduct, "quantity" | "createdAt" | "priceProduct" | "discountProduct" | "vendorShippingCost" | "vendorShippingFreeFrom"> = {
       orderId: orderId,
       productId: product.id,
       delivered: product.delivered,
@@ -218,8 +248,12 @@ export function updateOrder(reqParams: any, reqBody: any) {
 
   for (let product of productsOfOrder) {
     let vendorInfo: any = getUserById(product.vendorId);
-    let statusOrder: any = getQuantityAndDeliveredStatusOfOrder(orderId, product.id);
+    let statusOrder: any = getStatusOfOrder(orderId, product.id);
     let productDelivered = statusOrder.delivered === 1 ? true : false;
+    product.price = statusOrder.priceProduct;
+    product.discount = statusOrder.discountProduct;
+    vendorInfo.shippingCost = statusOrder.vendorShippingCost;
+    vendorInfo.shippingFreeFrom = statusOrder.vendorShippingFreeFrom;
     const combinedProduct = {
       ...product,
       quantity: statusOrder.quantity,

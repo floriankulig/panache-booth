@@ -40,6 +40,7 @@ router.post("/", async (req, res) => {
   try {
     res.status(200).json(await addOrder(req.body));
   } catch (error) {
+    console.log(error)
     if (error instanceof UserError || error instanceof OrderError || error instanceof ProductError) {
       res.status(400).send(error.message);
     } else {

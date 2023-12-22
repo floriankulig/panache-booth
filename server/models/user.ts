@@ -84,3 +84,11 @@ export function loggedInUser(email: string, password: string) {
   sql += `where (email = '${email}') and (password = '${password}');`;
   return database.prepare(sql).get();
 }
+
+export function getVendorShippingCost(vendorId: string) {
+  return database.prepare("select shippingCost from user where id = ?;").get(vendorId);
+}
+
+export function getVendorShippingFreeFrom(vendorId: string) {
+  return database.prepare("select shippingFreeFrom from user where id = ?;").get(vendorId);
+}
