@@ -7,7 +7,11 @@ import {
   signal,
 } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
-import { AuthService, NotificationService } from "../../services";
+import {
+  AuthService,
+  NotificationService,
+  ProductService,
+} from "../../services";
 import { User } from "../../../models";
 import { AxiosError } from "axios";
 import { Location } from "@angular/common";
@@ -15,11 +19,17 @@ import { format } from "date-fns";
 import { IconsModule } from "../../icons/icons.module";
 import { ModalComponent } from "../../components/modal/modal.component";
 import { DeleteConfirmComponent } from "../../components/delete-confirm/delete-confirm.component";
+import { ProductCardComponent } from "../../components/product";
 
 @Component({
   selector: "pb-profile",
   standalone: true,
-  imports: [IconsModule, ModalComponent, DeleteConfirmComponent],
+  imports: [
+    IconsModule,
+    ModalComponent,
+    DeleteConfirmComponent,
+    ProductCardComponent,
+  ],
   templateUrl: "./profile.component.html",
   styleUrl: "./profile.component.scss",
 })
@@ -27,7 +37,6 @@ export class ProfileComponent implements OnInit {
   profile: WritableSignal<User | undefined> = signal(undefined);
   joinDate = computed(() => {
     if (this.profile()?.createdAt) {
-      console.log(this.profile()?.createdAt);
       return format(new Date(this.profile()?.createdAt || ""), "dd.MM.yyyy");
     } else {
       return "";
@@ -37,6 +46,16 @@ export class ProfileComponent implements OnInit {
     () => this.profile()?.id === this.authService.user()?.id,
   );
 
+  shownProducts = computed(() =>
+    this.productService
+      .products()
+      .filter(
+        (product) =>
+          product.vendorId === this.profile()?.id &&
+          (this.isOwnProfile() || product.isVisible),
+      ),
+  );
+
   deleteModalOpen = signal(false);
 
   constructor(
@@ -44,6 +63,7 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private notificationService: NotificationService,
     private authService: AuthService,
+    private productService: ProductService,
   ) {
     effect(() => {
       if (
@@ -89,5 +109,9 @@ export class ProfileComponent implements OnInit {
 
   onEdit() {
     this.router.navigate(["update-profile"]);
+  }
+
+  updateList() {
+    this.productService.getProducts();
   }
 }
