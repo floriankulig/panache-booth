@@ -47,9 +47,9 @@ export function allUserOrdersById(reqParams: any) {
 
       for (let product of products) {
         let vendorInfo: any = getUserById(product.vendorId);
-        let statusOrder: any = getStatusOfOrder(order.orderId, product.vendorId);
-        product.price = statusOrder.price;
-        product.discount = statusOrder.discount;
+        let statusOrder: any = getStatusOfOrder(order.id, product.id);
+        product.price = statusOrder.priceProduct;
+        product.discount = statusOrder.discountProduct;
         vendorInfo.vendorShippingCost = statusOrder.shippingCost;
         vendorInfo.vendorShippingFreeFrom = statusOrder.shippingFreeFrom;
         product.delivered =
@@ -88,13 +88,13 @@ export function allVendorOrdersById(reqParams: any) {
         vendorId,
       );
       let vendorInfo: any = getUserById(vendorId);
-      let statusOrder: any = getStatusOfOrder(order.orderId, vendorId);
-      vendorInfo.vendorShippingCost = statusOrder.shippingCost;
-      vendorInfo.vendorShippingFreeFrom = statusOrder.shippingFreeFrom;
       for (const orderProductVendor of orderProductsVendor) {
-
-        orderProductVendor.price = statusOrder.price;
-        orderProductVendor.discount = statusOrder.discount;
+        let statusOrder: any = getStatusOfOrder(order.id, orderProductVendor.id);
+        console.log(statusOrder)
+        vendorInfo.shippingCost = statusOrder.vendorShippingCost;
+        vendorInfo.shippingFreeFrom = statusOrder.vendorShippingFreeFrom;
+        orderProductVendor.price = statusOrder.priceProduct;
+        orderProductVendor.discount = statusOrder.discountProduct;
         orderProductVendor.delivered =
           orderProductVendor.delivered === 1 ? true : false;
         orderProductVendor.isVisible = orderProductVendor.isVisible === 1 ? true : false;

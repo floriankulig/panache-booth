@@ -28,6 +28,7 @@ router.get("/:id", async (req, res) => {
       res.status(200).json(await allVendorOrdersById(req.params));
     }
   } catch (error) {
+    console.log(error)
     if (error instanceof UserError) {
       res.status(400).send(error.message);
     } else {
