@@ -30,6 +30,7 @@ import { ProductNotExistingError, ProductOutOfStockError, ProductPriceFormatErro
 import { IOrderProduct } from "../models/IOrderProduct";
 import { validateDecimalNumber } from "../util/util";
 import { it } from "node:test";
+import { Console } from "inspector";
 
 export function orderById(id: string) {
   return getOrderById(id);
@@ -81,7 +82,9 @@ export function allVendorOrdersById(reqParams: any) {
     let newArray = [];
     let productsNew = [];
     let vendorPrice = 0;
-
+    console.log("Order")
+    console.log(orders)
+    console.log("dsdsd")
     for (const order of orders) {
       console.log(order)
       let orderProductsVendor: any[] = getProductsOfOrderVendor(

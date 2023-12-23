@@ -55,7 +55,7 @@ export function getAllOrdersByUserId(id: string) {
 export function getAllOrdersWithVendorProducts(vendorId: string) {
   let orders = database
     .prepare(
-      "select orders.id, orders.userId, orders.price, orders.createdAt, orders.updatedAt " +
+      "select distinct orders.id, orders.userId, orders.price, orders.createdAt, orders.updatedAt " +
       "from orders join orderProduct on orders.id = orderProduct.orderId join product on orderProduct.productId = product.id " +
       "where product.vendorId = ?;",
     )
