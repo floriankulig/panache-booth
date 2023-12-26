@@ -155,6 +155,9 @@ function validateShippingFreeFromFormat(shippingFreeForm: any): number {
     throw new ShippingFreeFromFormatError() ;
   }
   if (!validateDecimalNumber(shippingFreeForm)) {
+    if (shippingFreeForm === -1) {
+      return shippingFreeForm;
+    }
     throw new ShippingFreeFromFormatError();
   }
   return shippingFreeForm;
