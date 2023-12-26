@@ -115,6 +115,10 @@ header.header {
       margin-block: grid();
       gap: grid();
 
+      &:not(:is(:first-of-type)) {
+        margin-top: grid(1.5);
+      }
+
       button,
       span {
         font-size: 0.9rem;
