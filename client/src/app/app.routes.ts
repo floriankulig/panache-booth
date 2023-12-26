@@ -8,6 +8,7 @@ import { WarehouseComponent } from "./pages/warehouse/warehouse.component";
 import { VendorGuard } from "./guards/vendor.guard";
 import { HomeComponent } from "./pages/home/home.component";
 import { ProductComponent } from "./pages/product/product.component";
+import { OrdersComponent } from "./pages/orders/orders.component";
 
 export const routes: Routes = [
   { path: "", component: HomeComponent },
@@ -25,5 +26,10 @@ export const routes: Routes = [
     path: "profile/warehouse",
     component: WarehouseComponent,
     canActivate: [VendorGuard],
+  },
+  {
+    path: "profile/orders",
+    component: OrdersComponent,
+    canActivate: [UserGuard],
   },
 ];

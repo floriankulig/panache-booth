@@ -1,0 +1,107 @@
+<div [class]="{ 'content-inner': !inModal }">
+  <header [class]="{ header: true, showsHeader: !inModal }">
+    @if (!inModal) {
+    <h2 class="page-title">Your Orders</h2>
+    } @if (userIsVendor()) {
+    <div class="display-select">
+      <span
+        [class]="{ active: displayType() === 'customer' }"
+        (click)="displayType.set('customer')"
+        >As a Customer</span
+      >
+      <span
+        [class]="{ active: displayType() === 'vendor' }"
+        (click)="displayType.set('vendor')"
+        >As a Vendor</span
+      >
+    </div>
+    }
+  </header>
+  <ul class="order-list">
+    @for (order of orders(); track order.id) {
+
+    <li class="order">
+      <div class="timeline">
+        <div class="calendar-wrapper">
+          <i-feather name="calendar"></i-feather>
+        </div>
+        <div class="line"></div>
+      </div>
+
+      <div class="order-info">
+        <span class="order__date">
+          {{ formatDate(order.createdAt) }}
+        </span>
+        @if (displayType() === "vendor") {
+        <div class="order__header">
+          <h3 class="order__title">
+            <div class="icon-wrapper">
+              <i-feather name="user"> </i-feather>
+            </div>
+            {{ order.user?.userName }}
+          </h3>
+
+          <button
+            (click)="markOrderAsDelivered(order)"
+            [class]="{ payment: true, checked: allDelivered(order) }"
+          >
+            <i-feather name="check"></i-feather
+            >{{ !allDelivered(order) ? "Mark order as paid" : "Paid" }}
+          </button>
+        </div>
+        <ul class="order__products">
+          @for (product of order.products; track product.id ) {
+          <li class="order__product">
+            <h4
+              class="order__product__title"
+              tabindex="0"
+              (click)="viewProduct(product)"
+            >
+              {{ product.name }}
+              <i-feather name="external-link"> </i-feather>
+            </h4>
+            <div class="order__product__quantity">{{ product.quantity }}x</div>
+          </li>
+          }
+        </ul>
+        } @else { @for (vendorOrder of productsByVendors(order.products); track
+        vendorOrder.vendor.id) {
+        <div class="order__header">
+          <h3 class="order__title">
+            <div class="icon-wrapper">
+              <i-feather name="user"> </i-feather>
+            </div>
+            {{ vendorOrder.vendor.userName }}
+          </h3>
+
+          @if (allDelivered(vendorOrder.products)) {
+          <span class="payment checked">
+            <i-feather name="check"></i-feather>Paid
+          </span>
+          } @else {
+          <span class="payment warn">
+            <i-feather name="alert-triangle"></i-feather>Not paid yet
+          </span>
+          }
+        </div>
+        <ul class="order__products">
+          @for (product of vendorOrder.products; track product.id ) {
+          <li class="order__product">
+            <h4
+              class="order__product__title"
+              tabindex="0"
+              (click)="viewProduct(product)"
+            >
+              {{ product.name }}
+              <i-feather name="external-link"> </i-feather>
+            </h4>
+            <div class="order__product__quantity">{{ product.quantity }}x</div>
+          </li>
+          }
+        </ul>
+        } }
+      </div>
+    </li>
+    }
+  </ul>
+</div>

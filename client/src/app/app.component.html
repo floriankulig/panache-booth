@@ -20,5 +20,6 @@
 </pb-modal>
 } @if (orderService.ordersOpen()){
 <pb-modal heading="Your Orders" (close)="orderService.ordersOpen.set(false)">
+  <pb-orders [inModal]="true"></pb-orders>
 </pb-modal>
 } }
