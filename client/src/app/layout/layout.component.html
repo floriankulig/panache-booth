@@ -9,5 +9,10 @@
   </div>
 </main>
 @if (sidebarOpen()) {
-<div class="blur-bg" tabindex="0" (click)="sidebarOpen.set(false)"></div>
+<div
+  class="blur-bg"
+  tabindex="0"
+  (click)="sidebarOpen.set(false)"
+  (keydown.enter)="sidebarOpen.set(false)"
+></div>
 }

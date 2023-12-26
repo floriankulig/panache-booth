@@ -6,6 +6,7 @@
     class="notification-close"
     role="button"
     (click)="removeNotification()"
+    (keydown.enter)="removeNotification()"
     tabindex="0"
   >
     <i-feather name="x"></i-feather>

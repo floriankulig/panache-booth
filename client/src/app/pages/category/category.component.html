@@ -17,7 +17,9 @@
     @for (category of categories; track category.id) {
     <li
       class="category-card"
+      tabindex="0"
       (click)="navigateTo('/categories?category=' + category.id)"
+      (keydown.enter)="navigateTo('/categories?category=' + category.id)"
     >
       <span class="category-card__title">
         {{ category.displayValue }} @if (itemAmountPerCategory(category)) {

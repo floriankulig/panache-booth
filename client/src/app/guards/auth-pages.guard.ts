@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import {
   CanActivate,
   ActivatedRouteSnapshot,
-  RouterStateSnapshot,
+  // RouterStateSnapshot,
   Router,
 } from "@angular/router";
 import { Observable } from "rxjs";
@@ -21,7 +21,6 @@ export class AuthGuard implements CanActivate {
 
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
   ): Observable<boolean> | Promise<boolean> | boolean {
     if (this.authService.uidFromLocalStorage()) {
       // If there's a redirect query parameter, use it

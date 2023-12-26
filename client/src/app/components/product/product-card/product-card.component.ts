@@ -96,7 +96,7 @@ export class ProductCardComponent {
     }
   }
 
-  onCardClick(event: MouseEvent) {
+  onCardClick(event: MouseEvent | Event) {
     if (
       [this.menu, this.visibility, this.cta].some((el) =>
         el?.nativeElement.contains(event.target as Node),

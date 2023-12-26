@@ -1,18 +1,34 @@
 <nav class="inner content-inner">
   <div>
-    <div class="burger" tabindex="0" role="button" (click)="toggleSidebar()">
+    <div
+      class="burger"
+      tabindex="0"
+      (keydown.enter)="toggleSidebar()"
+      role="button"
+      (click)="toggleSidebar()"
+    >
       <i-feather name="menu"></i-feather>
     </div>
     <h3>{{ tabText }}</h3>
   </div>
   <pb-searchbar></pb-searchbar>
   <div class="actions">
-    <div class="orders" tabindex="0" (click)="openOrders()">
+    <div
+      class="orders"
+      tabindex="0"
+      (keydown.enter)="openOrders()"
+      (click)="openOrders()"
+    >
       <i-feather name="shopping-bag"></i-feather>
       <div class="indicator"></div>
     </div>
     <span class="div"></span>
-    <div class="cart" tabindex="0" (click)="openCart()">
+    <div
+      class="cart"
+      tabindex="0"
+      (keydown.enter)="openCart()"
+      (click)="openCart()"
+    >
       <i-feather name="shopping-cart"></i-feather>
       @if (productsInCart()) {
       <div [class]="{ count: true, big: productsInCart() > 100 }">

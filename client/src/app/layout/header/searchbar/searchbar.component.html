@@ -5,6 +5,11 @@
   (input)="updateQuery($event)"
   [placeholder]="filterService.searchbarPlaceholder"
 />
-<div [class]="clearButtonClasses()" tabindex="0" (click)="clearSearch()">
+<div
+  [class]="clearButtonClasses()"
+  tabindex="0"
+  (click)="clearSearch()"
+  (keydown.enter)="clearSearch()"
+>
   <i-feather name="x"></i-feather>
 </div>

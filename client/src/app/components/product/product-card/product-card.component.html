@@ -1,4 +1,9 @@
-<div class="card" tabindex="0" (click)="onCardClick($event)">
+<div
+  class="card"
+  tabindex="0"
+  (click)="onCardClick($event)"
+  (keydown.enter)="onCardClick($event)"
+>
   @if (!!product.discount) {
   <div class="discount">-{{ product.discount * 100 }}%</div>
   }
@@ -14,12 +19,18 @@
         #menu
         role="button"
         (click)="optionsOpen.set(true)"
+        (keydown.enter)="optionsOpen.set(true)"
         (pbClickOutside)="optionsOpen.set(false)"
       >
         <i-feather name="more-vertical" class="trigger"></i-feather>
         @if (optionsOpen()) {
         <ul class="actions">
-          <li class="switch" tabindex="0" (click)="toggleVisibility()">
+          <li
+            class="switch"
+            tabindex="0"
+            (click)="toggleVisibility()"
+            (keydown.enter)="toggleVisibility()"
+          >
             <pb-switch [value]="product.isVisible">
               <span class="label-menu">
                 {{ product.isVisible ? "Visible" : "Hidden" }}
@@ -27,10 +38,19 @@
             </pb-switch>
           </li>
           <div class="div"></div>
-          <li tabindex="0" (click)="editModalOpen.set(true)">
+          <li
+            tabindex="0"
+            (click)="editModalOpen.set(true)"
+            (keydown.enter)="editModalOpen.set(true)"
+          >
             <i-feather name="edit-3"></i-feather> Edit
           </li>
-          <li class="delete" tabindex="0" (click)="deleteModalOpen.set(true)">
+          <li
+            class="delete"
+            tabindex="0"
+            (click)="deleteModalOpen.set(true)"
+            (keydown.enter)="deleteModalOpen.set(true)"
+          >
             <i-feather name="trash"></i-feather>Delete
           </li>
         </ul>
@@ -47,6 +67,7 @@
         #visibility
         [class]="{ visibility: true, hidden: !product.isVisible }"
         (click)="toggleVisibility()"
+        (keydown.enter)="toggleVisibility()"
       >
         <i-feather
           [name]="product.isVisible ? 'eye' : 'eye-off'"
@@ -104,6 +125,7 @@
       }"
       role="button"
       (click)="onClickCTA()"
+      (keydown.enter)="onClickCTA()"
       #cta
     >
       <i-feather name="shopping-bag"></i-feather>

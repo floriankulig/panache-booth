@@ -1,5 +1,11 @@
 <div class="header-logo">
-  <div class="burger" role="button" tabindex="0" (click)="onCloseSidebar()">
+  <div
+    class="burger"
+    role="button"
+    tabindex="0"
+    (keydown.enter)="onCloseSidebar()"
+    (click)="onCloseSidebar()"
+  >
     <i-feather name="x"></i-feather>
   </div>
   <pb-logo routerLink="/"></pb-logo>
@@ -22,6 +28,7 @@
       }"
       [routerLink]="link.url"
       (click)="onCloseSidebar()"
+      (keydown.enter)="onCloseSidebar()"
       tabindex="0"
     >
       <i-feather [name]="link.icon"></i-feather>

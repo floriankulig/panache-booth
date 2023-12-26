@@ -7,11 +7,15 @@
       <span
         [class]="{ active: displayType() === 'customer' }"
         (click)="displayType.set('customer')"
+        (keydown.enter)="displayType.set('customer')"
+        tabindex="0"
         >As a Customer</span
       >
       <span
         [class]="{ active: displayType() === 'vendor' }"
         (click)="displayType.set('vendor')"
+        (keydown.enter)="displayType.set('vendor')"
+        tabindex="0"
         >As a Vendor</span
       >
     </div>
@@ -56,6 +60,7 @@
               class="order__product__title"
               tabindex="0"
               (click)="viewProduct(product)"
+              (keydown.enter)="viewProduct(product)"
             >
               {{ product.name }}
               <i-feather name="external-link"> </i-feather>
@@ -94,6 +99,7 @@
               class="order__product__title"
               tabindex="0"
               (click)="viewProduct(product)"
+              (keydown.enter)="viewProduct(product)"
             >
               {{ product.name }}
               <i-feather name="external-link"> </i-feather>
