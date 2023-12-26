@@ -12,7 +12,7 @@ import { AxiosError } from "axios";
 import { Router } from "@angular/router";
 import { IconsModule } from "../../icons/icons.module";
 import { format, isSameDay, isToday, sub, subDays } from "date-fns";
-import { costOfCartProducts } from "../../../helpers";
+import { costOfCartProducts, getDiscountedPrice } from "../../../helpers";
 
 type DisplayType = "vendor" | "customer";
 
@@ -160,5 +160,9 @@ export class OrdersComponent {
       return order.every((product) => product.delivered);
     }
     return order.products.every((product) => product.delivered);
+  }
+
+  productPrice(product: OrderProduct) {
+    return (getDiscountedPrice(product) * product.quantity).toFixed(2);
   }
 }

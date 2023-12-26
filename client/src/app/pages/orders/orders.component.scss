@@ -57,7 +57,7 @@ header.header {
     padding-top: grid(1);
 
     .timeline {
-      height: 100%;
+      min-height: 100%;
       width: clamp(24px, 8vw, 50px);
       display: flex;
       flex-direction: column;
@@ -79,7 +79,6 @@ header.header {
       }
 
       .line {
-        min-height: 150px;
         height: 100%;
         width: 1px;
         background: $textSecondary;
@@ -235,7 +234,7 @@ header.header {
       padding: grid(2);
       display: flex;
       flex-direction: column;
-      gap: grid(0.5);
+      gap: grid(1);
 
       &__title {
         cursor: pointer;
@@ -258,6 +257,12 @@ header.header {
             scale: 1;
             opacity: 1;
           }
+        }
+      }
+
+      &__quantity {
+        span {
+          font-weight: 550;
         }
       }
     }

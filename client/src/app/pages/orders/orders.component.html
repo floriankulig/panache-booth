@@ -60,7 +60,10 @@
               {{ product.name }}
               <i-feather name="external-link"> </i-feather>
             </h4>
-            <div class="order__product__quantity">{{ product.quantity }}x</div>
+            <div class="order__product__quantity">
+              <span>{{ product.quantity }}x</span> for
+              <span>{{ productPrice(product) }}€</span>
+            </div>
           </li>
           }
         </ul>
@@ -95,7 +98,10 @@
               {{ product.name }}
               <i-feather name="external-link"> </i-feather>
             </h4>
-            <div class="order__product__quantity">{{ product.quantity }}x</div>
+            <div class="order__product__quantity">
+              <span>{{ product.quantity }}x</span> for
+              <span>{{ productPrice(product) }}€</span>
+            </div>
           </li>
           }
         </ul>
