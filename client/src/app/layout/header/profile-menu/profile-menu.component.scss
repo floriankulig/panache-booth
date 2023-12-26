@@ -1,24 +1,9 @@
 @use "variables.scss" as *;
 
-.menu-wrapper {
-  position: relative;
-  z-index: 999;
-}
-
-.icon-wrapper {
-  place-items: center;
-  width: 48px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  cursor: pointer;
-  display: grid;
-  background-color: $bgSecondary;
-}
-
 .profile-menu {
   position: absolute;
-  top: 110%;
-  right: 0;
+  top: 64px;
+  right: 32px;
   min-width: 200px;
   width: 100%;
   z-index: 999;
