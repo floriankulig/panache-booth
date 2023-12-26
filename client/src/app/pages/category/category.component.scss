@@ -2,6 +2,9 @@
 
 .grid-bg {
   margin-top: grid(5);
+  @media screen and (max-width: 768px) {
+    margin-top: grid(3);
+  }
   padding-block: grid(5);
   background: $bgSecondary;
 
@@ -58,7 +61,7 @@
     opacity: 0;
     color: $textSecondary;
     font-weight: 600;
-    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    font-size: clamp(1.25rem, 1.5vw, 1.6rem);
     user-select: none;
     transform: translate(grid(-4), 1px);
     transition: all 0.15s ease-in-out;
@@ -94,7 +97,13 @@
   &-grid {
     display: grid;
     gap: clamp(grid(3), 3vw, grid(4));
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    @media screen and (max-width: 1080px) {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    @media screen and (max-width: 768px) {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
   }
 
   &-card {

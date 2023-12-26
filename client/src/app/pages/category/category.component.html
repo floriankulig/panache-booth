@@ -20,7 +20,11 @@
       (click)="navigateTo('/categories?category=' + category.id)"
     >
       <span class="category-card__title">
-        {{ category.displayValue }}
+        {{ category.displayValue }} @if (itemAmountPerCategory(category)) {
+        <span class="category-card__count">
+          ({{ itemAmountPerCategory(category) }})
+        </span>
+        }
       </span>
     </li>
     }

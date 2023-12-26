@@ -15,17 +15,19 @@ import { IconsModule } from "../../icons/icons.module";
 })
 export class CategoryComponent implements OnDestroy {
   selectedCategory = signal<Category | null>(null);
-
+  productsVisible = computed(() =>
+    this.productService
+      .products()
+      .filter(
+        (product) =>
+          product.isVisible ||
+          product.vendor.id === this.authService.user()?.id,
+      ),
+  );
   productsByCategory = computed(() =>
     filterByString(
-      this.productService
-        .products()
-        .filter(
-          (product) =>
-            product.category === this.selectedCategory()?.id &&
-            (product.isVisible ||
-              product.vendor.id === this.authService.user()?.id),
-        )
+      this.productsVisible()
+        .filter((product) => product.category === this.selectedCategory()?.id)
         .map((product) => ({
           ...product,
           vendorName: product.vendor.userName,
@@ -72,5 +74,11 @@ export class CategoryComponent implements OnDestroy {
 
   navigateTo(url: string) {
     this.router.navigateByUrl(url);
+  }
+
+  itemAmountPerCategory(category: Category) {
+    return this.productsVisible().filter(
+      (product) => product.category === category.id,
+    ).length;
   }
 }
