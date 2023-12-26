@@ -158,6 +158,20 @@
       gap: grid(2);
       align-items: center;
 
+      .out-of-stock {
+        display: flex;
+        align-items: center;
+        gap: grid(1);
+        color: rgba($error, 0.8);
+        padding: grid(1) grid(2);
+        border-radius: grid(3);
+        background: rgba($error, 0.1);
+        i-feather {
+          width: grid(2.5);
+          height: grid(2.5);
+        }
+      }
+
       button {
         width: 100%;
       }
