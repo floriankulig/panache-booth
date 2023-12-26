@@ -34,8 +34,8 @@
       "extends": [
         "plugin:@angular-eslint/template/recommended",
         "plugin:@angular-eslint/template/accessibility",
-        "plugin:eslint-config-airbnb-base",
-        "plugin:eslint-config-airbnb-typescript"
+        "eslint-config-airbnb-base",
+        "eslint-config-airbnb-typescript"
       ],
       "rules": {}
     }

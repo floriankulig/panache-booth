@@ -12,6 +12,7 @@ export class ProductService {
     this.getProducts();
     effect(() => {
       // We need to trigger this to run the effect every time the user changes
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const user = this.authService.user();
       this.getProducts();
     });

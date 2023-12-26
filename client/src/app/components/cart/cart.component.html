@@ -80,6 +80,8 @@
             <div
               class="items__vendor--items-item-delete"
               (click)="onRemoveItem(item)"
+              (keydown.enter)="onRemoveItem(item)"
+              tabindex="0"
               role="button"
               [ariaLabel]="'Remove Item' + item.name"
             >
@@ -101,6 +103,8 @@
       class="summary__title--action"
       role="button"
       aria-label="Clear Cart"
+      tabindex="0"
+      (keydown.enter)="onClearCart()"
       (click)="onClearCart()"
     >
       Clear Cart
@@ -184,7 +188,11 @@
         of {{ (cartTotal * 0.19).toFixed(2) }}€</span
       >
     </div>
-    <button [disabled]="itemsCount <= 0" (click)="onCheckout()">
+    <button
+      [disabled]="itemsCount <= 0"
+      (click)="onCheckout()"
+      (keydown.enter)="onCheckout()"
+    >
       @if (!submitting) {
       <i-feather name="shopping-bag"></i-feather>
       }
