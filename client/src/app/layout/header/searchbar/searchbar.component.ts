@@ -1,6 +1,7 @@
 import { Component, computed, signal } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IconsModule } from "../../../icons/icons.module";
+import { FilterService } from "../../../services";
 
 @Component({
   selector: "pb-searchbar",
@@ -17,7 +18,11 @@ export class SearchbarComponent {
     hidden: !this.search(),
   }));
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    public filterService: FilterService,
+  ) {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.search.set(params["q"] || "");
     });

@@ -1,0 +1,50 @@
+<div class="content-inner">
+  <h2 [class]="{ 'page-title': true, active: !!selectedCategory() }">
+    <span class="back" routerLink="/categories">
+      <span class="back-icon">
+        <i-feather name="chevron-left"></i-feather>
+      </span>
+      <span class="back-text">Categories</span>
+    </span>
+    <div class="category">/ {{ selectedCategory()?.displayValue }}</div>
+  </h2>
+</div>
+
+<div class="grid-bg content-inner">
+  @if (!selectedCategory()) { @if (categories.length !== 0) {
+
+  <ul class="category-grid">
+    @for (category of categories; track category.id) {
+    <li
+      class="category-card"
+      (click)="navigateTo('/categories?category=' + category.id)"
+    >
+      <span class="category-card__title">
+        {{ category.displayValue }}
+      </span>
+    </li>
+    }
+  </ul>
+  }@else {
+  <div class="empty-state">
+    <h3 class="empty-state__title">No categories found</h3>
+    <p class="empty-state__description">
+      There are no categories that match this search.
+    </p>
+  </div>
+  } } @else { @if (productsByCategory().length !== 0) {
+
+  <ul class="grid">
+    @for (product of productsByCategory(); track product.id) {
+    <pb-product-card [product]="product"></pb-product-card>
+    }
+  </ul>
+  } @else {
+  <div class="empty-state">
+    <h3 class="empty-state__title">No products found</h3>
+    <p class="empty-state__description">
+      There are no products in this category or that match this search.
+    </p>
+  </div>
+  } }
+</div>
