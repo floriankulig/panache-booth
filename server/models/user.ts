@@ -55,7 +55,7 @@ export function updateUserById(id: string, user: Omit<IUser, "userId" | "created
   for (const [key, value] of Object.entries(user) as obj<IUser>[]) {
     if (value !== undefined) {
       if (key === "isVendor") {
-        if (value === "true") {
+        if (value === true) {
           sqlString += ` ${key} = '1',`;
         } else {
           sqlString += ` ${key} = '0',`;

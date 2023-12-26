@@ -222,6 +222,8 @@ function validateIsVendorFormat(isVendor: any): boolean {
   if (typeof isVendor !== "boolean") {
     throw new IsVendorFormatError();
   }
+  console.log("Rers")
+  console.log(isVendor)
   return isVendor;
 }
 
