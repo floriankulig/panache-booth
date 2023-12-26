@@ -3,7 +3,7 @@
   type="text"
   [value]="search()"
   (input)="updateQuery($event)"
-  placeholder="Search for a product..."
+  [placeholder]="filterService.searchbarPlaceholder"
 />
 <div [class]="clearButtonClasses()" tabindex="0" (click)="clearSearch()">
   <i-feather name="x"></i-feather>

@@ -1,7 +1,7 @@
 import { database } from "./databases";
 import { IProduct } from "./IProduct";
 
-export function getArticleById(id: string) {
+export function getProductById(id: string) {
   let product: any = database
     .prepare("select * from product where id = ? and archived = 0")
     .get(id);
@@ -11,7 +11,7 @@ export function getArticleById(id: string) {
   }
 }
 
-export function getAllArticles() {
+export function getAllProducts() {
   let products = database.prepare("select * from product where archived = 0;").all();
   products.forEach((key: any) => {
     key["isVisible"] = key["isVisible"] !== 0;
@@ -27,7 +27,7 @@ export function getAllVendorProducts(id: string) {
   return products;
 }
 
-export function createArticle(product: IProduct) {
+export function createProduct(product: IProduct) {
   let isVisibleNumeric = product.isVisible ? 1 : 0;
 
   const sql = database.prepare(
@@ -52,11 +52,10 @@ export function createArticle(product: IProduct) {
     product.createdAt,
     product.updatedAt,
   );
-  //return info;
-  return getArticleById(product.id);
+  return getProductById(product.id);
 }
 
-export function updateArticleById(
+export function updateProductById(
   product: Omit<IProduct, "id" | "createdAt" | "purchases">,
   id: string,
 ) {
@@ -76,7 +75,7 @@ export function updateArticleById(
   sqlString = sqlString.slice(0, -1);
   sqlString += ` where id = '${id}';`;
   database.prepare(sqlString).run();
-  return getArticleById(id);
+  return getProductById(id);
 }
 
 export function updateInventoryAndPurchases(productId: string, purchases: number) {
@@ -89,11 +88,19 @@ export function updateInventoryAndPurchases(productId: string, purchases: number
                     where id = '${productId}';`).run();
 }
 
-export function deleteArticleById(id: string) {
-  //return database.prepare("delete from product where id = ?;").run(id);
+export function deleteProductById(id: string) {
   database.prepare("update product set archived = 1 where id = ?").run(id);
+}
+
+export function getPriceOfProduct(productId: string) {
+  return database.prepare("select price from product where id = ? and archived = 0;").get(productId);
+}
+
+export function getDiscountOfProduct(productId: string) {
+  return database.prepare("select discount from product where id = ? and archived = 0;").get(productId);
 }
 
 function getInventoryAndPurchases(productId: string) {
   return database.prepare("select inventory, purchases from product where id = ? and archived = 0;").get(productId);
 }
+

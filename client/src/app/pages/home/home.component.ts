@@ -1,6 +1,6 @@
 import { Component, computed, signal } from "@angular/core";
 import { ProductCardComponent } from "../../components/product";
-import { ProductService } from "../../services";
+import { AuthService, ProductService } from "../../services";
 import { ActivatedRoute } from "@angular/router";
 import { filterByString } from "../../../helpers";
 import { Product } from "../../../models";
@@ -20,7 +20,11 @@ export class HomeComponent {
       filterByString(
         this.productService
           .products()
-          .filter((product) => product.isVisible)
+          .filter(
+            (product) =>
+              product.isVisible ||
+              product.vendor.id === this.authService.user()?.id,
+          )
           .map((product) => ({
             ...product,
             vendorName: product.vendor.userName,
@@ -38,6 +42,7 @@ export class HomeComponent {
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
+    private authService: AuthService,
   ) {
     this.route.queryParams.subscribe((params) => {
       const search = params["q"];

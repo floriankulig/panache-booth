@@ -24,11 +24,13 @@ import {
   UserNotExistingError,
 } from "../util/customUserErrors";
 import { v4 as uuidv4 } from "uuid";
+import { validateDecimalNumber } from "../util/util";
 
 export function userById(reqParams: any) {
   let userId = reqParams.userId;
-  let user = getUserById(userId);
+  let user: any = getUserById(userId);
   if (user !== undefined) {
+    user.isVendor = user.isVendor === 1;
     return user;
   } else {
     throw new UserNotExistingError();
@@ -36,6 +38,7 @@ export function userById(reqParams: any) {
 }
 
 export function userByEmail(email: string) {
+
   return getUserByEmail(email);
 }
 
@@ -44,6 +47,7 @@ export function allUsers() {
   users.forEach((key) => {
     key["isVendor"] = key["isVendor"] !== 0;
   });
+  console.log(users)
   return users;
 }
 
@@ -92,6 +96,11 @@ export function updateUser(reqParams: any, reqBody: any) {
     throw new UserNotExistingError();
   }
 
+  let existingUser: any = getUserById(userId);
+  console.log("exis")
+  console.log(existingUser.isVendor)
+  console.log(reqBody.shippingCost)
+
   const currentTimestamp = new Date().toISOString();
   let user: Omit<IUser, "userId" | "createdAt"> = {
     userName: reqBody.userName ? validateUserNameFormat(reqBody.userName) : undefined,
@@ -102,12 +111,13 @@ export function updateUser(reqParams: any, reqBody: any) {
     city: reqBody.city ? validateCityFormat(reqBody.city) : undefined,
     password: reqBody.password ? validatePasswordFormat(reqBody.password) : undefined,
     isVendor: reqBody.isVendor !== undefined ? validateIsVendorFormat(reqBody.isVendor) : undefined,
-    iban: reqBody.isVendor ? validateIbanFormat(reqBody.iban) : undefined,
-    bic: reqBody.isVendor ? validateBicFormat(reqBody.bic) : undefined,
-    shippingCost: reqBody.isVendor ? validateShippingCostFormat(reqBody.shippingCost) : undefined,
-    shippingFreeFrom: reqBody.isVendor ? validateShippingFreeFromFormat(reqBody.shippingFreeFrom) : undefined,
+    iban: reqBody.iban !== undefined && existingUser.isVendor === 1 ? validateIbanFormat(reqBody.iban) : undefined,
+    bic: reqBody.bic !== undefined && existingUser.isVendor === 1  ? validateBicFormat(reqBody.bic) : undefined,
+    shippingCost: reqBody.shippingCost !== undefined && existingUser.isVendor === 1 ? validateShippingCostFormat(reqBody.shippingCost) : 200,
+    shippingFreeFrom: reqBody.shippingFreeFrom !== undefined && existingUser.isVendor === 1 ? validateShippingFreeFromFormat(reqBody.shippingFreeFrom) : undefined,
     updatedAt: currentTimestamp,
   };
+  console.log(user)
   return updateUserById(userId, user);
 }
 
@@ -134,12 +144,18 @@ function validateShippingCostFormat(shippingCost: any): number {
   if (typeof shippingCost !== "number") {
     throw new ShippingCostFormatError();
   }
+  if (!validateDecimalNumber(shippingCost)) {
+    throw new ShippingCostFormatError();
+  }
   return shippingCost;
 }
 
 function validateShippingFreeFromFormat(shippingFreeForm: any): number {
   if (typeof shippingFreeForm !== "number") {
     throw new ShippingFreeFromFormatError() ;
+  }
+  if (!validateDecimalNumber(shippingFreeForm)) {
+    throw new ShippingFreeFromFormatError();
   }
   return shippingFreeForm;
 }
@@ -159,7 +175,7 @@ function validateBicFormat(bic: any): string {
 }
 
 function validateUserNameFormat(userName: any): string {
-  if (userName === undefined || userName.length < 1 || userName.length > 32) {
+  if (userName === undefined || userName.length < 4 || userName.length > 32) {
     throw new UserNameFormatError();
   }
   return userName;
@@ -182,14 +198,14 @@ function checkEmailFormat(email: string): boolean {
 }
 
 function validateStreetFormat(street: any): string {
-  if (street === undefined || street.length > 255) {
+  if (street === undefined || street.length < 1 || street.length > 255) {
     throw new StreetFormatError();
   }
   return street;
 }
 
 function validateHouseNumberFormat(houseNumber: any): string {
-  if (houseNumber === undefined || houseNumber.length > 10 || houseNumber.length < 1) {
+  if (houseNumber === undefined || houseNumber.length > 3 || houseNumber.length < 1) {
     throw new HouseNumberFormatError();
   }
   return houseNumber;
@@ -210,7 +226,7 @@ function validateIsVendorFormat(isVendor: any): boolean {
 }
 
 function validateCityFormat(city: any): string {
-  if (city === undefined || city.length > 50) {
+  if (city === undefined || city.length < 1 || city.length > 50) {
     throw new CityFormatError();
   }
   return city;

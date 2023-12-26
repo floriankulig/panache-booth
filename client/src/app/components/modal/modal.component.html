@@ -1,18 +1,26 @@
 <div class="modal-container" @modalAnimation>
-  <div class="close" tabindex="0" role="button" aria-label="Close Modal" (click)="onClose()">
+  <div
+    class="close"
+    tabindex="0"
+    role="button"
+    aria-label="Close Modal"
+    tabindex="0"
+    (click)="onClose()"
+    (keydown.enter)="onClose()"
+  >
     <i-feather name="x"></i-feather>
   </div>
-  tabindex="0"
   @if (!!heading) {
   <h1>{{ heading }}</h1>
   }
   <ng-content></ng-content>
 </div>
 <div
-  tabindex="0"
+  tabindex="-1"
   @backdrop
   class="modal-backdrop"
   (click)="onClose()"
+  (keydown.enter)="onClose()"
   role="button"
   aria-label="Close Modal"
 ></div>

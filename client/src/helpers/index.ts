@@ -5,3 +5,4 @@ export * from "./buildProductFromFormValues";
 export * from "./categoryById";
 export * from "./filterByString";
 export * from "./getDiscountedPrice";
+export * from "./costOfCartProducts";

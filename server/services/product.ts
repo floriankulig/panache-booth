@@ -1,10 +1,10 @@
 import { IProduct } from "../models/IProduct";
 import {
-  createArticle,
-  deleteArticleById,
-  getAllArticles, getAllVendorProducts,
-  getArticleById,
-  updateArticleById,
+  createProduct,
+  deleteProductById,
+  getAllProducts, getAllVendorProducts,
+  getProductById,
+  updateProductById,
 } from "../models/product";
 import { getUserById } from "../models/user";
 import { v4 as uuidv4 } from "uuid";
@@ -21,11 +21,12 @@ import {
   ProductIsVisibleFormatError, ProductNameFormatError, ProductNotExistingError,
   ProductPriceFormatError,
 } from "../util/customProductErrors";
+import { validateDecimalNumber } from "../util/util";
 
-export function articleById(reqParams: any) {
+export function productById(reqParams: any) {
   let productId = reqParams.productId;
-  if (getArticleById(productId) !== undefined) {
-    let product: any = getArticleById(productId);
+  if (getProductById(productId) !== undefined) {
+    let product: any = getProductById(productId);
     let vendorInfo: any = getUserById(product.vendorId);
     const combinedProduct = {
       ...product,
@@ -37,8 +38,8 @@ export function articleById(reqParams: any) {
   }
 }
 
-export function allArticles() {
-  let products: any[] = getAllArticles();
+export function allProducts() {
+  let products: any[] = getAllProducts();
   let productsNew = [];
 
   for (const product of products) {
@@ -68,7 +69,7 @@ export function allVendorProducts(reqQuery: any) {
   return productsNew;
 }
 
-export function addArticle(reqBody: any) {
+export function addProduct(reqBody: any) {
   const currentTimestamp = new Date().toISOString();
   console.log(reqBody)
   let product: IProduct = {
@@ -101,13 +102,13 @@ export function addArticle(reqBody: any) {
     createdAt: currentTimestamp,
     updatedAt: currentTimestamp,
   };
-  return createArticle(product);
+  return createProduct(product);
 }
 
-export function updateArticle(reqParams: any, reqBody: any) {
+export function updateProduct(reqParams: any, reqBody: any) {
 
   let productId = reqParams.productId;
-  if (!getArticleById(productId)) {
+  if (!getProductById(productId)) {
     throw new ProductNotExistingError();
   }
   const currentTimestamp = new Date().toISOString();
@@ -122,13 +123,13 @@ export function updateArticle(reqParams: any, reqBody: any) {
     isVisible: reqBody.isVisible !== undefined ? validateIsVisible(reqBody.isVisible) : undefined,
     updatedAt: currentTimestamp,
   };
-  return updateArticleById(product, productId);
+  return updateProductById(product, productId);
 }
 
-export function deleteArticle(reqParams: any) {
+export function deleteProduct(reqParams: any) {
   let productId = reqParams.productId;
-  if (getArticleById(productId) !== undefined) {
-    deleteArticleById(productId);
+  if (getProductById(productId) !== undefined) {
+    deleteProductById(productId);
   } else {
     throw new ProductNotExistingError();
   }
@@ -156,17 +157,24 @@ function validateCategory(category: any): string {
 }
 
 function validateDiscount(discount: any): number {
-  console.log("ddfd")
-  console.log(discount)
-  if (typeof discount !== "number" && !checkForTwoDecimalPlaces(discount)) {
+  if (typeof discount !== "number" ) {
     throw new ProductDiscountFormatError() ;
+  }
+  const discountRegExp: RegExp = /^(0(\.\d{1,2})?|1(\.0{1,2})?)$/;
+  if (!discountRegExp.test(discount.toString())) {
+    throw new ProductDiscountFormatError();
   }
   return discount;
 }
 
+
+
 function validatePrice(price: any): number {
-  if (typeof price !== "number" && !checkForTwoDecimalPlaces(price)) {
+  if (typeof price !== "number") {
     throw new ProductPriceFormatError() ;
+  }
+  if (!validateDecimalNumber(price)) {
+    throw new ProductPriceFormatError();
   }
   return price;
 }
@@ -178,13 +186,8 @@ function validateVendorId(vendorId: any): string {
   return vendorId;
 }
 
-function checkForTwoDecimalPlaces(value: number): boolean {
-  const decimalRegex = /^\d+(\.\d+)?$/;
-  return decimalRegex.test(value.toString());
-}
-
 function validateInventory(inventory: any): number {
-  if (typeof inventory !== "number") {
+  if (typeof inventory !== "number" || inventory < 0) {
     throw new ProductInventoryFormatError() ;
   }
   return inventory;

@@ -32,7 +32,7 @@
         flex: 1;
 
         .actions {
-          margin-top: grid(3.5);
+          margin-top: grid(3);
           display: flex;
           justify-content: space-between;
           gap: grid(1.5);
@@ -134,17 +134,37 @@
   }
   h1 {
     font-size: clamp(2.5rem, 5vw, 4rem);
-    margin: grid(3) 0 clamp(grid(1), 2vw, grid(3));
+    margin: grid(2) 0 clamp(grid(1), 2vw, grid(2));
     text-overflow: ellipsis;
     overflow: hidden;
-
-    span {
-      color: $textSecondaryDark;
-      color: rgba(lighten($primary, 20), 0.2);
-    }
+    line-height: 1.2;
   }
 
   h2 {
-    margin-top: grid(3);
+    margin-block: grid(5) grid(3);
+  }
+
+  section.content-inner {
+    padding-block: grid(3);
+    min-height: 200px;
+    background: $bgSecondary;
+
+    &.empty {
+      display: grid;
+      place-items: center;
+
+      p {
+        display: flex;
+        align-items: center;
+        gap: grid();
+        font-weight: 500;
+
+        i-feather {
+          flex-shrink: 0;
+          width: grid(2.5);
+          height: grid(2.5);
+        }
+      }
+    }
   }
 }

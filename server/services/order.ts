@@ -4,28 +4,33 @@ import {
   checkIfProductIsInOrder,
   createOrder,
   createOrderProductEntity,
-  deleteOrderById,
   getAllOrders,
   getAllOrdersByUserId,
   getAllOrdersWithVendorProducts,
   getOrderById,
   getProductsOfOrder,
-  getProductsOfOrderVendor, getQuantityAndDeliveredStatusOfOrder,
+  getProductsOfOrderVendor, getStatusOfOrder,
   updateOrderById, updateOrderProductEntity,
 } from "../models/order";
-import { getUserById } from "../models/user";
-import { userById } from "./user";
+import { getUserById, getVendorShippingCost, getVendorShippingFreeFrom } from "../models/user";
 import { IsVendorFormatError, UserNotExistingError } from "../util/customUserErrors";
-import { getArticleById, updateInventoryAndPurchases } from "../models/product";
 import {
-  InvalidUserError,
+  getDiscountOfProduct,
+  getPriceOfProduct,
+  getProductById,
+  updateInventoryAndPurchases,
+} from "../models/product";
+import {
+  InvalidUserError, NoProductsInOrderError,
   OrderNotExistingError,
   OrderPriceFormatError,
   OrderQuantityFormatError, ProductNotInOrderError,
 } from "../util/customOrderErrors";
 import { ProductNotExistingError, ProductOutOfStockError, ProductPriceFormatError } from "../util/customProductErrors";
 import { IOrderProduct } from "../models/IOrderProduct";
-import { articleById } from "./product";
+import { validateDecimalNumber } from "../util/util";
+import { it } from "node:test";
+import { Console } from "inspector";
 
 export function orderById(id: string) {
   return getOrderById(id);
@@ -43,6 +48,11 @@ export function allUserOrdersById(reqParams: any) {
 
       for (let product of products) {
         let vendorInfo: any = getUserById(product.vendorId);
+        let statusOrder: any = getStatusOfOrder(order.id, product.id);
+        product.price = statusOrder.priceProduct;
+        product.discount = statusOrder.discountProduct;
+        vendorInfo.vendorShippingCost = statusOrder.shippingCost;
+        vendorInfo.vendorShippingFreeFrom = statusOrder.shippingFreeFrom;
         product.delivered =
           product.delivered === 1 ? true : false;
         product.isVisible = product.isVisible === 1 ? true : false;
@@ -72,27 +82,43 @@ export function allVendorOrdersById(reqParams: any) {
     let newArray = [];
     let productsNew = [];
     let vendorPrice = 0;
-
+    console.log("Order")
+    console.log(orders)
+    console.log("dsdsd")
     for (const order of orders) {
+      console.log(order)
       let orderProductsVendor: any[] = getProductsOfOrderVendor(
         order.id,
         vendorId,
       );
+      let vendorInfo: any = getUserById(vendorId);
       for (const orderProductVendor of orderProductsVendor) {
-        let vendorInfo: any = getUserById(orderProductVendor.vendorId);
+        let statusOrder: any = getStatusOfOrder(order.id, orderProductVendor.id);
+        vendorInfo.shippingCost = statusOrder.vendorShippingCost;
+        vendorInfo.shippingFreeFrom = statusOrder.vendorShippingFreeFrom;
+        orderProductVendor.price = statusOrder.priceProduct;
+        orderProductVendor.discount = statusOrder.discountProduct;
         orderProductVendor.delivered =
           orderProductVendor.delivered === 1 ? true : false;
         orderProductVendor.isVisible = orderProductVendor.isVisible === 1 ? true : false;
-        vendorPrice += orderProductVendor.price;
+        vendorPrice += orderProductVendor.price - orderProductVendor.price * orderProductVendor.discount;
         const combinedProduct = {
           ...orderProductVendor,
           vendor: vendorInfo,
         };
         productsNew.push(combinedProduct);
       }
-      order.price = vendorPrice;
+      if (vendorPrice < vendorInfo.shippingFreeFrom) {
+        order.price = vendorPrice + vendorInfo.shippingCost;
+      } else {
+        order.price = vendorPrice;
+      }
+      console.log(order.price);
+      let user = getUserById(order.userId)
+      console.log(user)
       const combinedObject = {
         ...order,
+        user: user,
         products: [...productsNew],
       };
       newArray.push(combinedObject);
@@ -113,10 +139,16 @@ export function allOrders() {
     let products: any[] = getProductsOfOrder(order.id);
 
     for (let product of products) {
+      console.log(product)
       let vendorInfo: any = getUserById(product.vendorId);
-      let statusOrder: any = getQuantityAndDeliveredStatusOfOrder(order.id, product.id);
+      let statusOrder: any = getStatusOfOrder(order.id, product.id);
+      console.log(statusOrder)
       let productDelivered = statusOrder.delivered === 1 ? true : false;
       product.isVisible = product.isVisible === 1 ? true : false;
+      product.price = statusOrder.priceProduct;
+      product.discount = statusOrder.discountProduct;
+      vendorInfo.shippingCost = statusOrder.vendorShippingCost;
+      vendorInfo.shippingFreeFrom = statusOrder.vendorShippingFreeFrom;
       const combinedProduct = {
         ...product,
         quantity: statusOrder.quantity,
@@ -138,6 +170,9 @@ export function allOrders() {
 export function addOrder(reqBody: any) {
   const currentTimestamp = new Date().toISOString();
   let products = reqBody.products;
+  if (products === undefined || products.length === 0) {
+    throw new NoProductsInOrderError();
+  }
   let order: IOrder = {
     id: uuidv4(),
     createdAt: currentTimestamp,
@@ -156,7 +191,11 @@ export function addOrder(reqBody: any) {
   });
   let createdOrder = createOrder(order);
 
-  products.forEach((item: { id: string; quantity: number; }) => {
+  products.forEach((item: { id: string; quantity: number; vendorId: string; }) => {
+    let productPrice: any = getPriceOfProduct(item.id);
+    let productDiscount: any = getDiscountOfProduct(item.id);
+    let vendorShippingCost: any = getVendorShippingCost(item.vendorId);
+    let vendorShippingFreeFrom: any = getVendorShippingFreeFrom(item.vendorId);
     let orderProductEntity: IOrderProduct = {
       orderId: order.id,
       productId: item.id,
@@ -164,12 +203,17 @@ export function addOrder(reqBody: any) {
       delivered: false,
       updatedAt: currentTimestamp,
       createdAt: currentTimestamp,
+      priceProduct: productPrice.price,
+      discountProduct: productDiscount.discount,
+      vendorShippingCost: vendorShippingCost.shippingCost,
+      vendorShippingFreeFrom: vendorShippingFreeFrom.shippingFreeFrom,
     };
     createOrderProductEntity(orderProductEntity);
     updateInventoryAndPurchases(item.id, item.quantity);
   });
   return createdOrder;
 }
+
 
 export function updateOrder(reqParams: any, reqBody: any) {
   let orderId = reqParams.orderId;
@@ -178,7 +222,7 @@ export function updateOrder(reqParams: any, reqBody: any) {
     throw new OrderNotExistingError();
   }
   for (let product of products) {
-    if (!getArticleById(product.id)) {
+    if (!getProductById(product.id)) {
       throw new ProductNotExistingError();
     }
     if (!checkIfProductIsInOrder(product.id, orderId)) {
@@ -193,7 +237,7 @@ export function updateOrder(reqParams: any, reqBody: any) {
   updateOrderById(order, orderId);
 
   for (let product of products) {
-    let orderProduct: Omit<IOrderProduct, "quantity" | "createdAt"> = {
+    let orderProduct: Omit<IOrderProduct, "quantity" | "createdAt" | "priceProduct" | "discountProduct" | "vendorShippingCost" | "vendorShippingFreeFrom"> = {
       orderId: orderId,
       productId: product.id,
       delivered: product.delivered,
@@ -208,8 +252,12 @@ export function updateOrder(reqParams: any, reqBody: any) {
 
   for (let product of productsOfOrder) {
     let vendorInfo: any = getUserById(product.vendorId);
-    let statusOrder: any = getQuantityAndDeliveredStatusOfOrder(orderId, product.id);
+    let statusOrder: any = getStatusOfOrder(orderId, product.id);
     let productDelivered = statusOrder.delivered === 1 ? true : false;
+    product.price = statusOrder.priceProduct;
+    product.discount = statusOrder.discountProduct;
+    vendorInfo.shippingCost = statusOrder.vendorShippingCost;
+    vendorInfo.shippingFreeFrom = statusOrder.vendorShippingFreeFrom;
     const combinedProduct = {
       ...product,
       quantity: statusOrder.quantity,
@@ -224,11 +272,6 @@ export function updateOrder(reqParams: any, reqBody: any) {
   };
 }
 
-export function deleteOrder(id: string) {
-  return deleteOrderById(id);
-}
-
-
 function validateOrderUser(userId: any): string {
   if (getUserById(userId) === undefined) {
     throw new InvalidUserError();
@@ -237,14 +280,17 @@ function validateOrderUser(userId: any): string {
 }
 
 function validateProductId(productId: string) {
-  if (getArticleById(productId) === undefined) {
+  if (getProductById(productId) === undefined) {
     throw new ProductNotExistingError();
   }
 }
 
 function validateOrderPrice(price: any): number {
-  if (typeof price !== "number" && !checkForTwoDecimalPlaces(price)) {
+  if (typeof price !== "number") {
     throw new ProductPriceFormatError() ;
+  }
+  if (!validateDecimalNumber(price)) {
+    throw new ProductPriceFormatError();
   }
   return price;
 }
@@ -257,15 +303,10 @@ function validateOrderQuantity(quantity: any): number {
 }
 
 function checkOutOfStock(productId: string, quantity: number) {
-  let product = getArticleById(productId);
+  let product = getProductById(productId);
   if (product.inventory < quantity) {
     throw new ProductOutOfStockError();
   }
-}
-
-function checkForTwoDecimalPlaces(value: number): boolean {
-  const decimalRegex = /^\d+(\.\d{1,2})?$/;
-  return decimalRegex.test(value.toString());
 }
 
 function validateDeliveredFormat(delivered: any) {

@@ -10,7 +10,7 @@
       @if (isOwnProduct()) {
       <div
         tabindex="0"
-        class="vendor-actions"
+        [class]="{ 'vendor-actions': true, open: optionsOpen() }"
         #menu
         role="button"
         (click)="optionsOpen.set(true)"

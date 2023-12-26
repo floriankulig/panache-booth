@@ -103,7 +103,7 @@ export class TypedDropdownComponent<
     this.closeDropdown();
   }
 
-  onKeyPress(event: any) {
+  onKeyPress(event: KeyboardEvent) {
     if (event.key !== "Enter") {
       return;
     }

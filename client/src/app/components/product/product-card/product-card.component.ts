@@ -22,6 +22,7 @@ import { DeleteConfirmComponent } from "../../delete-confirm/delete-confirm.comp
 import { AddProductComponent } from "../add-product/add-product.component";
 import { categoryById, getDiscountedPrice } from "../../../../helpers";
 import { SwitchComponent } from "../../switch/switch.component";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "pb-product-card",
@@ -57,6 +58,7 @@ export class ProductCardComponent {
   constructor(
     private authService: AuthService,
     private productService: ProductService,
+    private router: Router,
     private notificationService: NotificationService,
     private cartService: CartService,
   ) {}
@@ -102,6 +104,7 @@ export class ProductCardComponent {
     ) {
       return;
     }
+    this.router.navigate(["/product", this.product.id]);
   }
 
   get category() {

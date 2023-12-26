@@ -42,6 +42,7 @@ export class WarehouseComponent {
         include: ["name", "vendorName", "category", "description", "price"],
       },
     ).map((prod) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { vendorName, ...product } = prod;
       return product;
     }) as Product[];

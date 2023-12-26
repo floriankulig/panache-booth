@@ -55,7 +55,21 @@
   <div class="content-inner">
     <h2 class="page-title">Products</h2>
   </div>
-  }
+
+  @if (!!shownProducts().length) {
+  <section class="grid content-inner">
+    @for (product of shownProducts(); track product.id) {
+    <pb-product-card
+      [product]="product"
+      (update)="updateList()"
+    ></pb-product-card>
+    }
+  </section>
+  } @else {
+  <section class="content-inner empty">
+    <p><i-feather name="frown"></i-feather>No products from this vendor yet.</p>
+  </section>
+  } }
 </div>
 } @if (deleteModalOpen()) {
 <pb-modal (modalClose)="deleteModalOpen.set(false)">

@@ -13,8 +13,9 @@ interface Product {
   description: string;
   category: CategoryID;
   purchases: number;
-  inventory?: number;
+  inventory: number;
   isVisible: boolean;
+  archived: boolean;
   vendor: User;
   vendorId: string;
   discount: number; // 0.0 - 1.0
@@ -26,12 +27,22 @@ interface APIProduct extends Omit<Product, "category"> {
 
 type FormProduct = Omit<
   APIProduct,
-  "id" | "createdAt" | "updatedAt" | "purchases" | "vendor" | "vendorId"
+  | "id"
+  | "createdAt"
+  | "updatedAt"
+  | "purchases"
+  | "vendor"
+  | "vendorId"
+  | "archived"
 >;
 
 interface CartProduct extends Product {
   quantity: number;
 }
 
+interface OrderProduct extends CartProduct {
+  delivered: boolean;
+}
+
 export type { Category, CategoryID, FormProduct };
-export { Product, APIProduct, CartProduct };
+export { Product, APIProduct, CartProduct, OrderProduct };

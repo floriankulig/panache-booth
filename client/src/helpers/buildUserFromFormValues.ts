@@ -20,11 +20,13 @@ export const buildUserFromFormValues = (
     ...address,
     isVendor: formType === "vendor",
     ...paymentInformation,
-    shippingCost: shippingCost ? Number(shippingCost) : 0,
+    shippingCost: shippingCost ? +(+shippingCost).toFixed(2) : 0,
     shippingFreeFrom: shippingFreeFrom.toString().trim()
-      ? Number(shippingFreeFrom)
+      ? +(+shippingFreeFrom).toFixed(2)
       : -1,
   };
+
+  console.log({ user });
 
   return user;
 };

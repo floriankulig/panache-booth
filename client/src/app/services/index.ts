@@ -6,3 +6,4 @@ export {
 export { CartService } from "./cart/cart.service";
 export { OrderService } from "./order/order.service";
 export { ProductService } from "./product/product.service";
+export { FilterService } from "./filter/filter.service";

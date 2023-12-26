@@ -11,7 +11,7 @@ interface User {
   city: string;
   iban?: string;
   bic?: string;
-  shippingCost?: number;
+  shippingCost: number;
   shippingFreeFrom: number;
 }
 interface RegisterUser

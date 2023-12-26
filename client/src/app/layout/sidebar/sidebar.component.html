@@ -14,7 +14,12 @@
     } @for (link of group.links; track $index) {
 
     <li
-      [class]="{ 'menu-item': true, active: currentUrl === link.url }"
+      [class]="{
+        'menu-item': true,
+        active:
+          currentUrl === link.url ||
+          (link.url === '/' && currentUrl.startsWith('/product'))
+      }"
       [routerLink]="link.url"
       (click)="onCloseSidebar()"
       tabindex="0"
