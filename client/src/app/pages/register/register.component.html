@@ -163,7 +163,7 @@
         <input
           type="number"
           required
-          positiveNumber
+          pbPositiveNumber
           min="1"
           formControlName="houseNumber"
           max="999"
@@ -182,7 +182,7 @@
           type="number"
           required
           placeholder="#####"
-          positiveNumber
+          pbPositiveNumber
           formControlName="postcode"
           min="10000"
           max="99999"
@@ -250,7 +250,7 @@
       </div>
       <input
         [allowDecimal]="true"
-        positiveNumber
+        pbPositiveNumber
         formControlName="shippingCost"
         placeholder="How much do you charge for shipping?"
       />
@@ -261,7 +261,7 @@
       </div>
       <input
         [allowDecimal]="true"
-        positiveNumber
+        pbPositiveNumber
         formControlName="shippingFreeFrom"
         placeholder="Minimum amount for free shipping"
       />

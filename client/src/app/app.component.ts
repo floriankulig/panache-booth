@@ -8,6 +8,7 @@ import { NotificationService, CartService, OrderService } from "./services";
 import { NotificationComponent } from "./components/notification/notification.component";
 import { ModalComponent } from "./components/modal/modal.component";
 import { CartComponent } from "./components/cart/cart.component";
+import { OrdersComponent } from "./pages/orders/orders.component";
 
 @Component({
   selector: "pb-root",
@@ -19,6 +20,7 @@ import { CartComponent } from "./components/cart/cart.component";
     AuthComponent,
     ModalComponent,
     NotificationComponent,
+    OrdersComponent,
     CartComponent,
   ],
   templateUrl: "./app.component.html",

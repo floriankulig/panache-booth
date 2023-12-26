@@ -1,6 +1,6 @@
 import { Location } from "@angular/common";
 import { AxiosError } from "axios";
-import { Component, effect } from "@angular/core";
+import { Component } from "@angular/core";
 import { IconsModule } from "../../icons/icons.module";
 import {
   FormsModule,
@@ -11,15 +11,9 @@ import {
   AbstractControlOptions,
 } from "@angular/forms";
 import { PositiveNumberDirective } from "../../directives/positive-number.directive";
-import {
-  ActivatedRoute,
-  ActivatedRouteSnapshot,
-  Router,
-  RouterModule,
-} from "@angular/router";
+import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { AuthService } from "../../services";
 import { buildUserFromFormValues } from "../../../helpers";
-import { User } from "../../../models";
 
 @Component({
   selector: "pb-register",

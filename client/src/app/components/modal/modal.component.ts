@@ -73,13 +73,13 @@ import { CommonModule } from "@angular/common";
 export class ModalComponent {
   @Input() heading = "";
   @Input() open?: boolean;
-  @Output() close = new EventEmitter<void>();
+  @Output() modalClose = new EventEmitter<void>();
 
   @HostBinding("@modal") get animation() {
     return true;
   }
 
   onClose() {
-    this.close.emit();
+    this.modalClose.emit();
   }
 }

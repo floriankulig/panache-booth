@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output, signal } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  signal,
+} from "@angular/core";
 import {
   AbstractControl,
   FormBuilder,
@@ -35,7 +42,7 @@ import { TypedDropdownComponent } from "../../typed-dropdown/typed-dropdown.comp
   templateUrl: "./add-product.component.html",
   styleUrl: "./add-product.component.scss",
 })
-export class AddProductComponent {
+export class AddProductComponent implements OnInit {
   @Input() initialValues?: Product;
   submitting = false;
   errorMessage = "";
@@ -97,7 +104,7 @@ export class AddProductComponent {
   }
 
   get primaryText() {
-    return !!this.initialValues ? "Confirm" : "Start Selling";
+    return this.initialValues ? "Confirm" : "Start Selling";
   }
 
   async onSubmit(e?: SubmitEvent) {
@@ -115,7 +122,7 @@ export class AddProductComponent {
     }
     try {
       let product: Product;
-      if (!!this.initialValues) {
+      if (this.initialValues) {
         product = (await this.updateProduct()) as Product;
       } else {
         product = await this.createProduct();

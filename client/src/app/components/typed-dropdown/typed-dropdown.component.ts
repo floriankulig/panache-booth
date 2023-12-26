@@ -1,12 +1,8 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
   EventEmitter,
-  HostBinding,
-  HostListener,
   Input,
-  OnInit,
   Output,
   ViewChild,
 } from "@angular/core";
@@ -107,7 +103,7 @@ export class TypedDropdownComponent<
     this.closeDropdown();
   }
 
-  onKeyPress(event: any) {
+  onKeyPress(event: KeyboardEvent) {
     if (event.key !== "Enter") {
       return;
     }

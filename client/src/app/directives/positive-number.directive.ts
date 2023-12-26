@@ -9,7 +9,7 @@ import {
 
 /** Wahrscheinlich das krasseste was ich jemals gebaut habe */
 @Directive({
-  selector: "[positiveNumber]",
+  selector: "[pbPositiveNumber]",
   standalone: true,
 })
 export class PositiveNumberDirective {
@@ -32,7 +32,7 @@ export class PositiveNumberDirective {
 
     // If decimal values are allowed, keep the first decimal point and remove all non-numeric characters
     if (this.allowDecimal) {
-      initialValue = initialValue.replace(/[^0-9\.\,]*/g, "");
+      initialValue = initialValue.replace(/[^0-9.,]*/g, "");
 
       initialValue = initialValue.replace(/,/g, ".");
       const decimalPointIndex = initialValue.indexOf(".");
@@ -50,7 +50,7 @@ export class PositiveNumberDirective {
       // If only integers are allowed, remove all non-numeric characters
     }
 
-    if (!!initialValue) {
+    if (initialValue) {
       this.el.nativeElement.value =
         +initialValue > 0 ||
         initialValue.endsWith(".") ||

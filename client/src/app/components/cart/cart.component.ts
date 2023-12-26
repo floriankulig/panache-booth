@@ -7,7 +7,7 @@ import {
 } from "../../services";
 import { CartProduct, User } from "../../../models";
 import { IconsModule } from "../../icons/icons.module";
-import { getDiscountedPrice } from "../../../helpers";
+import { costOfCartProducts, getDiscountedPrice } from "../../../helpers";
 import { QuantityComponent } from "../product/quantity/quantity.component";
 import { ActivatedRoute, Router } from "@angular/router";
 
@@ -36,7 +36,7 @@ export class CartComponent implements OnDestroy {
       const vendorItems = this.cartService
         .cartProducts()
         .filter((product) => product.vendor.id === vendor.id);
-      const itemTotal = this.costOfCartProducts(vendorItems);
+      const itemTotal = costOfCartProducts(vendorItems);
       return {
         vendor,
         total: itemTotal,
@@ -64,24 +64,12 @@ export class CartComponent implements OnDestroy {
     if (this.showPayments) this.cartService.clearCart();
   }
 
-  private costOfCartProducts(
-    products: CartProduct[],
-    discounted = true,
-  ): number {
-    return products.reduce((total, product) => {
-      const productPrice = discounted
-        ? getDiscountedPrice(product)
-        : product.price;
-      return total + productPrice * product.quantity;
-    }, 0);
-  }
-
   get uniqueItems() {
     return this.cartProducts().length;
   }
 
   get itemsTotal() {
-    return this.costOfCartProducts(this.cartProducts());
+    return costOfCartProducts(this.cartProducts());
   }
 
   get itemsCount() {
@@ -92,7 +80,7 @@ export class CartComponent implements OnDestroy {
 
   get shippingTotal() {
     return this.itemsByVendor().reduce((shippingtotal, { vendor, items }) => {
-      const costPerVendor = this.costOfCartProducts(items);
+      const costPerVendor = costOfCartProducts(items);
       if (
         costPerVendor > Number(vendor.shippingFreeFrom) &&
         this.vendorHasFreeShipping(vendor)
@@ -105,7 +93,7 @@ export class CartComponent implements OnDestroy {
   }
 
   get cartTotal(): number {
-    return this.itemsTotal + this.shippingTotal;
+    return +(this.itemsTotal + this.shippingTotal).toFixed(2);
   }
 
   onClearCart() {
@@ -167,6 +155,11 @@ export class CartComponent implements OnDestroy {
         duration: 5000,
       });
     } catch (error) {
+      this.notificiationService.addNotification({
+        message: "Order could not be placed",
+        type: "error",
+        duration: 5000,
+      });
     } finally {
       this.submitting = false;
     }

@@ -1,4 +1,4 @@
-import { formatDistance, formatDistanceToNowStrict } from "date-fns";
+import { formatDistance } from "date-fns";
 import { enGB } from "date-fns/locale";
 
 export const getDistanceToDate = (date: Date, refDate?: Date): string => {

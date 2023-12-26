@@ -1,6 +1,6 @@
 <pb-sidebar
   [class]="{ open: sidebarOpen() }"
-  (close)="closeSidebar()"
+  (closeSidebar)="closeSidebar()"
 ></pb-sidebar>
 <main>
   <pb-header (openSidebar)="sidebarOpen.set(true)"></pb-header>
@@ -9,5 +9,10 @@
   </div>
 </main>
 @if (sidebarOpen()) {
-<div class="blur-bg" (click)="sidebarOpen.set(false)"></div>
+<div
+  class="blur-bg"
+  tabindex="0"
+  (click)="sidebarOpen.set(false)"
+  (keydown.enter)="sidebarOpen.set(false)"
+></div>
 }

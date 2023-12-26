@@ -1,4 +1,4 @@
-import { signal, Component, ElementRef, computed } from "@angular/core";
+import { signal, Component, ElementRef, computed, OnInit } from "@angular/core";
 import { IconsModule } from "../../../icons/icons.module";
 import { RouterLink } from "@angular/router";
 import { AuthService } from "../../../services/auth/auth.service";
@@ -14,7 +14,7 @@ import { CartService, OrderService } from "../../../services";
   templateUrl: "./profile-menu.component.html",
   styleUrl: "./profile-menu.component.scss",
 })
-export class ProfileMenuComponent {
+export class ProfileMenuComponent implements OnInit {
   open = signal(false);
   user = this.authService.user;
   userJoinDate = computed(() =>

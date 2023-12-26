@@ -1,4 +1,4 @@
-<div class="click-contain" (onClickOutside)="clickOutside()">
+<div class="click-contain" (pbClickOutside)="clickOutside()">
   <div class="input">
     <input
       type="text"
@@ -8,7 +8,12 @@
       (keypress)="onKeyPress($event)"
       (focus)="onInputFocus()"
     />
-    <div class="open-icon" (click)="toggleDropdown()">
+    <div
+      class="open-icon"
+      tabindex="0"
+      (click)="toggleDropdown()"
+      (keydown.enter)="toggleDropdown()"
+    >
       <div class="open-icon__inner">
         <i-feather
           name="chevron-down"
@@ -23,7 +28,13 @@
       @if (displayedValues.length === 0) {
       <li class="no-result"><i-feather name="frown"></i-feather> No results</li>
       } @else { @for (item of displayedValues; track item.id) {
-      <li (click)="onSelectValue(item)">{{ item.displayValue }}</li>
+      <li
+        tabindex="0"
+        (click)="onSelectValue(item)"
+        (keydown.enter)="onSelectValue(item)"
+      >
+        {{ item.displayValue }}
+      </li>
       }}
     </ul>
   </div>

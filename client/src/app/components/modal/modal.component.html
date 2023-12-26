@@ -1,5 +1,13 @@
 <div class="modal-container" @modalAnimation>
-  <div class="close" role="button" aria-label="Close Modal" (click)="onClose()">
+  <div
+    class="close"
+    tabindex="0"
+    role="button"
+    aria-label="Close Modal"
+    tabindex="0"
+    (click)="onClose()"
+    (keydown.enter)="onClose()"
+  >
     <i-feather name="x"></i-feather>
   </div>
   @if (!!heading) {
@@ -8,9 +16,11 @@
   <ng-content></ng-content>
 </div>
 <div
+  tabindex="-1"
   @backdrop
   class="modal-backdrop"
   (click)="onClose()"
+  (keydown.enter)="onClose()"
   role="button"
   aria-label="Close Modal"
 ></div>

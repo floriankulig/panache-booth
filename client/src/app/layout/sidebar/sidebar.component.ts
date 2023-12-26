@@ -13,7 +13,7 @@ import { AuthService } from "../../services";
   styleUrl: "./sidebar.component.scss",
 })
 export class SidebarComponent {
-  @Output() close = new EventEmitter();
+  @Output() closeSidebar = new EventEmitter();
   currentUrl: string = "/";
   tabs = SIDEBAR_TABS;
   visibleTabs = computed(() => this.tabsForUser);
@@ -27,7 +27,7 @@ export class SidebarComponent {
   }
 
   get tabsForUser() {
-    const secondTabGroup = !!this.authService.user()
+    const secondTabGroup = this.authService.user()
       ? this.authService.user()?.isVendor
         ? this.tabs[2]
         : this.tabs[1]
@@ -38,7 +38,7 @@ export class SidebarComponent {
     return [this.tabs[0], secondTabGroup];
   }
 
-  closeSidebar() {
-    this.close.emit();
+  onCloseSidebar() {
+    this.closeSidebar.emit();
   }
 }

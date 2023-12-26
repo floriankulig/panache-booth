@@ -32,7 +32,7 @@
         flex: 1;
 
         .actions {
-          margin-top: grid(3.5);
+          margin-top: grid(3);
           display: flex;
           justify-content: space-between;
           gap: grid(1.5);
@@ -134,14 +134,10 @@
   }
   h1 {
     font-size: clamp(2.5rem, 5vw, 4rem);
-    margin: grid(3) 0 clamp(grid(1), 2vw, grid(3));
+    margin: grid(2) 0 clamp(grid(1), 2vw, grid(2));
     text-overflow: ellipsis;
     overflow: hidden;
-
-    span {
-      color: $textSecondaryDark;
-      color: rgba(lighten($primary, 20), 0.2);
-    }
+    line-height: 1.2;
   }
 
   h2 {
