@@ -174,12 +174,12 @@ header.header {
     }
 
     &__product {
-      background: $bgSecondary;
+      background: rgba($bgSecondaryDark, 0.03);
       border-radius: grid(1);
       padding: grid(2);
       display: flex;
       flex-direction: column;
-      gap: grid(0.5);
+      gap: grid(1);
 
       &__title {
         cursor: pointer;
@@ -202,6 +202,11 @@ header.header {
             scale: 1;
             opacity: 1;
           }
+        }
+      }
+      &__quantity {
+        span {
+          font-weight: 550;
         }
       }
     }
@@ -218,7 +223,7 @@ header.header {
         height: grid(4);
         width: grid(4);
         border-radius: 50%;
-        background: $bgSecondary;
+        background: rgba($bgSecondaryDark, 0.03);
         i-feather {
           width: grid(2.5);
           height: grid(2.5);
@@ -230,45 +235,6 @@ header.header {
       display: grid;
       gap: grid(0.5);
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    }
-
-    &__product {
-      background: $bgSecondary;
-      border-radius: grid(1);
-      padding: grid(2);
-      display: flex;
-      flex-direction: column;
-      gap: grid(1);
-
-      &__title {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        gap: grid(0.5);
-        i-feather {
-          opacity: 0;
-          width: grid(2);
-          scale: 0.8;
-          height: grid(2);
-          transition: all 0.2s ease-in-out;
-        }
-
-        &:hover {
-          i-feather {
-            scale: 1;
-            opacity: 1;
-          }
-        }
-      }
-
-      &__quantity {
-        span {
-          font-weight: 550;
-        }
-      }
     }
   }
 }
