@@ -124,9 +124,11 @@ header.header {
         font-size: 0.9rem;
         font-weight: 500;
         display: flex;
+        height: 38px;
         align-items: center;
         padding: grid(1) grid(2);
         gap: grid(1);
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
 
         i-feather {
           width: grid(2.5);
@@ -136,7 +138,6 @@ header.header {
         &:is(button) {
           background: transparent;
           color: $success;
-          text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
           border: 1px solid $success;
         }
 
