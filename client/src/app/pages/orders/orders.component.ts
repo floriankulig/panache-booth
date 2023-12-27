@@ -81,7 +81,7 @@ export class OrdersComponent {
     return (
       (isToday(date)
         ? "Today"
-        : isSameDay(date, subDays(date, 1))
+        : isSameDay(date, subDays(new Date(), 1))
         ? "Yesterday"
         : format(date, "do MMMM yyyy")) +
       " at " +

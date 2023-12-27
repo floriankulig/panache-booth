@@ -14,7 +14,11 @@
         ><i-feather name="user"></i-feather
         >{{ isOwnProduct() ? "You" : product.vendor.userName }}</span
       >
-      <span class=""
+      <span
+        class="clickable"
+        tabindex="0"
+        (click)="navigateTo('/categories?category=' + product.category)"
+        (keydown.enter)="navigateTo('/categories?category=' + product.category)"
         ><i-feather name="grid"></i-feather>{{ productCategory }}</span
       >
       @if (product.purchases) {
@@ -37,6 +41,18 @@
         <div>&bull;</div>
         <p>{{ maxProductQuantity > 99 ? "99+" : maxProductQuantity }} left</p>
       </span>
+      @if (isOwnProduct()) {
+
+      <div class="vendor-actions">
+        <button class="edit" (click)="editModalOpen.set(true)">
+          <i-feather name="edit3"></i-feather>
+          Edit</button
+        ><button class="danger" (click)="deleteModalOpen.set(true)">
+          <i-feather name="trash"></i-feather>
+          Delete
+        </button>
+      </div>
+      }
     </div>
     <div class="div"></div>
     <div class="vendor-info">
@@ -116,4 +132,22 @@
 <div class="content-inner">
   <h1>Product does not exist</h1>
 </div>
-} }
+} } @if (deleteModalOpen()) {
+<pb-modal (modalClose)="deleteModalOpen.set(false)">
+  <pb-delete-confirm
+    [product]="product"
+    (delete)="onDeleteSuccess()"
+  ></pb-delete-confirm>
+</pb-modal>
+} @if (editModalOpen()) {
+<pb-modal
+  (modalClose)="editModalOpen.set(false)"
+  [heading]="'Edit ' + product?.name"
+>
+  <pb-add-product
+    [initialValues]="product"
+    (cancel)="editModalOpen.set(false)"
+    (create)="onProductUpdated()"
+  ></pb-add-product>
+</pb-modal>
+}
