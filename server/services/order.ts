@@ -222,7 +222,7 @@ export function updateOrder(reqParams: any, reqBody: any) {
     throw new OrderNotExistingError();
   }
   for (let product of products) {
-    if (!getProductById(product.id)) {
+    if (!getProductsOfOrder(product.id)) {
       throw new ProductNotExistingError();
     }
     if (!checkIfProductIsInOrder(product.id, orderId)) {
