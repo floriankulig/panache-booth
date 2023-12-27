@@ -74,6 +74,7 @@ router.put("/:userId", async (req, res) => {
 
 router.delete("/:userId", async (req, res) => {
   try {
+
     deleteUser(req.params);
     res.sendStatus(200);
   } catch (error) {
