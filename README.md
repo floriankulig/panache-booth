@@ -34,3 +34,4 @@ npm run web-engineering
   - Optimieren von Animationen für WebKit Browser Engine: Keine _transform_-regeln auf **flex**-Elementen.
 - Schutz von Nutzerdaten: nur das jeweils eigene und Verkäuferprofile können eingesehen werden
 - Verkäufer können selbst zu Käufern werden.
+- Käufer werden mit Notification-Indikator (im Header) bei App-Load darüber informiert, wenn sich der Status einer Bestellung geändert hat.
