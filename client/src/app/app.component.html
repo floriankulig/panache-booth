@@ -2,11 +2,10 @@
 ></pb-auth-layout>}
 
 <ul class="notifications">
-  @for (notification of activeNotifications(); track $index) {
+  @for (notification of activeNotifications(); track notification.id) {
   <pb-notification
     class="notifications__item"
     [notification]="notification"
-    [index]="$index"
   ></pb-notification>
   }
 </ul>

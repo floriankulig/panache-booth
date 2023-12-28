@@ -12,7 +12,6 @@ export class OrderService {
 
   constructor(private authService: AuthService) {
     effect(() => {
-      console.log(this.lastTimeOrdersOpen);
       if (this.ordersOpen()) {
         localStorage.setItem(
           "lastTimeOrdersOpen",
