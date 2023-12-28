@@ -49,7 +49,6 @@ import {
 })
 export class NotificationComponent {
   @Input() notification!: Notification;
-  @Input() index!: number;
   @ViewChild("progress") progressBar!: ElementRef<HTMLDivElement>;
 
   @HostBinding("@notification") get notificationAnimation() {
