@@ -71,6 +71,13 @@
         padding-right: grid(10);
         letter-spacing: -1px;
         margin-block: grid(1.5) grid(3);
+        color: transparent;
+        background: linear-gradient(
+          to bottom,
+          lighten($textPrimary, 25),
+          $textPrimary
+        );
+        background-clip: text;
       }
 
       @media screen and (max-width: 768px) {

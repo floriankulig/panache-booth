@@ -34,13 +34,20 @@ header.header {
       transition-property: color, background;
 
       &.active {
-        background: $primary;
+        background: linear-gradient(
+          178deg,
+          lighten($primary, 1) 10%,
+          $primary,
+          darken($primary, 6) 95%
+        );
         color: $textPrimaryDark;
+        text-shadow: 0 0 6px rgba($textPrimaryDark, 0.2);
       }
 
       &:hover:not(:is(.active)) {
         background: $bgPrimaryDark;
         color: $textPrimaryDark;
+        text-shadow: 0 0 6px rgba($textPrimaryDark, 0.2);
       }
     }
   }
