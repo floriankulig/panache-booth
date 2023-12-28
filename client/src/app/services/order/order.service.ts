@@ -31,7 +31,10 @@ export class OrderService {
           );
           this._displayOrdersNotification = orders.some((order) => {
             const orderDate = new Date(order.updatedAt);
-            return orderDate.getTime() > this.lastTimeOrdersOpen.getTime();
+            return (
+              orderDate.getTime() > this.lastTimeOrdersOpen.getTime() &&
+              order.updatedAt !== order.createdAt
+            );
           });
         } catch (error) {
           console.error(error);
