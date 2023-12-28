@@ -40,6 +40,10 @@ export class HeaderComponent {
       : activeTabGroup?.links.find((link) => link.url === url)?.name || "Home";
   }
 
+  get displayOrdersNotification(): boolean {
+    return this.orderService.displayOrdersNotification;
+  }
+
   openCart() {
     this.cartService.setCartOpen(true);
   }
