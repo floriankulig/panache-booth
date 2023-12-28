@@ -123,7 +123,8 @@ export function updateUser(reqParams: any, reqBody: any) {
 
 export function deleteUser(reqParams: any) {
   let userId = reqParams.userId;
-  if (userById(userId) !== undefined) {
+  let user = getUserById(userId)
+  if (getUserById(userId) !== undefined) {
     return deleteUserById(userId);
   } else {
     throw new UserNotExistingError();
