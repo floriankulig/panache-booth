@@ -50,6 +50,7 @@ export class AppComponent {
     this.router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
         this.showLayout = !isAuthUrl(val.url);
+        this.authService.profileMenuOpen.set(false);
       }
     });
   }

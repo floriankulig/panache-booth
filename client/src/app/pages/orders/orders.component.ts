@@ -1,5 +1,17 @@
-import { Component, Input, computed, effect, signal } from "@angular/core";
-import { AuthService, NotificationService, OrderService } from "../../services";
+import {
+  Component,
+  Input,
+  OnDestroy,
+  computed,
+  effect,
+  signal,
+} from "@angular/core";
+import {
+  AuthService,
+  FilterService,
+  NotificationService,
+  OrderService,
+} from "../../services";
 import { Order, OrderProduct, User } from "../../../models";
 import { AxiosError } from "axios";
 import { Router } from "@angular/router";
@@ -16,12 +28,10 @@ type DisplayType = "vendor" | "customer";
   templateUrl: "./orders.component.html",
   styleUrl: "./orders.component.scss",
 })
-export class OrdersComponent {
+export class OrdersComponent implements OnDestroy {
   @Input() inModal: boolean = false;
   userIsVendor = computed(() => this.authService.user()?.isVendor);
-  displayType = signal<DisplayType>(
-    this.inModal || !this.authService.user()?.isVendor ? "customer" : "vendor",
-  );
+  displayType = signal<DisplayType>("customer");
   orders = signal<Order[]>([]);
   errorMessage = "";
   loading = true;
@@ -31,7 +41,18 @@ export class OrdersComponent {
     private authService: AuthService,
     private notificationService: NotificationService,
     private router: Router,
+    private filterService: FilterService,
   ) {
+    effect(
+      () => {
+        this.displayType.set(
+          this.inModal || !this.authService.user()?.isVendor
+            ? "customer"
+            : "vendor",
+        );
+      },
+      { allowSignalWrites: true },
+    );
     effect(() => {
       this.getOrders(this.displayType(), this.authService.user()?.id);
     });
@@ -40,12 +61,15 @@ export class OrdersComponent {
         this.router.navigate(["/"]);
       }
     });
-    // effect(
-    //   () => {
-    //     this.displayType.set(this.userIsVendor() ? "vendor" : "customer");
-    //   },
-    //   { allowSignalWrites: true },
-    // );
+    effect(() => {
+      console.log(this.inModal);
+      if (!this.inModal)
+        this.filterService.searchbarPlaceholder = `Search for ${this.displayType()}s or products`;
+    });
+  }
+
+  ngOnDestroy() {
+    if (!this.inModal) this.filterService.resetSearchbarPlaceholder();
   }
 
   private async getOrders(displayType: DisplayType, userId?: string) {
