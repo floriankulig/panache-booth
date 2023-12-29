@@ -53,6 +53,6 @@ export class HeaderComponent {
   }
 
   toggleMenu() {
-    this.authService.profileMenuOpen.update((prev) => !prev);
+    this.authService.profileMenuOpen.set(true);
   }
 }

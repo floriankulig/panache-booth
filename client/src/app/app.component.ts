@@ -58,9 +58,13 @@ export class AppComponent {
     this.notificationService.removeNotification(notificationIndex);
   }
 
-  clickOutsideMenu() {
-    if (this.profileMenuOpen()) {
-      // this.authService.profileMenuOpen.set(false);
+  clickOutsideMenu(event: MouseEvent) {
+    const profileMenuTrigger = document.getElementById("profileMenuTrigger");
+    if (
+      this.profileMenuOpen() &&
+      !profileMenuTrigger?.contains(event.target as Node)
+    ) {
+      this.authService.profileMenuOpen.set(false);
     }
   }
 }
