@@ -1,20 +1,20 @@
 import express from "express";
 import {
-  addUser,
-  allUsers,
-  deleteUser,
-  loginUser,
-  updateUser,
-  userById,
+  createUserService,
+  getAllUsersService,
+  deleteUserService,
+  loginUserService,
+  updateUserService,
+  getUserByIdService,
 } from "../services/user";
 import { UserError } from "../util/customUserErrors";
 import { SqliteError } from "better-sqlite3";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", async (req, res )=> {
   try {
-    res.status(200).json(allUsers());
+    res.status(200).json(getAllUsersService());
   } catch (error) {
     res.status(500).send("Internal server error!");
   }
@@ -22,7 +22,8 @@ router.get("/", async (req, res) => {
 
 router.get("/:userId", async (req, res) => {
   try {
-    res.status(200).json(userById(req.params));
+    let userId: string = req.params.userId
+    res.status(200).json(getUserByIdService(userId));
   } catch (error) {
     if (error instanceof UserError) {
       res.status(400).send(error.message);
@@ -34,9 +35,8 @@ router.get("/:userId", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    res.status(200).json(loginUser(req.body));
+    res.status(200).json(loginUserService(req.body));
   } catch (error) {
-    console.log(error)
     if (error instanceof UserError) {
       res.status(400).send(error.message);
     } else {
@@ -47,7 +47,7 @@ router.post("/login", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    res.status(200).json(await addUser(req.body));
+    res.status(200).json(createUserService(req.body));
   } catch (error: unknown) {
     if (error instanceof UserError) {
       res.status(400).send(error.message);
@@ -61,9 +61,8 @@ router.post("/", async (req, res) => {
 
 router.put("/:userId", async (req, res) => {
   try {
-    res.status(200).json(await updateUser(req.params, req.body));
+    res.status(200).json(updateUserService(req.params, req.body));
   } catch (error) {
-    console.log(error)
     if (error instanceof UserError) {
       res.status(400).send(error.message);
     } else if (error instanceof SqliteError && error.code === "SQLITE_CONSTRAINT_UNIQUE") {
@@ -77,7 +76,7 @@ router.put("/:userId", async (req, res) => {
 router.delete("/:userId", async (req, res) => {
   try {
 
-    deleteUser(req.params);
+    deleteUserService(req.params);
     res.sendStatus(200);
   } catch (error) {
     if (error instanceof UserError) {

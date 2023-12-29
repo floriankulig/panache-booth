@@ -12,7 +12,7 @@ import {
   getProductsOfOrderVendor, getStatusOfOrder,
   updateOrderById, updateOrderProductEntity,
 } from "../models/order";
-import { getUserById, getVendorShippingCost, getVendorShippingFreeFrom } from "../models/user";
+import { getUserByIdModel, getVendorShippingCostModel, getVendorShippingFreeFromModel } from "../models/user";
 import { IsVendorFormatError, UserNotExistingError } from "../util/customUserErrors";
 import {
   getDiscountOfProduct,
@@ -38,7 +38,7 @@ export function orderById(id: string) {
 
 export function allUserOrdersById(reqParams: any) {
   let userId = reqParams.id;
-  if (getUserById(userId) !== undefined) {
+  if (getUserByIdModel(userId) !== undefined) {
     let orders: any[] = getAllOrdersByUserId(userId);
     let newArray = [];
     let productsNew = [];
@@ -47,7 +47,7 @@ export function allUserOrdersById(reqParams: any) {
       let products: any[] = getProductsOfOrder(order.id);
 
       for (let product of products) {
-        let vendorInfo: any = getUserById(product.vendorId);
+        let vendorInfo: any = getUserByIdModel(product.vendorId);
         let statusOrder: any = getStatusOfOrder(order.id, product.id);
         product.price = statusOrder.priceProduct;
         product.discount = statusOrder.discountProduct;
@@ -78,7 +78,7 @@ export function allUserOrdersById(reqParams: any) {
 
 export function allVendorOrdersById(reqParams: any) {
   let vendorId = reqParams.id;
-  if (getUserById(vendorId) !== undefined) {
+  if (getUserByIdModel(vendorId) !== undefined) {
     let orders: any[] = getAllOrdersWithVendorProducts(vendorId);
     let newArray = [];
     let productsNew = [];
@@ -92,7 +92,7 @@ export function allVendorOrdersById(reqParams: any) {
         order.id,
         vendorId,
       );
-      let vendorInfo: any = getUserById(vendorId);
+      let vendorInfo: any = getUserByIdModel(vendorId);
       for (const orderProductVendor of orderProductsVendor) {
         let statusOrder: any = getStatusOfOrder(order.id, orderProductVendor.id);
         vendorInfo.shippingCost = statusOrder.vendorShippingCost;
@@ -116,7 +116,7 @@ export function allVendorOrdersById(reqParams: any) {
         order.price = vendorPrice;
       }
       console.log(order.price);
-      let user = getUserById(order.userId)
+      let user = getUserByIdModel(order.userId)
       console.log(user)
       const combinedObject = {
         ...order,
@@ -142,7 +142,7 @@ export function allOrders() {
 
     for (let product of products) {
       console.log(product)
-      let vendorInfo: any = getUserById(product.vendorId);
+      let vendorInfo: any = getUserByIdModel(product.vendorId);
       let statusOrder: any = getStatusOfOrder(order.id, product.id);
       console.log(statusOrder)
       let productDelivered = statusOrder.delivered === 1 ? true : false;
@@ -198,8 +198,8 @@ export function addOrder(reqBody: any) {
   products.forEach((item: { id: string; quantity: number; vendorId: string; }) => {
     let productPrice: any = getPriceOfProduct(item.id);
     let productDiscount: any = getDiscountOfProduct(item.id);
-    let vendorShippingCost: any = getVendorShippingCost(item.vendorId);
-    let vendorShippingFreeFrom: any = getVendorShippingFreeFrom(item.vendorId);
+    let vendorShippingCost: any = getVendorShippingCostModel(item.vendorId);
+    let vendorShippingFreeFrom: any = getVendorShippingFreeFromModel(item.vendorId);
     let orderProductEntity: IOrderProduct = {
       orderId: order.id,
       productId: item.id,
@@ -258,7 +258,7 @@ export function updateOrder(reqParams: any, reqBody: any) {
   let productsNew = [];
 
   for (let product of productsOfOrder) {
-    let vendorInfo: any = getUserById(product.vendorId);
+    let vendorInfo: any = getUserByIdModel(product.vendorId);
     let statusOrder: any = getStatusOfOrder(orderId, product.id);
     let productDelivered = statusOrder.delivered === 1 ? true : false;
     let productPaid = statusOrder.paid === 1 ? true : false;
@@ -282,7 +282,7 @@ export function updateOrder(reqParams: any, reqBody: any) {
 }
 
 function validateOrderUser(userId: any): string {
-  if (getUserById(userId) === undefined) {
+  if (getUserByIdModel(userId) === undefined) {
     throw new InvalidUserError();
   }
   return userId;

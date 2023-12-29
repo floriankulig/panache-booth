@@ -6,7 +6,7 @@ import {
   getProductById,
   updateProductById,
 } from "../models/product";
-import { getUserById } from "../models/user";
+import { getUserByIdModel } from "../models/user";
 import { v4 as uuidv4 } from "uuid";
 import {
   BicFormatError,
@@ -27,7 +27,7 @@ export function productById(reqParams: any) {
   let productId = reqParams.productId;
   if (getProductById(productId) !== undefined) {
     let product: any = getProductById(productId);
-    let vendorInfo: any = getUserById(product.vendorId);
+    let vendorInfo: any = getUserByIdModel(product.vendorId);
     const combinedProduct = {
       ...product,
       vendor: vendorInfo,
@@ -43,7 +43,7 @@ export function allProducts() {
   let productsNew = [];
 
   for (const product of products) {
-    let vendorInfo: any = getUserById(product.vendorId);
+    let vendorInfo: any = getUserByIdModel(product.vendorId);
     const combinedProduct = {
       ...product,
       vendor: vendorInfo,
@@ -59,7 +59,7 @@ export function allVendorProducts(reqQuery: any) {
   let productsNew = [];
 
   for (const product of products) {
-    let vendorInfo: any = getUserById(vendorId);
+    let vendorInfo: any = getUserByIdModel(vendorId);
     const combinedProduct = {
       ...product,
       vendor: vendorInfo,
@@ -180,7 +180,7 @@ function validatePrice(price: any): number {
 }
 
 function validateVendorId(vendorId: any): string {
-  if (getUserById(vendorId) === undefined) {
+  if (getUserByIdModel(vendorId) === undefined) {
     throw new IsVendorFormatError();
   }
   return vendorId;
