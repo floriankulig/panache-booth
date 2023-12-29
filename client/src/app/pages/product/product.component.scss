@@ -91,7 +91,8 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    width: clamp(250px, 30%, 300px);
+    min-width: clamp(250px, 30%, 300px);
+    max-width: 500px;
     border-radius: grid(2);
     background: $bgSecondary;
 
@@ -109,11 +110,9 @@
         gap: grid(0.5);
         flex-wrap: wrap;
         align-items: baseline;
-        line-height: 1;
         .right {
           font-size: clamp(2rem, 4vw, 3rem);
           font-weight: 700;
-          line-height: 1;
         }
         .wrong {
           font-size: clamp(1rem, 1.75vw, 1.3rem);
@@ -223,7 +222,7 @@
     flex-direction: column;
 
     .action-bar {
-      width: 100%;
+      max-width: 100%;
     }
   }
 }
