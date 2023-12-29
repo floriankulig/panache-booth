@@ -10,7 +10,10 @@
   }
 </ul>
 
-@if (showLayout) { @if (cartService.cartOpen()){
+@if(profileMenuOpen() && showLayout) {<pb-profile-menu
+  (pbClickOutside)="clickOutsideMenu($event)"
+></pb-profile-menu
+>} @if (showLayout) { @if (cartService.cartOpen()){
 <pb-modal
   [heading]="'Cart (' + cartService.cartProducts().length + ')'"
   (modalClose)="cartService.setCartOpen(false)"

@@ -1,12 +1,3 @@
-<div
-  class="icon-wrapper"
-  tabindex="0"
-  (click)="toggleMenu()"
-  (keydown.enter)="toggleMenu()"
->
-  <i-feather name="user"></i-feather>
-</div>
-@if (open()) {
 <div class="profile-menu">
   @if (!!user()) {
   <div class="user-info">
@@ -18,18 +9,18 @@
   <ul class="profile-menu__actions">
     <li
       class="profile-menu__actions-item"
-      tabindex="0"
       (click)="openCart()"
       (keydown.enter)="openCart()"
+      tabindex="0"
     >
       <i-feather name="shopping-cart"></i-feather> Cart
     </li>
     @if (user()) {
     <li
       class="profile-menu__actions-item"
-      tabindex="0"
       (click)="openOrders()"
       (keydown.enter)="openOrders()"
+      tabindex="0"
     >
       <i-feather name="shopping-bag"></i-feather> Orders
     </li>
@@ -54,13 +45,12 @@
     </li>
     <li
       class="profile-menu__actions-item"
-      tabindex="0"
       (click)="logout()"
       (keydown.enter)="logout()"
+      tabindex="0"
     >
       <i-feather name="log-out"></i-feather> Log out
     </li>
     }
   </ul>
 </div>
-}

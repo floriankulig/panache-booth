@@ -41,7 +41,15 @@
       }
     </div>
     <span class="div"></span>
-    <pb-profile-menu></pb-profile-menu>
+    <div
+      class="icon-wrapper"
+      id="profileMenuTrigger"
+      (click)="toggleMenu()"
+      (keydown.enter)="toggleMenu()"
+      tabindex="0"
+    >
+      <i-feather name="user"></i-feather>
+    </div>
   </div>
 </nav>
 <div class="divider"></div>

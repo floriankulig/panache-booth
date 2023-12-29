@@ -229,7 +229,7 @@
   padding: $grid * 1.75 grid(4);
   font-size: 1rem;
   border: none;
-  background: darken($primary, 0);
+  background: $primary;
   color: $textPrimaryDark;
   white-space: nowrap;
   overflow: hidden;

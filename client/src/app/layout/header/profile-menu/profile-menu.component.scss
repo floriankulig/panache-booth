@@ -1,34 +1,18 @@
 @use "variables.scss" as *;
 
-:host {
-  display: block;
-  position: relative;
-  z-index: 999;
-}
-
-.icon-wrapper {
-  place-items: center;
-  width: 48px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  cursor: pointer;
-  display: grid;
-  background-color: $bgSecondary;
-}
-
 .profile-menu {
   position: absolute;
-  top: 110%;
-  right: 0;
+  top: 64px;
+  right: 32px;
   min-width: 200px;
-  width: 100%;
-  z-index: 999;
+  width: fit-content;
   max-width: 400px;
-  backdrop-filter: blur(20px) saturate(150%);
+  z-index: 999;
+  backdrop-filter: blur(20px) saturate(180%);
   background: linear-gradient(
     to right bottom,
-    rgba($bgPrimary, 0.85),
-    rgba($bgPrimary, 0.8)
+    rgba($bgPrimary, 0.8),
+    rgba($bgPrimary, 0.5)
   );
   box-shadow: 3px 8px 16px rgba($textPrimary, 0.08);
   border-radius: grid(2);
@@ -88,5 +72,10 @@
         aspect-ratio: 1;
       }
     }
+  }
+
+  @media screen and (max-width: 768px) {
+    right: 16px;
+    max-width: calc(100vw - 32px);
   }
 }

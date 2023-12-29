@@ -50,7 +50,7 @@
         required
         minlength="4"
         maxlength="32"
-        pattern="[a-zA-Z0-9]*"
+        pattern="[a-zA-Z0-9 ]*"
         type="text"
         [placeholder]="
           formType === 'vendor' ? 'Your Company Name' : 'Display Name'
@@ -92,19 +92,20 @@
           >@if (formGroup.get("password")?.errors?.["required"]) {Required}
           @else if (formGroup.get("password")?.errors?.["minlength"] ||
           formGroup.get("password")?.errors?.["maxlength"] ) {Must be within
-          6-24 characters} @else {Must contain 1 capital letter}</span
+          6-24 characters} @else {Must contain 1 capital letter, 1 digit}</span
         >
         }
       </div>
       <input
         required
         minlength="6"
-        maxlength="24"
+        maxlength="12"
         type="password"
-        pattern="[a-zA-Z0-9\@\,\.\!\?\-]*[A-Z][a-zA-Z0-9\@\,\.\!\?\-]*"
-        title="Das Passwort muss 6 bis 12 Zeichen lang sein und mindestens einen Großbuchstaben enthalten."
+        pattern="^(?=.*[A-Z])(?=.*\d).+$"
+        name="password"
+        title="Das Passwort muss 6 bis 12 Zeichen lang sein und mindestens einen Großbuchstaben und eine Zahl enthalten."
         formControlName="password"
-        placeholder="6-12 Characters, at least one capital letter"
+        placeholder="6-12 Characters, at least one capital letter and one digit"
       />
     </div>
     <div class="input">
@@ -119,18 +120,20 @@
           formGroup.get("confirmPassword")?.errors?.["maxlength"]) {Must be
           within 6-24 characters} @else if
           (formGroup.get("confirmPassword")?.errors?.["passwordMismatch"] )
-          {Must match password} @else {Must contain 1 capital letter}</span
+          {Must match password} @else {Must contain 1 capital letter, 1
+          digit}</span
         >
         }
       </div>
       <input
         formControlName="confirmPassword"
-        minlength="6"
-        maxlength="24"
         required
+        minlength="6"
+        maxlength="12"
         type="password"
-        pattern="[a-zA-Z0-9\@\,\.\!\?\-]*[A-Z][a-zA-Z0-9\@\,\.\!\?\-]*"
-        title="Das Passwort muss 6 bis 12 Zeichen lang sein und mindestens einen Großbuchstaben enthalten."
+        pattern="^(?=.*[A-Z])(?=.*\d).+$"
+        name="password"
+        title="Das Passwort muss 6 bis 12 Zeichen lang sein und mindestens einen Großbuchstaben und eine Zahl enthalten."
         placeholder="Confirm Password"
       />
     </div>
@@ -154,6 +157,7 @@
         <input
           type="text"
           required
+          maxlength="255"
           formControlName="street"
           placeholder="e.g. Daimlerstraße"
         />
@@ -200,14 +204,16 @@
           formGroup.get("postcode")?.touched)) {
           <span class="input-error"
             >@if (formGroup.get("city")?.errors?.["required"]||
-            formGroup.get("postcode")?.errors?.["required"]) {Required} @else
-            {Postcode must be 5 digits}</span
+            formGroup.get("postcode")?.errors?.["required"]) {Required} @else if
+            (formGroup.get("city")?.errors?.["maxlength"]) {Max. 50 characters}
+            @else {Postcode must be 5 digits}</span
           >
           }
         </div>
         <input
           type="text"
           required
+          maxlength="50"
           placeholder="e.g. Stuttgart"
           formControlName="city"
         />
@@ -221,7 +227,7 @@
         @if (formGroup.get("bic")?.errors&& formGroup.get("bic")?.touched) {
         <span class="input-error">
           @if (formGroup.get("bic")?.errors?.["required"]) {Required} @else
-          {Must be less than 12 characters}
+          {Max. 11 characters}
         </span>
         }
       </div>
@@ -239,7 +245,7 @@
         @if (formGroup.get("iban")?.errors&& formGroup.get("iban")?.touched) {
         <span class="input-error">
           @if (formGroup.get("iban")?.errors?.["required"]) {Required} @else
-          {Must be less than 23 characters}
+          {Max. 22 characters}
         </span>
         }
       </div>

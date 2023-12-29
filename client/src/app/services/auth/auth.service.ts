@@ -8,6 +8,7 @@ import { NotificationService } from "../notification/notification.service";
 })
 export class AuthService {
   user: WritableSignal<User | null> = signal(null);
+  profileMenuOpen: WritableSignal<boolean> = signal(false);
 
   constructor(private notificationService: NotificationService) {
     this.getUserFromLocalStorage();

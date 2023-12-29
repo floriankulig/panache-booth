@@ -5,17 +5,18 @@
       @if (formGroup.get("name")?.errors && formGroup.get("name")?.touched) {
       <span class="input-error"
         >@if (formGroup.get("name")?.errors?.["required"]) {Required} @else
-        {Max. 64 characters}</span
+        {Max. 32 characters}</span
       >
       }
     </div>
     <input
       required
       type="text"
-      maxlength="64"
+      maxlength="32"
       formControlName="name"
       placeholder="Product Name"
     />
+    <div class="length">{{ formGroup.get("name")?.value?.length || 0 }}/32</div>
   </div>
   <div class="input">
     <div>

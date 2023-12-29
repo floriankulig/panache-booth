@@ -75,7 +75,7 @@
         background: linear-gradient(
           to bottom,
           lighten($textPrimary, 25),
-          $textPrimary
+          $textPrimary 85%
         );
         background-clip: text;
       }

@@ -22,7 +22,7 @@
     }
   </header>
   <ul class="order-list">
-    @for (order of orders(); track order.id) {
+    @for (order of displayedOrders(); track order.id) {
 
     <li class="order">
       <div class="timeline">
