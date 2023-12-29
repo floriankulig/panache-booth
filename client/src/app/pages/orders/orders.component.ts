@@ -33,6 +33,31 @@ export class OrdersComponent implements OnDestroy {
   userIsVendor = computed(() => this.authService.user()?.isVendor);
   displayType = signal<DisplayType>("customer");
   orders = signal<Order[]>([]);
+  displayedOrders = computed(() => {
+    const searchFilter = this.filterService.searchFilter();
+    const orders = this.orders();
+
+    if (!searchFilter) {
+      return orders;
+    }
+
+    return orders.filter((order) => {
+      const customerName = order.user?.userName.toLowerCase();
+      const products = order.products;
+
+      return (
+        customerName?.includes(searchFilter.toLowerCase()) ||
+        products.some(
+          ({ name, vendor }) =>
+            name.toLowerCase().includes(searchFilter.toLowerCase()) ||
+            (this.displayType() === "customer" &&
+              vendor.userName
+                .toLowerCase()
+                .includes(searchFilter.toLowerCase())),
+        )
+      );
+    });
+  });
   errorMessage = "";
   loading = true;
 
@@ -64,7 +89,9 @@ export class OrdersComponent implements OnDestroy {
     effect(() => {
       console.log(this.inModal);
       if (!this.inModal)
-        this.filterService.searchbarPlaceholder = `Search for ${this.displayType()}s or products`;
+        this.filterService.searchbarPlaceholder = `Search for ${
+          this.displayType() === "customer" ? "vendor" : "customer"
+        }s or products`;
     });
   }
 
