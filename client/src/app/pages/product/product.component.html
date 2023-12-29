@@ -4,16 +4,27 @@
     <span class="date">
       <i-feather name="calendar"></i-feather>{{ lastUpdated }}
     </span>
-    <h1>{{ product.name }}</h1>
+    <h1>
+      {{ product.name }}
+    </h1>
     <div class="chiplist">
-      <span
+      @if (product.discount) {
+      <span class="discount"
+        ><i-feather name="tag"></i-feather>{{ product.discount * 100 }}%</span
+      >
+      }<span
         class="clickable"
         tabindex="0"
         (click)="navigateTo('/profile?id=' + product.vendor.id)"
+        (keydown.enter)="navigateTo('/profile?id=' + product.vendor.id)"
         ><i-feather name="user"></i-feather
         >{{ isOwnProduct() ? "You" : product.vendor.userName }}</span
       >
-      <span class=""
+      <span
+        class="clickable"
+        tabindex="0"
+        (click)="navigateTo('/categories?category=' + product.category)"
+        (keydown.enter)="navigateTo('/categories?category=' + product.category)"
         ><i-feather name="grid"></i-feather>{{ productCategory }}</span
       >
       @if (product.purchases) {
@@ -30,12 +41,29 @@
   </div>
   <div class="action-bar">
     <div class="price">
-      <span class="price--value">{{ product.price.toFixed(2) }}€</span>
-      <span class="price--currency"
+      <span class="price--value"
+        ><span class="right"> {{ discountedPrice.toFixed(2) }}€</span> @if
+        (product.discount) {
+        <span class="wrong">{{ product.price.toFixed(2) }}€</span>
+        }</span
+      >
+      <span class="price--info"
         >per item
         <div>&bull;</div>
         <p>{{ maxProductQuantity > 99 ? "99+" : maxProductQuantity }} left</p>
       </span>
+      @if (isOwnProduct()) {
+
+      <div class="vendor-actions">
+        <button class="edit" (click)="editModalOpen.set(true)">
+          <i-feather name="edit3"></i-feather>
+          Edit</button
+        ><button class="danger" (click)="deleteModalOpen.set(true)">
+          <i-feather name="trash"></i-feather>
+          Delete
+        </button>
+      </div>
+      }
     </div>
     <div class="div"></div>
     <div class="vendor-info">
@@ -72,13 +100,23 @@
     </div>
     <div class="div"></div>
     <div class="actions">
+      @if (maxProductQuantity >= 1) {
+
       <pb-quantity
         [value]="addToCartQuantity"
         [min]="1"
         [max]="maxProductQuantity"
         (valueChange)="addToCartQuantity = $event"
       ></pb-quantity>
-      <button (click)="addToCart()">Add {{ addToCartQuantity }} to cart</button>
+      } @else {
+      <span class="out-of-stock">
+        <i-feather name="info"></i-feather>
+        Out of stock</span
+      >
+      }
+      <button [disabled]="maxProductQuantity <= 0" (click)="addToCart()">
+        Add {{ addToCartQuantity }} to cart
+      </button>
     </div>
   </div>
 </div>
@@ -105,4 +143,22 @@
 <div class="content-inner">
   <h1>Product does not exist</h1>
 </div>
-} }
+} } @if (deleteModalOpen()) {
+<pb-modal (modalClose)="deleteModalOpen.set(false)">
+  <pb-delete-confirm
+    [product]="product"
+    (delete)="onDeleteSuccess()"
+  ></pb-delete-confirm>
+</pb-modal>
+} @if (editModalOpen()) {
+<pb-modal
+  (modalClose)="editModalOpen.set(false)"
+  [heading]="'Edit ' + product?.name"
+>
+  <pb-add-product
+    [initialValues]="product"
+    (cancel)="editModalOpen.set(false)"
+    (create)="onProductUpdated()"
+  ></pb-add-product>
+</pb-modal>
+}

@@ -54,6 +54,7 @@ router.put("/:orderId", async (req, res) => {
   try {
     res.status(200).json(await updateOrder(req.params, req.body));
   } catch (error) {
+    console.log(error)
     res.status(500).send("Internal server error!");
   }
 });

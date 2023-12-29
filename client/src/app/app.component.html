@@ -2,27 +2,29 @@
 ></pb-auth-layout>}
 
 <ul class="notifications">
-  @for (notification of activeNotifications(); track $index) {
+  @for (notification of activeNotifications(); track notification.id) {
   <pb-notification
     class="notifications__item"
     [notification]="notification"
-    [index]="$index"
   ></pb-notification>
   }
 </ul>
 
 @if(profileMenuOpen()) {<pb-profile-menu
-  (onClickOutside)="clickOutsideMenu($event)"
+  (pbClickOutside)="clickOutsideMenu($event)"
 ></pb-profile-menu
 >} @if (showLayout) { @if (cartService.cartOpen()){
 <pb-modal
   [heading]="'Cart (' + cartService.cartProducts().length + ')'"
-  (close)="cartService.setCartOpen(false)"
+  (modalClose)="cartService.setCartOpen(false)"
 >
   <pb-cart></pb-cart>
 </pb-modal>
 } @if (orderService.ordersOpen()){
-<pb-modal heading="Your Orders" (close)="orderService.ordersOpen.set(false)">
+<pb-modal
+  heading="Your Orders"
+  (modalClose)="orderService.ordersOpen.set(false)"
+>
   <pb-orders [inModal]="true"></pb-orders>
 </pb-modal>
 } }

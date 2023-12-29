@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, signal } from "@angular/core";
+import { Component, computed, signal } from "@angular/core";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { Product } from "../../../models";
 import {
@@ -10,19 +10,38 @@ import {
 import { AxiosError } from "axios";
 import { QuantityComponent } from "../../components/product/quantity/quantity.component";
 import { IconsModule } from "../../icons/icons.module";
-import { categoryById, filterByString } from "../../../helpers";
-import { ProductCardComponent } from "../../components/product";
+import {
+  categoryById,
+  filterByString,
+  getDiscountedPrice,
+} from "../../../helpers";
+import {
+  AddProductComponent,
+  ProductCardComponent,
+} from "../../components/product";
 import { format } from "date-fns";
+import { ModalComponent } from "../../components/modal/modal.component";
+import { DeleteConfirmComponent } from "../../components/delete-confirm/delete-confirm.component";
 
 @Component({
   selector: "pb-product",
   standalone: true,
-  imports: [QuantityComponent, IconsModule, RouterModule, ProductCardComponent],
+  imports: [
+    QuantityComponent,
+    IconsModule,
+    RouterModule,
+    ProductCardComponent,
+    ModalComponent,
+    DeleteConfirmComponent,
+    AddProductComponent,
+  ],
   templateUrl: "./product.component.html",
   styleUrl: "./product.component.scss",
 })
 export class ProductComponent {
   product?: Product;
+  deleteModalOpen = signal(false);
+  editModalOpen = signal(false);
   addToCartQuantity = 1;
   searchFilter = signal("");
   productId = signal("");
@@ -98,7 +117,7 @@ export class ProductComponent {
     if (!this.product) {
       return 0;
     }
-    return this.product?.inventory - this.quantityInCart;
+    return Math.max(0, this.product?.inventory - this.quantityInCart);
   }
 
   get lastUpdated() {
@@ -113,6 +132,13 @@ export class ProductComponent {
       return 0;
     }
     return this.cartService.getItemQuantity(this.product);
+  }
+
+  get discountedPrice() {
+    if (!this.product) {
+      return 0;
+    }
+    return getDiscountedPrice(this.product);
   }
 
   get productCategory() {
@@ -160,5 +186,14 @@ export class ProductComponent {
         duration: 2000,
       });
     }
+  }
+
+  onDeleteSuccess() {
+    this.deleteModalOpen.set(false);
+    this.router.navigateByUrl("/");
+  }
+  onProductUpdated() {
+    this.editModalOpen.set(false);
+    this.loadProduct(this.product!.id);
   }
 }

@@ -1,4 +1,4 @@
-import { WritableSignal, Injectable, signal, effect } from "@angular/core";
+import { WritableSignal, Injectable, signal } from "@angular/core";
 import axios, { AxiosError } from "axios";
 import { API_URL, RegisterUser, User } from "../../../models";
 import { NotificationService } from "../notification/notification.service";

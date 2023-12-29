@@ -7,7 +7,7 @@
   @for (text of confirmationText.split("\n"); track $index) {
   <p>{{ text }}</p>
   }
-  <button class="danger" (click)="onConfirm()">
+  <button class="danger" (click)="onConfirm()" (keydown.enter)="onConfirm()">
     @if (submitting) { deleting... } @else {
     <i-feather name="trash"></i-feather>Delete }
   </button>

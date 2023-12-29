@@ -6,10 +6,9 @@ import {
   Output,
   ViewChild,
   computed,
-  effect,
   signal,
 } from "@angular/core";
-import { CartProduct, Product } from "../../../../models";
+import { Product } from "../../../../models";
 import { IconsModule } from "../../../icons/icons.module";
 import {
   AuthService,
@@ -97,7 +96,7 @@ export class ProductCardComponent {
     }
   }
 
-  onCardClick(event: MouseEvent) {
+  onCardClick(event: MouseEvent | Event) {
     if (
       [this.menu, this.visibility, this.cta].some((el) =>
         el?.nativeElement.contains(event.target as Node),

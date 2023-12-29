@@ -1,18 +1,38 @@
 <nav class="inner content-inner">
   <div>
-    <div class="burger" role="button" (click)="toggleSidebar()">
+    <div
+      class="burger"
+      tabindex="0"
+      (keydown.enter)="toggleSidebar()"
+      role="button"
+      (click)="toggleSidebar()"
+    >
       <i-feather name="menu"></i-feather>
     </div>
     <h3>{{ tabText }}</h3>
   </div>
   <pb-searchbar></pb-searchbar>
   <div class="actions">
-    <div class="orders" (click)="openOrders()">
+    @if (authService.user()) {
+    <div
+      class="orders"
+      tabindex="0"
+      (keydown.enter)="openOrders()"
+      (click)="openOrders()"
+    >
       <i-feather name="shopping-bag"></i-feather>
+      @if (displayOrdersNotification) {
       <div class="indicator"></div>
+      }
     </div>
     <span class="div"></span>
-    <div class="cart" (click)="openCart()">
+    }
+    <div
+      class="cart"
+      tabindex="0"
+      (keydown.enter)="openCart()"
+      (click)="openCart()"
+    >
       <i-feather name="shopping-cart"></i-feather>
       @if (productsInCart()) {
       <div [class]="{ count: true, big: productsInCart() > 100 }">
@@ -21,7 +41,13 @@
       }
     </div>
     <span class="div"></span>
-    <div class="icon-wrapper" id="profileMenuTrigger" (click)="toggleMenu()">
+    <div
+      class="icon-wrapper"
+      id="profileMenuTrigger"
+      (click)="toggleMenu()"
+      (keydown.enter)="toggleMenu()"
+      tabindex="0"
+    >
       <i-feather name="user"></i-feather>
     </div>
   </div>

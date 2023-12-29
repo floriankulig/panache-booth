@@ -7,17 +7,17 @@ import {
 } from "@angular/core";
 
 @Directive({
-  selector: "[onClickOutside]",
+  selector: "[pbClickOutside]",
   standalone: true,
 })
 export class ClickOutsideDirective {
-  @Output() onClickOutside = new EventEmitter<MouseEvent>();
+  @Output() pbClickOutside = new EventEmitter<MouseEvent>();
   constructor(private el: ElementRef) {}
 
   @HostListener("document:click", ["$event"]) onClick(event: MouseEvent) {
     const clickedInside = this.el.nativeElement.contains(event.target);
     if (!clickedInside) {
-      this.onClickOutside.emit(event);
+      this.pbClickOutside.emit(event);
     }
   }
 }

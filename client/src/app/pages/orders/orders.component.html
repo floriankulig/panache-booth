@@ -7,11 +7,15 @@
       <span
         [class]="{ active: displayType() === 'customer' }"
         (click)="displayType.set('customer')"
+        (keydown.enter)="displayType.set('customer')"
+        tabindex="0"
         >As a Customer</span
       >
       <span
         [class]="{ active: displayType() === 'vendor' }"
         (click)="displayType.set('vendor')"
+        (keydown.enter)="displayType.set('vendor')"
+        tabindex="0"
         >As a Vendor</span
       >
     </div>
@@ -45,8 +49,12 @@
             (click)="markOrderAsDelivered(order)"
             [class]="{ payment: true, checked: allDelivered(order) }"
           >
-            <i-feather name="check"></i-feather
-            >{{ !allDelivered(order) ? "Mark order as paid" : "Paid" }}
+            <i-feather
+              [name]="!allDelivered(order) ? 'check' : 'truck'"
+            ></i-feather
+            >{{
+              !allDelivered(order) ? "Mark order as delivered" : "Delivered"
+            }}
           </button>
         </div>
         <ul class="order__products">
@@ -56,11 +64,15 @@
               class="order__product__title"
               tabindex="0"
               (click)="viewProduct(product)"
+              (keydown.enter)="viewProduct(product)"
             >
               {{ product.name }}
               <i-feather name="external-link"> </i-feather>
             </h4>
-            <div class="order__product__quantity">{{ product.quantity }}x</div>
+            <div class="order__product__quantity">
+              <span>{{ product.quantity }}x</span> for
+              <span>{{ productPrice(product) }}€</span>
+            </div>
           </li>
           }
         </ul>
@@ -76,11 +88,11 @@
 
           @if (allDelivered(vendorOrder.products)) {
           <span class="payment checked">
-            <i-feather name="check"></i-feather>Paid
+            <i-feather name="truck"></i-feather>Delivered
           </span>
           } @else {
           <span class="payment warn">
-            <i-feather name="alert-triangle"></i-feather>Not paid yet
+            <i-feather name="alert-triangle"></i-feather>Not delivered
           </span>
           }
         </div>
@@ -91,11 +103,15 @@
               class="order__product__title"
               tabindex="0"
               (click)="viewProduct(product)"
+              (keydown.enter)="viewProduct(product)"
             >
               {{ product.name }}
               <i-feather name="external-link"> </i-feather>
             </h4>
-            <div class="order__product__quantity">{{ product.quantity }}x</div>
+            <div class="order__product__quantity">
+              <span>{{ product.quantity }}x</span> for
+              <span>{{ productPrice(product) }}€</span>
+            </div>
           </li>
           }
         </ul>

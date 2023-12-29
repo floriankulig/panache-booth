@@ -150,6 +150,12 @@
       font-size: 0.75rem;
       font-weight: 600;
     }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
   }
 
   &.disabled {
@@ -232,13 +238,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: grid(2);
+  gap: grid(1);
   transition: 0.15s linear;
   transition-property: color, background, scale;
 
-  & > i-feather {
-    width: $grid;
-    height: $grid;
+  i-feather {
+    width: grid(2.5) !important;
+    height: grid(2.5) !important;
     flex-shrink: 0;
   }
 

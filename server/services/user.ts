@@ -123,7 +123,8 @@ export function updateUser(reqParams: any, reqBody: any) {
 
 export function deleteUser(reqParams: any) {
   let userId = reqParams.userId;
-  if (userById(userId) !== undefined) {
+  let user = getUserById(userId)
+  if (getUserById(userId) !== undefined) {
     return deleteUserById(userId);
   } else {
     throw new UserNotExistingError();
@@ -155,6 +156,9 @@ function validateShippingFreeFromFormat(shippingFreeForm: any): number {
     throw new ShippingFreeFromFormatError() ;
   }
   if (!validateDecimalNumber(shippingFreeForm)) {
+    if (shippingFreeForm === -1) {
+      return shippingFreeForm;
+    }
     throw new ShippingFreeFromFormatError();
   }
   return shippingFreeForm;
@@ -222,6 +226,8 @@ function validateIsVendorFormat(isVendor: any): boolean {
   if (typeof isVendor !== "boolean") {
     throw new IsVendorFormatError();
   }
+  console.log("Rers")
+  console.log(isVendor)
   return isVendor;
 }
 

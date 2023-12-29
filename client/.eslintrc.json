@@ -33,9 +33,7 @@
       "files": ["*.html"],
       "extends": [
         "plugin:@angular-eslint/template/recommended",
-        "plugin:@angular-eslint/template/accessibility",
-        "plugin:eslint-config-airbnb-base",
-        "plugin:eslint-config-airbnb-typescript"
+        "plugin:@angular-eslint/template/accessibility"
       ],
       "rules": {}
     }

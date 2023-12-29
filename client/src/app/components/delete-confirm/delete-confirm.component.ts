@@ -37,7 +37,7 @@ export class DeleteConfirmComponent implements OnInit {
     this.data = {
       name: this.user?.userName || this.product?.name || "",
       id: this.user?.id || this.product?.id || "",
-      type: !!this.user ? "user" : !!this.product ? "product" : undefined,
+      type: this.user ? "user" : this.product ? "product" : undefined,
     };
   }
 

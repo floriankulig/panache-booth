@@ -1,18 +1,11 @@
-import {
-  Component,
-  Input,
-  Signal,
-  computed,
-  effect,
-  signal,
-} from "@angular/core";
+import { Component, Input, computed, effect, signal } from "@angular/core";
 import { AuthService, NotificationService, OrderService } from "../../services";
 import { Order, OrderProduct, User } from "../../../models";
 import { AxiosError } from "axios";
 import { Router } from "@angular/router";
 import { IconsModule } from "../../icons/icons.module";
-import { format, isSameDay, isToday, sub, subDays } from "date-fns";
-import { costOfCartProducts } from "../../../helpers";
+import { format, isSameDay, isToday, subDays } from "date-fns";
+import { costOfCartProducts, getDiscountedPrice } from "../../../helpers";
 
 type DisplayType = "vendor" | "customer";
 
@@ -79,7 +72,6 @@ export class OrdersComponent {
       this.errorMessage = (error as AxiosError).message;
     } finally {
       this.loading = false;
-      console.log(this.orders());
     }
   }
 
@@ -88,7 +80,7 @@ export class OrdersComponent {
     return (
       (isToday(date)
         ? "Today"
-        : isSameDay(date, subDays(date, 1))
+        : isSameDay(date, subDays(new Date(), 1))
         ? "Yesterday"
         : format(date, "do MMMM yyyy")) +
       " at " +
@@ -115,6 +107,27 @@ export class OrdersComponent {
         products: order.products.map((product) => ({
           id: product.id,
           delivered: true,
+          paid: product.paid,
+        })),
+      });
+      this.getOrders(this.displayType(), this.authService.user()?.id);
+    } catch (error) {
+      this.notificationService.addNotification({
+        type: "error",
+        message: "Order could not be updated.",
+        duration: 5000,
+      });
+    }
+  }
+
+  async markOrderAsPaid(order: Order) {
+    try {
+      await this.orderService.updateOrder({
+        id: order.id,
+        products: order.products.map((product) => ({
+          id: product.id,
+          delivered: product.delivered,
+          paid: true,
         })),
       });
       this.getOrders(this.displayType(), this.authService.user()?.id);
@@ -160,5 +173,9 @@ export class OrdersComponent {
       return order.every((product) => product.delivered);
     }
     return order.products.every((product) => product.delivered);
+  }
+
+  productPrice(product: OrderProduct) {
+    return (getDiscountedPrice(product) * product.quantity).toFixed(2);
   }
 }
