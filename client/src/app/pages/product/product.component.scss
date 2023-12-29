@@ -24,6 +24,7 @@
     h1 {
       font-size: clamp(2rem, 4vw, 4rem);
       font-weight: 700;
+      word-break: break-all;
       margin-bottom: grid(3);
     }
 
@@ -59,6 +60,11 @@
         i-feather {
           width: grid(2.5);
           height: grid(2.5);
+        }
+
+        &.discount {
+          color: $error;
+          background: rgba($error, 0.075);
         }
       }
     }
@@ -98,11 +104,26 @@
       margin-block: grid(1);
 
       &--value {
-        font-size: clamp(2rem, 4vw, 3rem);
-        font-weight: 700;
+        margin-bottom: grid(0.5);
+        display: flex;
+        gap: grid(0.5);
+        flex-wrap: wrap;
+        align-items: baseline;
+        line-height: 1;
+        .right {
+          font-size: clamp(2rem, 4vw, 3rem);
+          font-weight: 700;
+          line-height: 1;
+        }
+        .wrong {
+          font-size: clamp(1rem, 1.75vw, 1.3rem);
+          font-weight: 500;
+          color: $textSecondary;
+          text-decoration: line-through;
+        }
       }
 
-      &--currency {
+      &--info {
         color: $textSecondary;
         display: flex;
         align-items: center;
