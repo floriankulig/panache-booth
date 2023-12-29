@@ -10,7 +10,7 @@
   }
 </ul>
 
-@if(profileMenuOpen()) {<pb-profile-menu
+@if(profileMenuOpen() && showLayout) {<pb-profile-menu
   (pbClickOutside)="clickOutsideMenu($event)"
 ></pb-profile-menu
 >} @if (showLayout) { @if (cartService.cartOpen()){
