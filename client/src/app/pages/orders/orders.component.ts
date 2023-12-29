@@ -87,7 +87,6 @@ export class OrdersComponent implements OnDestroy {
       }
     });
     effect(() => {
-      console.log(this.inModal);
       if (!this.inModal)
         this.filterService.searchbarPlaceholder = `Search for ${
           this.displayType() === "customer" ? "vendor" : "customer"
