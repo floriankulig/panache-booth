@@ -15,10 +15,10 @@ import {
 import { getUserByIdModel, getVendorShippingCostModel, getVendorShippingFreeFromModel } from "../models/user";
 import { IsVendorFormatError, UserNotExistingError } from "../util/customUserErrors";
 import {
-  getDiscountOfProduct,
-  getPriceOfProduct,
-  getProductById,
-  updateInventoryAndPurchases,
+  getDiscountOfProductModel,
+  getPriceOfProductModel,
+  getProductByIdModel,
+  updateInventoryAndPurchasesModel,
 } from "../models/product";
 import {
   InvalidUserError, NoProductsInOrderError,
@@ -196,8 +196,8 @@ export function addOrder(reqBody: any) {
   let createdOrder = createOrder(order);
 
   products.forEach((item: { id: string; quantity: number; vendorId: string; }) => {
-    let productPrice: any = getPriceOfProduct(item.id);
-    let productDiscount: any = getDiscountOfProduct(item.id);
+    let productPrice: any = getPriceOfProductModel(item.id);
+    let productDiscount: any = getDiscountOfProductModel(item.id);
     let vendorShippingCost: any = getVendorShippingCostModel(item.vendorId);
     let vendorShippingFreeFrom: any = getVendorShippingFreeFromModel(item.vendorId);
     let orderProductEntity: IOrderProduct = {
@@ -214,7 +214,7 @@ export function addOrder(reqBody: any) {
       vendorShippingFreeFrom: vendorShippingFreeFrom.shippingFreeFrom,
     };
     createOrderProductEntity(orderProductEntity);
-    updateInventoryAndPurchases(item.id, item.quantity);
+    updateInventoryAndPurchasesModel(item.id, item.quantity);
   });
   return createdOrder;
 }
@@ -289,7 +289,7 @@ function validateOrderUser(userId: any): string {
 }
 
 function validateProductId(productId: string) {
-  if (getProductById(productId) === undefined) {
+  if (getProductByIdModel(productId) === undefined) {
     throw new ProductNotExistingError();
   }
 }
@@ -312,8 +312,9 @@ function validateOrderQuantity(quantity: any): number {
 }
 
 function checkOutOfStock(productId: string, quantity: number) {
-  let product = getProductById(productId);
-  if (product.inventory < quantity) {
+  let product = getProductByIdModel(productId);
+  // Hizugefügtes !!! cheken !!!
+  if (product.inventory! < quantity) {
     throw new ProductOutOfStockError();
   }
 }

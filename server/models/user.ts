@@ -9,6 +9,14 @@ export function getUserByIdModel(userId: string): IUser {
     ).get(userId);
 }
 
+export function getVendorByIdModel(userId: string): IUser {
+  return <IUser>database
+    .prepare(
+      "select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
+      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where id = ? and isVendor = 1;",
+    ).get(userId);
+}
+
 export function getUserByEmailModel(email: string): IUser {
   return <IUser>database
     .prepare(

@@ -1,164 +1,178 @@
 import { IProduct } from "../models/IProduct";
 import {
-  createProduct,
-  deleteProductById,
-  getAllProducts, getAllVendorProducts,
-  getProductById,
-  updateProductById,
+  createProductModel,
+  deleteProductByIdModel,
+  getAllProductsModel,
+  getAllVendorProductsModel,
+  getProductByIdModel,
+  updateProductByIdModel,
 } from "../models/product";
 import { getUserByIdModel } from "../models/user";
 import { v4 as uuidv4 } from "uuid";
 import {
-  BicFormatError,
   IsVendorFormatError,
+  ShippingCostFormatError,
   UserNameFormatError,
+  UserNotExistingError,
 } from "../util/customUserErrors";
 import {
+  ProductArchivedFormatError,
   ProductCategoryFormatError,
   ProductDescriptionFormatError,
   ProductDiscountFormatError,
   ProductInventoryFormatError,
-  ProductIsVisibleFormatError, ProductNameFormatError, ProductNotExistingError,
+  ProductIsVisibleFormatError,
+  ProductNameFormatError,
+  ProductNotExistingError,
   ProductPriceFormatError,
 } from "../util/customProductErrors";
-import { validateDecimalNumber } from "../util/util";
+import { booleanToNumber, numberToBoolean, validateDecimalNumber } from "../util/util";
+import { getUserByIdService, getVendorByIdService } from "./user";
+import { IUser } from "../models/IUser";
 
-export function productById(reqParams: any) {
-  let productId = reqParams.productId;
-  if (getProductById(productId) !== undefined) {
-    let product: any = getProductById(productId);
-    let vendorInfo: any = getUserByIdModel(product.vendorId);
-    const combinedProduct = {
-      ...product,
-      vendor: vendorInfo,
-    };
-    return combinedProduct;
-  } else {
+export function getProductByIdService(productId: string): IProduct {
+  if (!checkIfProductExistsById(productId)) {
     throw new ProductNotExistingError();
   }
+  let product: IProduct = getProductByIdModel(productId);
+  return individualProduct(product);
 }
 
-export function allProducts() {
-  let products: any[] = getAllProducts();
-  let productsNew = [];
-
-  for (const product of products) {
-    let vendorInfo: any = getUserByIdModel(product.vendorId);
-    const combinedProduct = {
-      ...product,
-      vendor: vendorInfo,
-    };
-    productsNew.push(combinedProduct);
-  }
-  return productsNew;
+export function getAllProductsService(): IProduct[] {
+  let products: IProduct[] = getAllProductsModel();
+  return multipleProducts(products);
 }
 
-export function allVendorProducts(reqQuery: any) {
+export function getAllVendorProductsService(reqQuery: any): IProduct[] {
   let vendorId = reqQuery["vendorId"];
-  let products: any[] = getAllVendorProducts(vendorId);
-  let productsNew = [];
-
-  for (const product of products) {
-    let vendorInfo: any = getUserByIdModel(vendorId);
-    const combinedProduct = {
-      ...product,
-      vendor: vendorInfo,
-    };
-    productsNew.push(combinedProduct);
-  }
-  return productsNew;
+  let products: IProduct[] = getAllVendorProductsModel(vendorId);
+  return multipleProducts(products);
 }
 
-export function addProduct(reqBody: any) {
-  const currentTimestamp = new Date().toISOString();
-  console.log(reqBody)
-  let product: IProduct = {
-    id: uuidv4(),
-    name: reqBody.name ? validateName(reqBody.name) : (() => {
-      throw new ProductNameFormatError();
-    })(),
-    description: reqBody.description ? validateDescription(reqBody.description) : (() => {
-      throw new ProductDescriptionFormatError();
-    })(),
-    category: reqBody.category ? validateCategory(reqBody.category) : (() => {
-      throw new ProductCategoryFormatError();
-    })(),
-    discount: reqBody.discount !== undefined ? validateDiscount(reqBody.discount) : (() => {
-      throw new ProductDiscountFormatError();
-    })(),
-    price: reqBody.price !== undefined ? validatePrice(reqBody.price) : (() => {
-      throw new ProductPriceFormatError();
-    })(),
-    vendorId: reqBody.vendorId ? validateVendorId(reqBody.vendorId) : (() => {
-      throw new IsVendorFormatError();
-    })(),
-    purchases: 0,
-    inventory: reqBody.inventory !== undefined ? validateInventory(reqBody.inventory) : (() => {
-      throw new ProductInventoryFormatError();
-    })(),
-    isVisible: reqBody.isVisible.toString() ? validateIsVisible(reqBody.isVisible) : (() => {
-      throw new ProductIsVisibleFormatError();
-    })(),
-    createdAt: currentTimestamp,
-    updatedAt: currentTimestamp,
-  };
-  return createProduct(product);
+export function createProductService(reqBody: any): IProduct {
+  const createFlag: boolean = true;
+  let product: IProduct = buildAndValidateProductModel(reqBody, createFlag);
+  createProductModel(product);
+  return getProductByIdService(product.productId!);
 }
 
-export function updateProduct(reqParams: any, reqBody: any) {
-
+export function updateProductService(reqParams: any, reqBody: any): IProduct {
   let productId = reqParams.productId;
-  if (!getProductById(productId)) {
+  if (!checkIfProductExistsById(productId)) {
     throw new ProductNotExistingError();
   }
-  const currentTimestamp = new Date().toISOString();
-  let product: Omit<IProduct, "id" | "createdAt" | "purchases"> = {
-    name: reqBody.name !== undefined ? validateName(reqBody.name) : undefined,
-    description: reqBody.description !== undefined ? validateDescription(reqBody.description) : undefined,
-    category: reqBody.category !== undefined ? validateCategory(reqBody.category) : undefined,
-    discount: reqBody.discount !== undefined ? validateDiscount(reqBody.discount) : undefined,
-    price: reqBody.price !== undefined ? validatePrice(reqBody.price) : undefined,
-    vendorId: reqBody.vendorId !== undefined ? validateVendorId(reqBody.vendorId) : undefined,
-    inventory: reqBody.inventory !== undefined ? validateInventory(reqBody.inventory) : undefined,
-    isVisible: reqBody.isVisible !== undefined ? validateIsVisible(reqBody.isVisible) : undefined,
-    updatedAt: currentTimestamp,
-  };
-  return updateProductById(product, productId);
+  let existingProduct: IProduct = getProductByIdService(productId);
+  let createFlag: boolean = false;
+  let updatedProduct: IProduct = buildAndValidateProductModel(reqBody, createFlag, existingProduct);
+  updateProductByIdModel(productId, updatedProduct);
+  return getProductByIdService(productId);
 }
 
-export function deleteProduct(reqParams: any) {
+export function deleteProductService(reqParams: any): void {
   let productId = reqParams.productId;
-  if (getProductById(productId) !== undefined) {
-    deleteProductById(productId);
+  if (checkIfProductExistsById(productId)) {
+    deleteProductByIdModel(productId)
   } else {
     throw new ProductNotExistingError();
   }
 }
 
-function validateName(name: any): string {
-  if (name.length > 255 || name.length < 1) {
+function checkIfProductExistsById(productId: string): boolean {
+  let product: IProduct = getProductByIdModel(productId);
+  return product !== undefined;
+}
+
+function individualProduct(product: IProduct): IProduct {
+  if (product === undefined) {
+    throw new UserNotExistingError();
+  }
+  product.isVisible = numberToBoolean(product.isVisible);
+  product.archived = numberToBoolean(product.archived);
+  return combineVendorWithProduct(product);
+}
+
+function combineVendorWithProduct(product: IProduct): IProduct {
+  let vendorInfo: IUser = getUserByIdService(product.vendorId!);
+  return {
+    ...product,
+    vendor: vendorInfo,
+  };
+}
+
+function multipleProducts(products: IProduct[]): IProduct[] {
+  let productsWithVendorInfo: IProduct[] = [];
+  for (let product of products) {
+    product.isVisible = numberToBoolean(product.isVisible);
+    product.archived = numberToBoolean(product.archived);
+    productsWithVendorInfo.push(combineVendorWithProduct(product));
+  }
+  return productsWithVendorInfo;
+}
+
+function buildAndValidateProductModel(productModelData: any, createFlag: boolean = false, existingProduct?: IProduct): IProduct {
+  const currentTimestamp: string = new Date().toISOString();
+  return {
+    productId: createFlag ? uuidv4() : existingProduct?.productId,
+    name: validateName(productModelData.name, createFlag),
+    description: validateDescription(productModelData.description, createFlag),
+    category: validateCategory(productModelData.category, createFlag),
+    discount: validateDiscount(productModelData.discount, createFlag),
+    price: validatePrice(productModelData.price, createFlag),
+    vendorId: validateVendorId(productModelData.vendorId, createFlag),
+    purchases: createFlag ? 0 : undefined,
+    inventory: validateInventory(productModelData.inventory, createFlag),
+    isVisible: validateIsVisible(productModelData.isVisible, createFlag),
+    archived: createFlag ? 0 : validateArchived(productModelData.archived, createFlag),
+    createdAt: createFlag ? currentTimestamp : undefined,
+    updatedAt: currentTimestamp,
+  };
+}
+
+function validateName(name: any, createFlag: boolean): string | undefined {
+  if (typeof name !== "string") {
+    if (createFlag || name !== undefined) {
+      throw new ProductNameFormatError();
+    }
+    return undefined;
+  }
+  if (name.length > 32 || name.length < 1) {
     throw new ProductNameFormatError();
   }
   return name;
 }
 
-function validateDescription(description: any): string {
+function validateDescription(description: any, createFlag: boolean): string | undefined {
+  if (typeof description !== "string") {
+    if (createFlag || description !== undefined) {
+      throw new ProductDescriptionFormatError();
+    }
+    return undefined;
+  }
   if (description.length > 300 || description.length < 1) {
     throw new ProductDescriptionFormatError();
   }
   return description;
 }
 
-function validateCategory(category: any): string {
+function validateCategory(category: any, createFlag: boolean): string | undefined {
+  if (typeof category !== "string") {
+    if (createFlag || category !== undefined) {
+      throw new ProductCategoryFormatError();
+    }
+    return undefined;
+  }
   if (category.length > 36 || category.length < 1) {
     throw new ProductCategoryFormatError();
   }
   return category;
 }
 
-function validateDiscount(discount: any): number {
-  if (typeof discount !== "number" ) {
-    throw new ProductDiscountFormatError() ;
+function validateDiscount(discount: any, createFlag: boolean): number | undefined {
+  if (typeof discount !== "number") {
+    if (createFlag || discount !== undefined) {
+      throw new ProductDiscountFormatError();
+    }
+    return undefined;
   }
   const discountRegExp: RegExp = /^(0(\.\d{1,2})?|1(\.0{1,2})?)$/;
   if (!discountRegExp.test(discount.toString())) {
@@ -168,10 +182,12 @@ function validateDiscount(discount: any): number {
 }
 
 
-
-function validatePrice(price: any): number {
+function validatePrice(price: any, createFlag: boolean): number | undefined {
   if (typeof price !== "number") {
-    throw new ProductPriceFormatError() ;
+    if (createFlag || price !== undefined) {
+      throw new ProductPriceFormatError();
+    }
+    return undefined;
   }
   if (!validateDecimalNumber(price)) {
     throw new ProductPriceFormatError();
@@ -179,24 +195,46 @@ function validatePrice(price: any): number {
   return price;
 }
 
-function validateVendorId(vendorId: any): string {
-  if (getUserByIdModel(vendorId) === undefined) {
+function validateVendorId(vendorId: any, createFlag: boolean): string | undefined {
+  if (!createFlag) {
+    return undefined;
+  }
+  if (getVendorByIdService(vendorId) === undefined) {
     throw new IsVendorFormatError();
   }
   return vendorId;
 }
 
-function validateInventory(inventory: any): number {
-  if (typeof inventory !== "number" || inventory < 0) {
+function validateInventory(inventory: any, createFlag: boolean): number | undefined {
+  if (typeof inventory !== "number") {
+    if (createFlag || inventory !== undefined) {
+      throw new ProductInventoryFormatError();
+    }
+    return undefined;
+  }
+  if (inventory < 0) {
     throw new ProductInventoryFormatError() ;
   }
   return inventory;
 }
 
-function validateIsVisible(isVisible: any): boolean {
+function validateIsVisible(isVisible: any, createFlag: boolean): number | undefined {
   if (typeof isVisible !== "boolean") {
-    throw new ProductIsVisibleFormatError();
+    if (createFlag || isVisible !== undefined) {
+      throw new ProductIsVisibleFormatError();
+    }
+    return undefined;
   }
-  return isVisible;
+  return booleanToNumber(isVisible);
+}
+
+function validateArchived(archived: any, createFlag: boolean): number | undefined {
+  if (typeof archived !== "boolean") {
+    if (createFlag || archived !== undefined) {
+      throw new ProductArchivedFormatError();
+    }
+    return undefined;
+  }
+  return booleanToNumber(archived);
 }
 

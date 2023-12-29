@@ -2,7 +2,7 @@ import {
   createUserModel,
   deleteUserByIdModel,
   getAllUsersModel, getUserByEmailModel,
-  getUserByIdModel,
+  getUserByIdModel, getVendorByIdModel,
   loggedInUserModel,
   updateUserByIdModel,
 } from "../models/user";
@@ -19,7 +19,7 @@ import {
   PostcodeFormatError,
   ShippingCostFormatError,
   ShippingFreeFromFormatError,
-  StreetFormatError,
+  StreetFormatError, UserIsNoVendorError,
   UserNameFormatError,
   UserNotExistingError,
 } from "../util/customUserErrors";
@@ -31,6 +31,17 @@ export function getUserByIdService(userId: string): IUser {
     throw new UserNotExistingError();
   }
   let user: IUser = getUserByIdModel(userId);
+  return individualUser(user);
+}
+
+export function getVendorByIdService(userId: string): IUser {
+  if (!checkIfUserExistsById(userId)) {
+    throw new UserNotExistingError();
+  }
+  if (!checkIfUserIsVendor(userId)) {
+    throw new UserIsNoVendorError();
+  }
+  let user: IUser = getVendorByIdModel(userId);
   return individualUser(user);
 }
 
@@ -65,7 +76,7 @@ export function updateUserService(reqParams: any, reqBody: any): IUser {
 
 export function deleteUserService(reqParams: any): void {
   let userId = reqParams.userId;
-  if (!checkIfUserExistsById(userId)) {
+  if (checkIfUserExistsById(userId)) {
     deleteUserByIdModel(userId);
   } else {
     throw new UserNotExistingError();
@@ -84,6 +95,11 @@ export function loginUserService(reqBody: any) {
 
 function checkIfUserExistsById(userId: string): boolean {
   let user: IUser = getUserByIdModel(userId);
+  return user !== undefined;
+}
+
+function checkIfUserIsVendor(userId: string): boolean {
+  let user: IUser = getVendorByIdModel(userId);
   return user !== undefined;
 }
 

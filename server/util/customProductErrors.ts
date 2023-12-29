@@ -74,3 +74,10 @@ export class ProductIsVisibleFormatError extends ProductError {
     this.name = "ProductIsVisibleFormatError";
   }
 }
+
+export class ProductArchivedFormatError extends ProductError {
+  constructor() {
+    super("Archived format is wrong!");
+    this.name = "ProductArchivedFormatError";
+  }
+}
