@@ -10,7 +10,11 @@ import {
 import { AxiosError } from "axios";
 import { QuantityComponent } from "../../components/product/quantity/quantity.component";
 import { IconsModule } from "../../icons/icons.module";
-import { categoryById, filterByString } from "../../../helpers";
+import {
+  categoryById,
+  filterByString,
+  getDiscountedPrice,
+} from "../../../helpers";
 import {
   AddProductComponent,
   ProductCardComponent,
@@ -128,6 +132,13 @@ export class ProductComponent {
       return 0;
     }
     return this.cartService.getItemQuantity(this.product);
+  }
+
+  get discountedPrice() {
+    if (!this.product) {
+      return 0;
+    }
+    return getDiscountedPrice(this.product);
   }
 
   get productCategory() {

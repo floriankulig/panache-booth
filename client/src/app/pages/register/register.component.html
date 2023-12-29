@@ -71,8 +71,10 @@
       </div>
       <input
         required
-        type="email"
+        type="text"
+        name="email"
         formControlName="email"
+        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+"
         placeholder="example@company.com"
       />
     </div>
@@ -216,14 +218,17 @@
     <div class="input">
       <div>
         <span>BIC</span>
-        @if (formGroup.get("bic")?.errors?.["required"] &&
-        formGroup.get("bic")?.touched) {
-        <span class="input-error">Required</span>
+        @if (formGroup.get("bic")?.errors&& formGroup.get("bic")?.touched) {
+        <span class="input-error">
+          @if (formGroup.get("bic")?.errors?.["required"]) {Required} @else
+          {Must be less than 12 characters}
+        </span>
         }
       </div>
       <input
         required
         type="text"
+        maxlength="11"
         formControlName="bic"
         placeholder="Your BIC"
       />
@@ -231,13 +236,16 @@
     <div class="input">
       <div>
         <span>IBAN</span>
-        @if (formGroup.get("iban")?.errors?.["required"] &&
-        formGroup.get("iban")?.touched) {
-        <span class="input-error">Required</span>
+        @if (formGroup.get("iban")?.errors&& formGroup.get("iban")?.touched) {
+        <span class="input-error">
+          @if (formGroup.get("iban")?.errors?.["required"]) {Required} @else
+          {Must be less than 23 characters}
+        </span>
         }
       </div>
       <input
         required
+        maxlength="22"
         type="text"
         formControlName="iban"
         placeholder="DExx xxxx xxxx xxxx xxxx xx "

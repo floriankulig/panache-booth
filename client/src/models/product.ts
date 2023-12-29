@@ -42,6 +42,7 @@ interface CartProduct extends Product {
 
 interface OrderProduct extends CartProduct {
   delivered: boolean;
+  paid: boolean;
 }
 
 export type { Category, CategoryID, FormProduct };

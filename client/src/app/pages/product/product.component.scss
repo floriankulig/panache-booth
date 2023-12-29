@@ -24,6 +24,7 @@
     h1 {
       font-size: clamp(2rem, 4vw, 4rem);
       font-weight: 700;
+      word-break: break-all;
       margin-bottom: grid(3);
     }
 
@@ -60,6 +61,11 @@
           width: grid(2.5);
           height: grid(2.5);
         }
+
+        &.discount {
+          color: $error;
+          background: rgba($error, 0.075);
+        }
       }
     }
 
@@ -85,7 +91,8 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    width: clamp(250px, 30%, 300px);
+    min-width: clamp(250px, 30%, 300px);
+    max-width: 500px;
     border-radius: grid(2);
     background: $bgSecondary;
 
@@ -98,11 +105,24 @@
       margin-block: grid(1);
 
       &--value {
-        font-size: clamp(2rem, 4vw, 3rem);
-        font-weight: 700;
+        margin-bottom: grid(0.5);
+        display: flex;
+        gap: grid(0.5);
+        flex-wrap: wrap;
+        align-items: baseline;
+        .right {
+          font-size: clamp(2rem, 4vw, 3rem);
+          font-weight: 700;
+        }
+        .wrong {
+          font-size: clamp(1rem, 1.75vw, 1.3rem);
+          font-weight: 500;
+          color: $textSecondary;
+          text-decoration: line-through;
+        }
       }
 
-      &--currency {
+      &--info {
         color: $textSecondary;
         display: flex;
         align-items: center;
@@ -202,7 +222,7 @@
     flex-direction: column;
 
     .action-bar {
-      width: 100%;
+      max-width: 100%;
     }
   }
 }
