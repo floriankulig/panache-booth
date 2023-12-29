@@ -55,6 +55,7 @@ export function allUserOrdersById(reqParams: any) {
         vendorInfo.vendorShippingFreeFrom = statusOrder.shippingFreeFrom;
         product.delivered =
           product.delivered === 1 ? true : false;
+        product.paid = product.paid === 1 ? true : false;
         product.isVisible = product.isVisible === 1 ? true : false;
         const combinedProduct = {
           ...product,
@@ -99,7 +100,8 @@ export function allVendorOrdersById(reqParams: any) {
         orderProductVendor.price = statusOrder.priceProduct;
         orderProductVendor.discount = statusOrder.discountProduct;
         orderProductVendor.delivered =
-          orderProductVendor.delivered === 1 ? true : false;
+          statusOrder.delivered === 1 ? true : false;
+        orderProductVendor.paid = statusOrder.paid === 1 ? true : false;
         orderProductVendor.isVisible = orderProductVendor.isVisible === 1 ? true : false;
         vendorPrice += orderProductVendor.price - orderProductVendor.price * orderProductVendor.discount;
         const combinedProduct = {
@@ -144,6 +146,7 @@ export function allOrders() {
       let statusOrder: any = getStatusOfOrder(order.id, product.id);
       console.log(statusOrder)
       let productDelivered = statusOrder.delivered === 1 ? true : false;
+      let productPaid = statusOrder.paid === 1 ? true : false;
       product.isVisible = product.isVisible === 1 ? true : false;
       product.price = statusOrder.priceProduct;
       product.discount = statusOrder.discountProduct;
@@ -153,6 +156,7 @@ export function allOrders() {
         ...product,
         quantity: statusOrder.quantity,
         delivered: productDelivered,
+        paid: productPaid,
         vendor: vendorInfo,
       };
       productsNew.push(combinedProduct);
@@ -201,6 +205,7 @@ export function addOrder(reqBody: any) {
       productId: item.id,
       quantity: item.quantity,
       delivered: false,
+      paid: false,
       updatedAt: currentTimestamp,
       createdAt: currentTimestamp,
       priceProduct: productPrice.price,
@@ -229,6 +234,7 @@ export function updateOrder(reqParams: any, reqBody: any) {
       throw new ProductNotInOrderError();
     }
     validateDeliveredFormat(product.delivered);
+    validateDeliveredFormat(product.paid);
   }
   const currentTimestamp = new Date().toISOString();
   let order: Pick<IOrder, "updatedAt"> = {
@@ -241,6 +247,7 @@ export function updateOrder(reqParams: any, reqBody: any) {
       orderId: orderId,
       productId: product.id,
       delivered: product.delivered,
+      paid: product.paid,
       updatedAt: currentTimestamp,
     };
     updateOrderProductEntity(orderProduct);
@@ -254,6 +261,7 @@ export function updateOrder(reqParams: any, reqBody: any) {
     let vendorInfo: any = getUserById(product.vendorId);
     let statusOrder: any = getStatusOfOrder(orderId, product.id);
     let productDelivered = statusOrder.delivered === 1 ? true : false;
+    let productPaid = statusOrder.paid === 1 ? true : false;
     product.price = statusOrder.priceProduct;
     product.discount = statusOrder.discountProduct;
     vendorInfo.shippingCost = statusOrder.vendorShippingCost;
@@ -262,6 +270,7 @@ export function updateOrder(reqParams: any, reqBody: any) {
       ...product,
       quantity: statusOrder.quantity,
       delivered: productDelivered,
+      paid: productPaid,
       vendor: vendorInfo,
     };
     productsNew.push(combinedProduct);

@@ -3,6 +3,7 @@ export interface IOrderProduct {
   productId: string;
   quantity: number;
   delivered: boolean;
+  paid: boolean;
   updatedAt: string;
   createdAt: string;
   priceProduct: number;

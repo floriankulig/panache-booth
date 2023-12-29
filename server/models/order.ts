@@ -43,9 +43,10 @@ export function updateOrderById(order: Pick<IOrder, "updatedAt">, orderId: strin
 
 export function updateOrderProductEntity(orderProduct: Omit<IOrderProduct, "quantity" | "createdAt" | "priceProduct" | "discountProduct" | "vendorShippingCost" | "vendorShippingFreeFrom">) {
   let isDeliveredNumeric = orderProduct.delivered ? 1 : 0;
+  let isPaidNumeric = orderProduct.paid ? 1 : 0;
   return database.prepare(
-    "update orderProduct set delivered = ?, updatedAt = ? where orderId = ? and productId = ?;",
-  ).run(isDeliveredNumeric, orderProduct.updatedAt, orderProduct.orderId, orderProduct.productId);
+    "update orderProduct set delivered = ?, paid = ?, updatedAt = ? where orderId = ? and productId = ?;",
+  ).run(isDeliveredNumeric, isPaidNumeric, orderProduct.updatedAt, orderProduct.orderId, orderProduct.productId);
 }
 
 export function getAllOrdersByUserId(id: string) {
@@ -64,20 +65,21 @@ export function getAllOrdersWithVendorProducts(vendorId: string) {
 }
 
 export function getStatusOfOrder(orderId: string, productId: string) {
-  return database.prepare("select quantity, delivered, priceProduct, discountProduct, vendorShippingCost, vendorShippingFreeFrom" +
+  return database.prepare("select quantity, delivered, paid, priceProduct, discountProduct, vendorShippingCost, vendorShippingFreeFrom" +
     " from orderProduct where orderId = ? and productId = ?").get(orderId, productId);
 }
 
 export function createOrderProductEntity(orderProduct: IOrderProduct) {
   let isDeliveredNumeric = orderProduct.delivered ? 1 : 0;
+  let isPaidNumeric = orderProduct.paid ? 1 : 0;
   console.log(orderProduct)
   database
     .prepare(
       "insert into orderProduct " +
-      "(orderId, productId, quantity, delivered, createdAt, updatedAt, priceProduct, discountProduct, vendorShippingCost, vendorShippingFreeFrom) " +
+      "(orderId, productId, quantity, delivered, paid, createdAt, updatedAt, priceProduct, discountProduct, vendorShippingCost, vendorShippingFreeFrom) " +
       "values " +
-      "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-    ).run(orderProduct.orderId, orderProduct.productId, orderProduct.quantity, isDeliveredNumeric,
+      "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    ).run(orderProduct.orderId, orderProduct.productId, orderProduct.quantity, isDeliveredNumeric, isPaidNumeric,
     orderProduct.createdAt, orderProduct.updatedAt, orderProduct.priceProduct, orderProduct.discountProduct,
     orderProduct.vendorShippingCost, orderProduct.vendorShippingFreeFrom);
 }
@@ -85,7 +87,7 @@ export function createOrderProductEntity(orderProduct: IOrderProduct) {
 export function getProductsOfOrder(orderId: string) {
   return database
     .prepare(
-      "select product.*, orderProduct.quantity, orderProduct.delivered " +
+      "select product.*, orderProduct.quantity, orderProduct.delivered, orderProduct.paid " +
       "from orders " +
       "join orderProduct on orders.id = orderProduct.OrderId " +
       "join product on orderProduct.productId = product.id " +
@@ -110,7 +112,7 @@ export function checkIfProductIsInOrder(productId: string, orderId: string) {
 export function getProductsOfOrderVendor(orderId: string, vendorId: string) {
   return database
     .prepare(
-      "select product.*, orderProduct.quantity, orderProduct.delivered " +
+      "select product.*, orderProduct.quantity, orderProduct.delivered, orderProduct.paid " +
       "from orders " +
       "join orderProduct on orders.id = orderProduct.OrderId " +
       "join product on orderProduct.productId = product.id " +
