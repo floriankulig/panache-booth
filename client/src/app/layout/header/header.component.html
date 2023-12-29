@@ -13,6 +13,7 @@
   </div>
   <pb-searchbar></pb-searchbar>
   <div class="actions">
+    @if (authService.user()) {
     <div
       class="orders"
       tabindex="0"
@@ -20,9 +21,12 @@
       (click)="openOrders()"
     >
       <i-feather name="shopping-bag"></i-feather>
+      @if (displayOrdersNotification) {
       <div class="indicator"></div>
+      }
     </div>
     <span class="div"></span>
+    }
     <div
       class="cart"
       tabindex="0"

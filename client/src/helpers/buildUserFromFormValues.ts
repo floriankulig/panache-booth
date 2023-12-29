@@ -26,7 +26,5 @@ export const buildUserFromFormValues = (
       : -1,
   };
 
-  console.log({ user });
-
   return user;
 };

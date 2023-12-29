@@ -1,19 +1,56 @@
 import { signal, Injectable, effect } from "@angular/core";
 import { API_URL, CartOrder, Order, OrderProduct } from "../../../models";
 import axios, { AxiosError } from "axios";
+import { AuthService } from "../auth/auth.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class OrderService {
   ordersOpen = signal(false);
+  private _displayOrdersNotification = false;
 
-  constructor() {
+  constructor(private authService: AuthService) {
     effect(() => {
-      axios.get(`${API_URL}/order`).then((res) => {
-        console.log(res.data);
-      });
+      if (this.ordersOpen()) {
+        localStorage.setItem(
+          "lastTimeOrdersOpen",
+          JSON.stringify(new Date().toISOString()),
+        );
+        this._displayOrdersNotification = false;
+      }
     });
+    effect(() => {
+      if (this.authService.user() === null) {
+        return;
+      }
+      (async () => {
+        try {
+          const orders = await this.getCustomerOrders(
+            this.authService.user()!.id,
+          );
+          this._displayOrdersNotification = orders.some((order) => {
+            const orderDate = new Date(order.updatedAt);
+            return (
+              orderDate.getTime() > this.lastTimeOrdersOpen.getTime() &&
+              order.updatedAt !== order.createdAt
+            );
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+    });
+  }
+
+  private get lastTimeOrdersOpen() {
+    return new Date(
+      JSON.parse(localStorage.getItem("lastTimeOrdersOpen") || "undefined"),
+    );
+  }
+
+  get displayOrdersNotification(): boolean {
+    return this._displayOrdersNotification;
   }
 
   async createOrder(order: CartOrder) {

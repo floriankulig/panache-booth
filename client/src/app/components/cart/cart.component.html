@@ -158,14 +158,12 @@
         vendorHasFreeShipping(entry.vendor) && entry.total >
         (entry.vendor.shippingFreeFrom)){
         <span class="summary__list-item--value">
-          <span class="wrong"
-            >{{ entry.vendor.shippingCost?.toFixed(2) }}€</span
-          >
+          <span class="wrong">{{ entry.vendor.shippingCost.toFixed(2) }}€</span>
           0.00€
         </span>
         } @else {
         <span class="summary__list-item--value">
-          {{ entry.vendor.shippingCost?.toFixed(2) }}€
+          {{ entry.vendor.shippingCost.toFixed(2) }}€
         </span>
         }
       </div>

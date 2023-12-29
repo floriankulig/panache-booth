@@ -72,7 +72,6 @@ export class OrdersComponent {
       this.errorMessage = (error as AxiosError).message;
     } finally {
       this.loading = false;
-      console.log(this.orders());
     }
   }
 

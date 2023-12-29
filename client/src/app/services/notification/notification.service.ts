@@ -7,6 +7,7 @@ export interface Notification {
   duration?: number;
   type?: NotificationType;
   icon?: string;
+  id: number;
 }
 
 @Injectable({
@@ -17,10 +18,11 @@ export class NotificationService {
 
   constructor() {}
 
-  public addNotification(notification: Notification) {
+  public addNotification(notification: Omit<Notification, "id">) {
     const newNotification = {
       ...notification,
       type: notification.type || "info",
+      id: Date.now(),
     };
     this.notifications.update((notifications) => [
       ...notifications,

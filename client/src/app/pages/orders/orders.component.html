@@ -49,8 +49,12 @@
             (click)="markOrderAsDelivered(order)"
             [class]="{ payment: true, checked: allDelivered(order) }"
           >
-            <i-feather name="check"></i-feather
-            >{{ !allDelivered(order) ? "Mark order as paid" : "Paid" }}
+            <i-feather
+              [name]="!allDelivered(order) ? 'check' : 'truck'"
+            ></i-feather
+            >{{
+              !allDelivered(order) ? "Mark order as delivered" : "Delivered"
+            }}
           </button>
         </div>
         <ul class="order__products">
@@ -84,11 +88,11 @@
 
           @if (allDelivered(vendorOrder.products)) {
           <span class="payment checked">
-            <i-feather name="check"></i-feather>Paid
+            <i-feather name="truck"></i-feather>Delivered
           </span>
           } @else {
           <span class="payment warn">
-            <i-feather name="alert-triangle"></i-feather>No payment received yet
+            <i-feather name="alert-triangle"></i-feather>Not delivered
           </span>
           }
         </div>
