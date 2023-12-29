@@ -107,6 +107,27 @@ export class OrdersComponent {
         products: order.products.map((product) => ({
           id: product.id,
           delivered: true,
+          paid: product.paid,
+        })),
+      });
+      this.getOrders(this.displayType(), this.authService.user()?.id);
+    } catch (error) {
+      this.notificationService.addNotification({
+        type: "error",
+        message: "Order could not be updated.",
+        duration: 5000,
+      });
+    }
+  }
+
+  async markOrderAsPaid(order: Order) {
+    try {
+      await this.orderService.updateOrder({
+        id: order.id,
+        products: order.products.map((product) => ({
+          id: product.id,
+          delivered: product.delivered,
+          paid: true,
         })),
       });
       this.getOrders(this.displayType(), this.authService.user()?.id);

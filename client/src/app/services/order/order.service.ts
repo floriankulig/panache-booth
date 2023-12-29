@@ -87,7 +87,7 @@ export class OrderService {
 
   async updateOrder(order: {
     id: string;
-    products: Pick<OrderProduct, "id" | "delivered">[];
+    products: Pick<OrderProduct, "id" | "delivered" | "paid">[];
   }) {
     try {
       const res = await axios.put<Order>(`${API_URL}/order/${order.id}`, {
