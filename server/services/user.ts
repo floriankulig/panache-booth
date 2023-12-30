@@ -93,12 +93,12 @@ export function loginUserService(reqBody: any) {
   }
 }
 
-function checkIfUserExistsById(userId: string): boolean {
+export function checkIfUserExistsById(userId: string): boolean {
   let user: IUser = getUserByIdModel(userId);
   return user !== undefined;
 }
 
-function checkIfUserIsVendor(userId: string): boolean {
+export function checkIfUserIsVendor(userId: string): boolean {
   let user: IUser = getVendorByIdModel(userId);
   return user !== undefined;
 }

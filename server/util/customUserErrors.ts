@@ -19,6 +19,13 @@ export class UserNotExistingError extends UserError {
   }
 }
 
+export class UserIdFormatError extends UserError {
+  constructor() {
+    super("UserId format is wrong!");
+    this.name = "UserIdFormatError"
+  }
+}
+
 export class UserIsNoVendorError extends UserError {
   constructor() {
     super("User is not a vendor!");

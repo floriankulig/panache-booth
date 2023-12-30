@@ -42,6 +42,7 @@ router.post("/", async (req, res) => {
   try {
     res.status(200).json(await createProductService(req.body));
   } catch (error) {
+    console.log(error)
     if (error instanceof ProductError || error instanceof UserError) {
       res.status(400).send(error.message);
     } else {
@@ -54,6 +55,7 @@ router.put("/:productId", async (req, res) => {
   try {
     res.status(200).json(await updateProductService(req.params, req.body));
   } catch (error) {
+    console.log(error)
     if (error instanceof ProductError) {
       res.status(400).send(error.message);
     } else {

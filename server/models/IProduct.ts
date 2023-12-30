@@ -1,7 +1,7 @@
 import { IUser } from "./IUser";
 
 export interface IProduct {
-  productId: string | undefined;
+  id: string | undefined;
   name: string | undefined;
   description: string | undefined;
   category: string | undefined;
@@ -15,4 +15,7 @@ export interface IProduct {
   createdAt: string | undefined;
   updatedAt: string;
   vendor?: IUser;
+  quantity?: number,
+  delivered?: boolean | number | undefined;
+  paid?: boolean | number | undefined;
 }

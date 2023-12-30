@@ -23,7 +23,7 @@ export function createProductModel(product: IProduct): void {
     "values " +
     "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
   ).run(
-    product.productId, product.name, product.description, product.category, product.discount,
+    product.id, product.name, product.description, product.category, product.discount,
     product.price, product.vendorId, product.purchases, product.inventory, product.isVisible,
     product.archived, product.createdAt, product.updatedAt,
   );
@@ -38,6 +38,7 @@ export function updateProductByIdModel(productId: string, product: IProduct): vo
   });
   sqlString = sqlString.slice(0, -1);
   sqlString += ` where id = '${productId}';`;
+  console.log(sqlString)
   database.prepare(sqlString).run();
 }
 

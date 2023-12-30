@@ -1,10 +1,10 @@
 import express from "express";
 import {
-  addOrder,
-  allOrders,
-  allUserOrdersById,
-  allVendorOrdersById,
-  updateOrder
+  createOrderService,
+  getAllOrdersService,
+  getAllOrdersByUserIdService,
+  getAllVendorOrdersByIdService,
+  updateOrderService
 } from "../services/order";
 import { UserError } from "../util/customUserErrors";
 import { OrderError } from "../util/customOrderErrors";
@@ -14,8 +14,9 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    res.status(200).json(await allOrders());
+    res.status(200).json(await getAllOrdersService());
   } catch (error) {
+    console.log(error)
     res.status(500).send("Internal server error!");
   }
 });
@@ -23,12 +24,11 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     if (req.query.isVendor === "false") {
-      res.status(200).json(await allUserOrdersById(req.params));
+      res.status(200).json(await getAllOrdersByUserIdService(req.params));
     } else {
-      res.status(200).json(await allVendorOrdersById(req.params));
+      res.status(200).json(await getAllVendorOrdersByIdService(req.params));
     }
   } catch (error) {
-    console.log(error)
     if (error instanceof UserError) {
       res.status(400).send(error.message);
     } else {
@@ -39,7 +39,7 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    res.status(200).json(await addOrder(req.body));
+    res.status(200).json(await createOrderService(req.body));
   } catch (error) {
     console.log(error)
     if (error instanceof UserError || error instanceof OrderError || error instanceof ProductError) {
@@ -52,9 +52,8 @@ router.post("/", async (req, res) => {
 
 router.put("/:orderId", async (req, res) => {
   try {
-    res.status(200).json(await updateOrder(req.params, req.body));
+    res.status(200).json(await updateOrderService(req.params, req.body));
   } catch (error) {
-    console.log(error)
     res.status(500).send("Internal server error!");
   }
 });

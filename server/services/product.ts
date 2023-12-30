@@ -11,7 +11,7 @@ import { getUserByIdModel } from "../models/user";
 import { v4 as uuidv4 } from "uuid";
 import {
   IsVendorFormatError,
-  ShippingCostFormatError,
+  ShippingCostFormatError, UserIdFormatError,
   UserNameFormatError,
   UserNotExistingError,
 } from "../util/customUserErrors";
@@ -53,7 +53,7 @@ export function createProductService(reqBody: any): IProduct {
   const createFlag: boolean = true;
   let product: IProduct = buildAndValidateProductModel(reqBody, createFlag);
   createProductModel(product);
-  return getProductByIdService(product.productId!);
+  return getProductByIdService(product.id!);
 }
 
 export function updateProductService(reqParams: any, reqBody: any): IProduct {
@@ -77,7 +77,7 @@ export function deleteProductService(reqParams: any): void {
   }
 }
 
-function checkIfProductExistsById(productId: string): boolean {
+export function checkIfProductExistsById(productId: string): boolean {
   let product: IProduct = getProductByIdModel(productId);
   return product !== undefined;
 }
@@ -112,7 +112,7 @@ function multipleProducts(products: IProduct[]): IProduct[] {
 function buildAndValidateProductModel(productModelData: any, createFlag: boolean = false, existingProduct?: IProduct): IProduct {
   const currentTimestamp: string = new Date().toISOString();
   return {
-    productId: createFlag ? uuidv4() : existingProduct?.productId,
+    id: createFlag ? uuidv4() : existingProduct?.id,
     name: validateName(productModelData.name, createFlag),
     description: validateDescription(productModelData.description, createFlag),
     category: validateCategory(productModelData.category, createFlag),
@@ -198,6 +198,9 @@ function validatePrice(price: any, createFlag: boolean): number | undefined {
 function validateVendorId(vendorId: any, createFlag: boolean): string | undefined {
   if (!createFlag) {
     return undefined;
+  }
+  if (typeof vendorId !== "string") {
+    throw new UserIdFormatError();
   }
   if (getVendorByIdService(vendorId) === undefined) {
     throw new IsVendorFormatError();
