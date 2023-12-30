@@ -314,12 +314,10 @@ function validatePassword(password: any, createFlag: boolean = false): string | 
 
 function passwordRequirements(password: string): boolean {
   const uppercaseRegex = /[A-Z]/;
-  const lowercaseRegex = /[a-z]/;
   const numberRegex = /\d/;
 
   return (
     uppercaseRegex.test(password) &&
-    lowercaseRegex.test(password) &&
     numberRegex.test(password)
   );
 }
