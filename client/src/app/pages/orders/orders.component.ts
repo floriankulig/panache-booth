@@ -37,7 +37,7 @@ export class OrdersComponent implements OnDestroy {
     const searchFilter = this.filterService.searchFilter();
     const orders = this.orders();
 
-    if (!searchFilter) {
+    if (!searchFilter || this.inModal) {
       return orders;
     }
 
