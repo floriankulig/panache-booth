@@ -82,7 +82,7 @@
         <div class="category-chip-bg"></div>
         <span class="category-chip-text"> {{ category?.displayValue }}</span>
       </div>
-      @if (product.inventory && amountLeft(product) <= 10) {
+      @if (product.inventory>= 0 && amountLeft(product) <= 10) {
       <div
         [class]="{
           'category-chip': true,
@@ -121,7 +121,7 @@
       tabindex="0"
       [class]="{
         card__cta: true,
-        disabled: product.inventory && amountLeft(product) <= 0
+        disabled: product.inventory >= 0 && amountLeft(product) <= 0
       }"
       role="button"
       (click)="onClickCTA()"

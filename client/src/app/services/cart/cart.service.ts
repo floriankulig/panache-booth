@@ -36,7 +36,10 @@ export class CartService {
           quantity,
         };
       })
-      .filter((product) => product.isVisible && product.quantity > 0),
+      .filter(
+        (product) =>
+          product.isVisible && product.quantity > 0 && product.inventory > 0,
+      ),
   );
 
   private _urlStateName = "cart";
@@ -131,5 +134,6 @@ export class CartService {
 
   clearCart() {
     this.cartItems.set([]);
+    this.productService.getProducts();
   }
 }

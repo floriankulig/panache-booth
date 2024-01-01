@@ -9,6 +9,7 @@ import {
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import {
   AuthService,
+  FilterService,
   NotificationService,
   ProductService,
 } from "../../services";
@@ -19,6 +20,7 @@ import { IconsModule } from "../../icons/icons.module";
 import { ModalComponent } from "../../components/modal/modal.component";
 import { DeleteConfirmComponent } from "../../components/delete-confirm/delete-confirm.component";
 import { ProductCardComponent } from "../../components/product";
+import { filterByString } from "../../../helpers";
 
 @Component({
   selector: "pb-profile",
@@ -46,13 +48,23 @@ export class ProfileComponent implements OnInit {
   );
 
   shownProducts = computed(() =>
-    this.productService
-      .products()
-      .filter(
-        (product) =>
-          product.vendorId === this.profile()?.id &&
-          (this.isOwnProfile() || product.isVisible),
-      ),
+    filterByString(
+      this.productService
+        .products()
+        .filter(
+          (product) =>
+            product.vendorId === this.profile()?.id &&
+            (this.isOwnProfile() || product.isVisible),
+        )
+        .map((product) => ({
+          ...product,
+          vendorName: product.vendor.userName,
+        })),
+      this.filterService.searchFilter(),
+      {
+        include: ["name", "vendorName", "category", "description", "price"],
+      },
+    ),
   );
 
   deleteModalOpen = signal(false);
@@ -62,6 +74,7 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private notificationService: NotificationService,
     private authService: AuthService,
+    private filterService: FilterService,
     private productService: ProductService,
   ) {
     effect(() => {

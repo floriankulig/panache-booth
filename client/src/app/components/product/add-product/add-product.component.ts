@@ -77,7 +77,7 @@ export class AddProductComponent implements OnInit {
         },
       ],
       category: [this.initialValues?.category || "", Validators.required],
-      inventory: [this.initialValues?.inventory || "", Validators.required],
+      inventory: [this.initialValues?.inventory || 0, Validators.required],
       discount: [(this.initialValues?.discount || 0) * 100 || ""],
     });
     this.isVisible.set(this.initialValues?.isVisible === false ? false : true);

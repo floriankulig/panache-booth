@@ -79,13 +79,13 @@ export class ProductCardComponent {
         ...this.product,
         isVisible: !this.product.isVisible,
       });
-      // this.notificationService.addNotification({
-      //   type: "success",
-      //   message: this.product.isVisible
-      //     ? `${this.product.name} is now hidden`
-      //     : `${this.product.name} is now visible`,
-      //   duration: 1000,
-      // });
+      this.notificationService.addNotification({
+        type: "success",
+        message: this.product.isVisible
+          ? `${this.product.name} is now hidden`
+          : `${this.product.name} is now visible`,
+        duration: 1000,
+      });
       this.update.emit();
     } catch (error) {
       this.notificationService.addNotification({

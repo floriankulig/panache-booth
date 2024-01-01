@@ -36,7 +36,7 @@
     @if (formStep === 1) {
     <div [class]="{ input: true, disabled: isUserUpdate }">
       <div>
-        <span>Display Name</span>
+        <span>Username</span>
         @if (formGroup.get("username")?.errors &&
         formGroup.get("username")?.touched) {
         <span class="input-error"
