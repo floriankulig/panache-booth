@@ -34,8 +34,14 @@
       position: relative;
       border-radius: $br $br 0 0;
       padding: grid(6) clamp(grid(4), 5vw, grid(8));
-      background: rgba($bgSecondary, 0.9);
-      backdrop-filter: blur(32px) saturate(180%);
+      border: 2.5px solid rgba($bgPrimary, 0.5);
+      border-bottom: none;
+      background: radial-gradient(
+        circle at 20% 10%,
+        rgba($bgSecondary, 0.9),
+        rgba($bgSecondary, 0.8) 100%
+      );
+      backdrop-filter: blur(32px) saturate(150%);
       box-shadow: 0 0 64px rgba($bgPrimaryDark, 0.1);
       overflow-y: auto;
 
