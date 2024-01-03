@@ -15,6 +15,10 @@ export function getAllVendorProductsModel(productId: string): IProduct[] {
   return <IProduct[]>database.prepare("select * from product where vendorId = ? and archived = 0").all(productId);
 }
 
+export function getProductByProductIdAndUserId(userId: string, prodcutId: string): IProduct {
+  return <IProduct>database.prepare("select * from product where vendorId = ? and id = ? and archived = 0;").get(userId, prodcutId);
+}
+
 export function createProductModel(product: IProduct): void {
   database.prepare(
     "insert into product " +
@@ -38,7 +42,7 @@ export function updateProductByIdModel(productId: string, product: IProduct): vo
   });
   sqlString = sqlString.slice(0, -1);
   sqlString += ` where id = '${productId}';`;
-  console.log(sqlString)
+  console.log(sqlString);
   database.prepare(sqlString).run();
 }
 

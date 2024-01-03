@@ -9,6 +9,7 @@ import {
 } from "../services/product";
 import { ProductError } from "../util/customProductErrors";
 import { UserError } from "../util/customUserErrors";
+import { customAuthUser, customAuthIsVendor, customAuthIsVendorOwnProduct } from "../util/customAuth";
 
 const router = express.Router();
 
@@ -38,9 +39,10 @@ router.get("/:productId", async (req, res) => {
 });
 
 
-router.post("/", async (req, res) => {
+router.post("/", customAuthIsVendor, async (req, res) => {
   try {
-    res.status(200).json(await createProductService(req.body));
+    console.log("tets")
+    res.status(200).json(createProductService(req.body));
   } catch (error) {
     console.log(error)
     if (error instanceof ProductError || error instanceof UserError) {
@@ -51,7 +53,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:productId", async (req, res) => {
+router.put("/:productId", customAuthIsVendorOwnProduct, async (req, res) => {
   try {
     res.status(200).json(await updateProductService(req.params, req.body));
   } catch (error) {
@@ -64,7 +66,7 @@ router.put("/:productId", async (req, res) => {
   }
 });
 
-router.delete("/:productId", async (req, res) => {
+router.delete("/:productId", customAuthIsVendorOwnProduct, async (req, res) => {
   try {
     deleteProductService(req.params);
     res.sendStatus(200);

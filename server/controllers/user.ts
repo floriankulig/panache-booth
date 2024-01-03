@@ -9,6 +9,7 @@ import {
 } from "../services/user";
 import { UserError } from "../util/customUserErrors";
 import { SqliteError } from "better-sqlite3";
+import { customAuthUser, customAuthUserOrVendor } from "../util/customAuth";
 
 const router = express.Router();
 
@@ -20,7 +21,7 @@ router.get("/", async (req, res )=> {
   }
 });
 
-router.get("/:userId", async (req, res) => {
+router.get("/:userId", customAuthUserOrVendor, async (req, res) => {
   try {
     let userId: string = req.params.userId
     res.status(200).json(getUserByIdService(userId));
@@ -45,7 +46,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", customAuthUser, async (req, res) => {
   try {
     res.status(200).json(createUserService(req.body));
   } catch (error: unknown) {
@@ -59,7 +60,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:userId", async (req, res) => {
+router.put("/:userId", customAuthUser, async (req, res) => {
   try {
     res.status(200).json(updateUserService(req.params, req.body));
   } catch (error) {
@@ -73,7 +74,7 @@ router.put("/:userId", async (req, res) => {
   }
 });
 
-router.delete("/:userId", async (req, res) => {
+router.delete("/:userId", customAuthUser, async (req, res) => {
   try {
 
     deleteUserService(req.params);

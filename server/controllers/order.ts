@@ -9,6 +9,7 @@ import {
 import { UserError } from "../util/customUserErrors";
 import { OrderError } from "../util/customOrderErrors";
 import { ProductError } from "../util/customProductErrors";
+import { customAuthUser } from "../util/customAuth";
 
 const router = express.Router();
 
@@ -37,7 +38,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", /*customAuthUser,*/ async (req, res) => {
   try {
     res.status(200).json(await createOrderService(req.body));
   } catch (error) {
@@ -50,7 +51,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:orderId", async (req, res) => {
+router.put("/:orderId", /*customAuthUser,*/ async (req, res) => {
   try {
     res.status(200).json(await updateOrderService(req.params, req.body));
   } catch (error) {

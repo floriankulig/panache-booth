@@ -1,17 +1,137 @@
-import { getUserByEmailService } from "../services/user";
+import { checkIfUserIsVendor, getUserByEmailService } from "../services/user";
+import { IUser } from "../models/IUser";
+import {
+  AuthenticationRequired,
+  CustomAuthError, NoPermission,
+  UsernamePasswordMismatch,
+} from "./customAuthError";
+import { UserError } from "./customUserErrors";
+import { checkIsVendorsProduct } from "../services/product";
+import { userHasOrdersByVendor } from "../services/order";
 
-export async function customAuth(req: any, res: any, next: any) {
-  try{
-    const b64auth = req.headers.authorization.split(' ')[1];
-    let [email, password] = Buffer.from(b64auth, 'base64').toString().split(':');
-
-    let user: any = await getUserByEmailService(email);
-    if (!user || user.password !== password) {
-      return res.status(401).send('Username password mismatch!');
+export async function customAuthUser(req: any, res: any, next: any) {
+  try {
+    let [email, password] = getEmailAndPasswordFromHeader(req.headers);
+    req.user = getUserAndCheckPassword(email, password);
+    next();
+  } catch (error) {
+    if (error instanceof CustomAuthError || error instanceof UserError) {
+      return res.status(401).send(error.message);
+    } else {
+      return res.status(500).send("Internal server error!");
     }
+  }
+}
+
+export async function customAuthUserOrVendor(req: any, res: any, next: any) {
+  try {
+    let [email, password] = getEmailAndPasswordFromHeader(req.headers);
+    let user: IUser = getUserAndCheckPassword(email, password);
+    isVendorAndUserHasOrder(user.userId!, req.params.userId);
     req.user = user;
     next();
   } catch (error) {
-    return res.status(401).send('Authentication required!');
+    if (error instanceof CustomAuthError || error instanceof UserError) {
+      return res.status(401).send(error.message);
+    } else {
+      return res.status(500).send("Internal server error!");
+    }
   }
 }
+
+export async function customAuthIsVendor(req: any, res: any, next: any) {
+  try {
+    let [email, password] = getEmailAndPasswordFromHeader(req.headers);
+    let user: IUser = getUserAndCheckPassword(email, password);
+    isVendor(user.userId!);
+    req.user = user;
+    next();
+  } catch (error) {
+    if (error instanceof CustomAuthError || error instanceof UserError) {
+      return res.status(401).send(error.message);
+    } else {
+      return res.status(500).send("Internal server error!");
+    }
+  }
+}
+
+export async function customAuthIsVendorOwnProduct(req: any, res: any, next: any) {
+  try {
+    let [email, password] = getEmailAndPasswordFromHeader(req.headers);
+    let user: IUser = getUserAndCheckPassword(email, password);
+    isVendor(user.userId!);
+    console.log(req.params.productId);
+    isVendorsProduct(user.userId!, req.params.productId);
+    req.user = user;
+    next();
+  } catch (error) {
+    if (error instanceof CustomAuthError || error instanceof UserError) {
+      return res.status(401).send(error.message);
+    } else {
+      return res.status(500).send("Internal server error!");
+    }
+  }
+}
+
+/*export async function customAuthGetOrder(req: any, res: any, next: any) {
+  try {
+    let [email, password] = getEmailAndPasswordFromHeader(req.headers);
+    req.user = getUserAndCheckPassword(email, password);
+    if (req.query.isVendor === "false") {
+
+    }
+    else if (req.query.isVendor === "true") {
+
+    } else {
+      throw new Error();
+    }
+    next();
+  } catch (error) {
+    if (error instanceof CustomAuthError || error instanceof UserError) {
+      return res.status(401).send(error.message);
+    } else {
+      return res.status(500).send("Internal server error!");
+    }
+  }
+}*/
+
+
+function getEmailAndPasswordFromHeader(reqHeader: any): string[] {
+  if (reqHeader.authorization === undefined) {
+    throw new AuthenticationRequired();
+  }
+  const b64auth = reqHeader.authorization.split(" ")[1];
+  let [email, password] = Buffer.from(b64auth, "base64").toString().split(":");
+  if (email === "") {
+    throw new AuthenticationRequired();
+  }
+  return [email, password];
+}
+
+function getUserAndCheckPassword(email: string, password: string): IUser {
+  let user: IUser = getUserByEmailService(email);
+  if (!user || user.password !== password) {
+    throw new UsernamePasswordMismatch();
+  }
+  return user;
+}
+
+function isVendor(userId: string): void {
+  if (!checkIfUserIsVendor(userId)) {
+    throw new NoPermission();
+  }
+}
+
+function isVendorsProduct(userId: string, productId: string): void {
+  if (!checkIsVendorsProduct(userId, productId)) {
+    throw new NoPermission();
+  }
+}
+
+function isVendorAndUserHasOrder(vendorId: string, userId: string): void {
+  isVendor(vendorId);
+  if (!userHasOrdersByVendor(vendorId, userId)) {
+    throw new NoPermission();
+  }
+}
+
