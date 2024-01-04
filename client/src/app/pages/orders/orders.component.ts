@@ -225,6 +225,13 @@ export class OrdersComponent implements OnDestroy {
     return order.products.every((product) => product.delivered);
   }
 
+  allPaid(order: Order | OrderProduct[]) {
+    if (Array.isArray(order)) {
+      return order.every((product) => product.paid);
+    }
+    return order.products.every((product) => product.paid);
+  }
+
   productPrice(product: OrderProduct) {
     return (getDiscountedPrice(product) * product.quantity).toFixed(2);
   }

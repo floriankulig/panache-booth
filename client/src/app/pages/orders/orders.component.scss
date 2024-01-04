@@ -56,7 +56,24 @@ header.header {
 .order-list {
   margin-top: grid(4);
   display: flex;
+  padding: grid(5);
+  border-radius: grid(3);
+  background: darken($bgPrimary, 1.5);
+  box-shadow: 0 0 64px rgba($bgPrimaryDark, 0.075);
+  background: rgba($bgPrimary, 0.5);
+  &.inModal {
+    box-shadow: none;
+  }
   flex-direction: column;
+  @media screen and (max-width: 768px) {
+    padding: grid(4);
+    padding-inline: 0;
+    box-shadow: none;
+
+    &.inModal {
+      background: transparent;
+    }
+  }
 
   .order {
     display: flex;
@@ -173,6 +190,13 @@ header.header {
           width: 100%;
         }
       }
+    }
+
+    &__actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: grid(2);
     }
 
     &__products {
