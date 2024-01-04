@@ -52,8 +52,17 @@
   </div>
 
   @if (profile()?.isVendor) {
-  <div class="content-inner">
+  <div class="content-inner product-heading">
     <h2 class="page-title">Products</h2>
+    @if (isOwnProfile()) {
+    <button
+      title="Add new Product"
+      aria-label="Add new Product"
+      (click)="openAddProductModal()"
+    >
+      <i-feather name="plus"></i-feather> <span>Add Product</span>
+    </button>
+    }
   </div>
 
   @if (!!shownProducts().length) {
@@ -77,5 +86,15 @@
     [user]="profile()"
     (delete)="deleteModalOpen.set(false)"
   ></pb-delete-confirm>
+</pb-modal>
+} @if (addProductModalOpen()) {
+<pb-modal
+  (modalClose)="addProductModalOpen.set(false)"
+  heading="Add New Product"
+>
+  <pb-add-product
+    (cancel)="addProductModalOpen.set(false)"
+    (create)="onProductCreated()"
+  ></pb-add-product>
 </pb-modal>
 }

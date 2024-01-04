@@ -161,7 +161,7 @@ function combineOrderWithProductInfo(order: IOrder, vendorId: string = ""): IOrd
 }
 
 function combineProductWithOrderStatus(orderProduct: IProduct, orderId: string): IProduct {
-  let productInfo: IProduct = getProductByIdService(orderProduct.id!);
+  let productInfo: IProduct = getProductByIdService(orderProduct.id!, true);
   let statusOfOrder: IOrderProduct = getStatusOfOrderModel(orderId, orderProduct.id!);
   productInfo.price = statusOfOrder.priceProduct;
   productInfo.discount = statusOfOrder.discountProduct;
@@ -224,7 +224,7 @@ function buildAndValidateUpdateOrderProductModel(products: any, orderId: string,
 
 function checkIfProductIsInOrderAndExists(products: any, orderId: string): boolean {
   for (let product of products) {
-    if (!checkIfProductExistsById(product.id)) {
+    if (!checkIfProductExistsById(product.id, true)) {
       throw new ProductNotExistingError();
     }
     if (!checkIfProductIsInOrderService(orderId, product.id)) {
@@ -269,7 +269,7 @@ function validateOrderUser(userId: any, createFlag: boolean): string | undefined
 }
 
 function validateProductId(productId: string) {
-  if (getProductByIdModel(productId) === undefined) {
+  if (getProductByIdModel(productId, true) === undefined) {
     throw new ProductNotExistingError();
   }
 }
@@ -295,9 +295,7 @@ function validateOrderQuantity(quantity: any): number {
 }
 
 function checkOutOfStock(productId: string, quantity: number) {
-  let product = getProductByIdModel(productId);
-  console.log(productId)
-  // Hizugefügtes !!! cheken !!!
+  let product = getProductByIdModel(productId, true);
   if (product.inventory! < quantity) {
     throw new ProductOutOfStockError();
   }

@@ -21,7 +21,9 @@
     </div>
     }
   </header>
-  <ul class="order-list">
+  @if (displayedOrders().length) {
+
+  <ul [class]="{ 'order-list': true, inModal }">
     @for (order of displayedOrders(); track order.id) {
 
     <li class="order">
@@ -44,18 +46,28 @@
             </div>
             {{ order.user?.userName }}
           </h3>
-
-          <button
-            (click)="markOrderAsDelivered(order)"
-            [class]="{ payment: true, checked: allDelivered(order) }"
-          >
-            <i-feather
-              [name]="!allDelivered(order) ? 'check' : 'truck'"
-            ></i-feather
-            >{{
-              !allDelivered(order) ? "Mark order as delivered" : "Delivered"
-            }}
-          </button>
+          <div class="order__actions">
+            <button
+              (click)="markOrderAsDelivered(order)"
+              [class]="{ payment: true, checked: allDelivered(order) }"
+            >
+              <i-feather
+                [name]="!allDelivered(order) ? 'check' : 'truck'"
+              ></i-feather
+              >{{
+                !allDelivered(order) ? "Mark order as delivered" : "Delivered"
+              }}
+            </button>
+            <button
+              (click)="markOrderAsPaid(order)"
+              [class]="{ payment: true, checked: allPaid(order) }"
+            >
+              <i-feather
+                [name]="!allPaid(order) ? 'credit-card' : 'check'"
+              ></i-feather
+              >{{ !allPaid(order) ? "Mark order as paid" : "Paid" }}
+            </button>
+          </div>
         </div>
         <ul class="order__products">
           @for (product of order.products; track product.id ) {
@@ -120,4 +132,5 @@
     </li>
     }
   </ul>
+  }
 </div>

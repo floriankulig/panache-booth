@@ -82,7 +82,7 @@ export class CartComponent implements OnDestroy {
     return this.itemsByVendor().reduce((shippingtotal, { vendor, items }) => {
       const costPerVendor = costOfCartProducts(items);
       if (
-        costPerVendor > Number(vendor.shippingFreeFrom) &&
+        costPerVendor >= Number(vendor.shippingFreeFrom) &&
         this.vendorHasFreeShipping(vendor)
       ) {
         return shippingtotal;

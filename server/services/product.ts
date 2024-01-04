@@ -30,11 +30,11 @@ import { booleanToNumber, numberToBoolean, validateDecimalNumber } from "../util
 import { getUserByIdService, getVendorByIdService } from "./user";
 import { IUser } from "../models/IUser";
 
-export function getProductByIdService(productId: string): IProduct {
-  if (!checkIfProductExistsById(productId)) {
+export function getProductByIdService(productId: string, fromOrders:boolean = false): IProduct {
+  if (!checkIfProductExistsById(productId, fromOrders)) {
     throw new ProductNotExistingError();
   }
-  let product: IProduct = getProductByIdModel(productId);
+  let product: IProduct = getProductByIdModel(productId, fromOrders);
   return individualProduct(product);
 }
 
@@ -77,8 +77,8 @@ export function deleteProductService(reqParams: any): void {
   }
 }
 
-export function checkIfProductExistsById(productId: string): boolean {
-  let product: IProduct = getProductByIdModel(productId);
+export function checkIfProductExistsById(productId: string, fromOrders: boolean = false): boolean {
+  let product: IProduct = getProductByIdModel(productId, fromOrders);
   return product !== undefined;
 }
 
@@ -89,7 +89,7 @@ export function checkIsVendorsProduct(userId: string, productId: string): boolea
 
 function individualProduct(product: IProduct): IProduct {
   if (product === undefined) {
-    throw new UserNotExistingError();
+    throw new ProductNotExistingError();
   }
   product.isVisible = numberToBoolean(product.isVisible);
   product.archived = numberToBoolean(product.archived);

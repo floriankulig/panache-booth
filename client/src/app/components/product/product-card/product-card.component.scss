@@ -279,6 +279,7 @@
 
       &.disabled {
         color: rgba($textPrimary, 0.5);
+        color: $textSecondary;
         cursor: not-allowed !important;
         pointer-events: none;
       }

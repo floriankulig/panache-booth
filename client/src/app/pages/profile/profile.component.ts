@@ -19,7 +19,10 @@ import { format } from "date-fns";
 import { IconsModule } from "../../icons/icons.module";
 import { ModalComponent } from "../../components/modal/modal.component";
 import { DeleteConfirmComponent } from "../../components/delete-confirm/delete-confirm.component";
-import { ProductCardComponent } from "../../components/product";
+import {
+  AddProductComponent,
+  ProductCardComponent,
+} from "../../components/product";
 import { filterByString } from "../../../helpers";
 
 @Component({
@@ -30,11 +33,13 @@ import { filterByString } from "../../../helpers";
     ModalComponent,
     DeleteConfirmComponent,
     ProductCardComponent,
+    AddProductComponent,
   ],
   templateUrl: "./profile.component.html",
   styleUrl: "./profile.component.scss",
 })
 export class ProfileComponent implements OnInit {
+  addProductModalOpen = signal(false);
   profile: WritableSignal<User | undefined> = signal(undefined);
   joinDate = computed(() => {
     if (this.profile()?.createdAt) {
@@ -125,5 +130,14 @@ export class ProfileComponent implements OnInit {
 
   updateList() {
     this.productService.getProducts();
+  }
+
+  openAddProductModal() {
+    this.addProductModalOpen.set(true);
+  }
+
+  onProductCreated() {
+    this.addProductModalOpen.set(false);
+    this.updateList();
   }
 }

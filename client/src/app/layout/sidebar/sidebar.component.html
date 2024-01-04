@@ -1,39 +1,41 @@
-<div class="header-logo">
-  <div
-    class="burger"
-    role="button"
-    tabindex="0"
-    (keydown.enter)="onCloseSidebar()"
-    (click)="onCloseSidebar()"
-  >
-    <i-feather name="x"></i-feather>
-  </div>
-  <pb-logo routerLink="/"></pb-logo>
-</div>
-<div class="content">
-  <ul class="menu">
-    @for (group of visibleTabs(); track $index) { @if (!!group?.name) {
-    <span class="menu-group"
-      >{{ group.name }}
-      <div class="div"></div
-    ></span>
-    } @for (link of group.links; track $index) {
-
-    <li
-      [class]="{
-        'menu-item': true,
-        active:
-          currentUrl === link.url ||
-          (link.url === '/' && currentUrl.startsWith('/product'))
-      }"
-      [routerLink]="link.url"
-      (click)="onCloseSidebar()"
-      (keydown.enter)="onCloseSidebar()"
+<div class="sidebar">
+  <div class="header-logo">
+    <div
+      class="burger"
+      role="button"
       tabindex="0"
+      (keydown.enter)="onCloseSidebar()"
+      (click)="onCloseSidebar()"
     >
-      <i-feather [name]="link.icon"></i-feather>
-      <span class="label">{{ link.name }}</span>
-    </li>
-    } }
-  </ul>
+      <i-feather name="x"></i-feather>
+    </div>
+    <pb-logo routerLink="/"></pb-logo>
+  </div>
+  <div class="content">
+    <ul class="menu">
+      @for (group of visibleTabs(); track $index) { @if (!!group?.name) {
+      <span class="menu-group"
+        >{{ group.name }}
+        <div class="div"></div
+      ></span>
+      } @for (link of group.links; track $index) {
+
+      <li
+        [class]="{
+          'menu-item': true,
+          active:
+            currentUrl === link.url ||
+            (link.url === '/' && currentUrl.startsWith('/product'))
+        }"
+        [routerLink]="link.url"
+        (click)="onCloseSidebar()"
+        (keydown.enter)="onCloseSidebar()"
+        tabindex="0"
+      >
+        <i-feather [name]="link.icon"></i-feather>
+        <span class="label">{{ link.name }}</span>
+      </li>
+      } }
+    </ul>
+  </div>
 </div>

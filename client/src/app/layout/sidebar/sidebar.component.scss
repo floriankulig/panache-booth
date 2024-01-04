@@ -1,13 +1,12 @@
 @use "../../../variables.scss" as *;
 
+// use the host element as a container to handle the animation
+// this enhances performance in webkit browsers
 :host {
+  z-index: 999;
   height: 100%;
-  display: flex;
-  flex-direction: column;
   min-width: $sidebarWidth;
   width: $sidebarWidth;
-  color: $textPrimaryDark;
-  z-index: 999;
   transition: transform 0.2s ease-in-out;
 
   @media screen and (max-width: 1080px) {
@@ -16,6 +15,15 @@
       transform: translateX(-100%);
     }
   }
+}
+
+.sidebar {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: $textPrimaryDark;
+  z-index: 999;
 
   .header-logo {
     padding: grid(3);
