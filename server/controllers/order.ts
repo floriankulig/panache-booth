@@ -4,12 +4,12 @@ import {
   getAllOrdersService,
   getAllOrdersByUserIdService,
   getAllVendorOrdersByIdService,
-  updateOrderService
+  updateOrderService,
 } from "../services/order";
 import { UserError } from "../util/customUserErrors";
 import { OrderError } from "../util/customOrderErrors";
 import { ProductError } from "../util/customProductErrors";
-import { customAuthUser } from "../util/customAuth";
+import { customAuthGetOrder, customAuthUpdateOrder, customAuthUser } from "../util/customAuth";
 
 const router = express.Router();
 
@@ -17,12 +17,12 @@ router.get("/", async (req, res) => {
   try {
     res.status(200).json(await getAllOrdersService());
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).send("Internal server error!");
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", customAuthGetOrder, async (req, res) => {
   try {
     if (req.query.isVendor === "false") {
       res.status(200).json(await getAllOrdersByUserIdService(req.params));
@@ -38,11 +38,11 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", /*customAuthUser,*/ async (req, res) => {
+router.post("/", customAuthUser, async (req, res) => {
   try {
     res.status(200).json(await createOrderService(req.body));
   } catch (error) {
-    console.log(error)
+    console.log(error);
     if (error instanceof UserError || error instanceof OrderError || error instanceof ProductError) {
       res.status(400).send(error.message);
     } else {
@@ -51,7 +51,7 @@ router.post("/", /*customAuthUser,*/ async (req, res) => {
   }
 });
 
-router.put("/:orderId", /*customAuthUser,*/ async (req, res) => {
+router.put("/:orderId", customAuthUpdateOrder, async (req, res) => {
   try {
     res.status(200).json(await updateOrderService(req.params, req.body));
   } catch (error) {

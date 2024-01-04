@@ -7,7 +7,15 @@ import {
 } from "./customAuthError";
 import { UserError } from "./customUserErrors";
 import { checkIsVendorsProduct } from "../services/product";
-import { userHasOrdersByVendor } from "../services/order";
+import {
+  checkIfProductIsInOrderService,
+  getAllOrdersByUserIdService,
+  getAllVendorOrdersByIdService, getOrderByIdService,
+  userHasOrdersByVendor,
+} from "../services/order";
+import { checkIfProductIsInOrderModel } from "../models/order";
+import { ProductNotInOrderError } from "./customOrderErrors";
+import { IOrder } from "../models/IOrder";
 
 export async function customAuthUser(req: any, res: any, next: any) {
   try {
@@ -73,18 +81,35 @@ export async function customAuthIsVendorOwnProduct(req: any, res: any, next: any
   }
 }
 
-/*export async function customAuthGetOrder(req: any, res: any, next: any) {
+export async function customAuthGetOrder(req: any, res: any, next: any) {
   try {
     let [email, password] = getEmailAndPasswordFromHeader(req.headers);
-    req.user = getUserAndCheckPassword(email, password);
+    let user: IUser = getUserAndCheckPassword(email, password);
+    let order: IOrder = getOrderByIdService(req.params.orderId);
     if (req.query.isVendor === "false") {
-
-    }
-    else if (req.query.isVendor === "true") {
-
+      isSameUser(user.userId!, order.userId!);
     } else {
-      throw new Error();
+      orderHasProductOfVendor(order, user.userId!);
     }
+    req.user = user;
+  } catch (error) {
+    if (error instanceof CustomAuthError || error instanceof UserError) {
+      return res.status(401).send(error.message);
+    } else {
+      return res.status(500).send("Internal server error!");
+    }
+  }
+}
+
+export async function customAuthUpdateOrder(req: any, res: any, next: any) {
+  try {
+    let [email, password] = getEmailAndPasswordFromHeader(req.headers);
+    let user: IUser = getUserAndCheckPassword(email, password);
+    let orderId: string = req.params.orderId;
+    let products = req.body.products;
+    isVendorProductAndInOrder(products, user.userId!, orderId);
+
+    req.user = user;
     next();
   } catch (error) {
     if (error instanceof CustomAuthError || error instanceof UserError) {
@@ -93,7 +118,7 @@ export async function customAuthIsVendorOwnProduct(req: any, res: any, next: any
       return res.status(500).send("Internal server error!");
     }
   }
-}*/
+}
 
 
 function getEmailAndPasswordFromHeader(reqHeader: any): string[] {
@@ -133,5 +158,29 @@ function isVendorAndUserHasOrder(vendorId: string, userId: string): void {
   if (!userHasOrdersByVendor(vendorId, userId)) {
     throw new NoPermission();
   }
+}
+
+function isVendorProductAndInOrder(products: any, userId: string, orderId: string): void {
+  for (let product of products) {
+    isVendorsProduct(userId, product.id);
+    if (!checkIfProductIsInOrderService(orderId, product.id)) {
+      throw new ProductNotInOrderError();
+    }
+  }
+}
+
+function isSameUser(userId: string, orderUserId: string): void {
+  if (!(userId === orderUserId)) {
+    throw new NoPermission();
+  }
+}
+
+function orderHasProductOfVendor(order: IOrder, userId: String): void {
+  for (let product of order.products!) {
+    if (product.vendorId === userId) {
+      return;
+    }
+  }
+  throw new NoPermission();
 }
 

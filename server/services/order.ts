@@ -239,7 +239,7 @@ function checkIfOrderExistsById(orderId: string): boolean {
   return order !== undefined;
 }
 
-function checkIfProductIsInOrderService(orderId: string, productId: string): boolean {
+export function checkIfProductIsInOrderService(orderId: string, productId: string): boolean {
   let product: IProduct = checkIfProductIsInOrderModel(productId, orderId);
   return product !== undefined;
 }
