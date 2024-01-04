@@ -140,7 +140,10 @@
     line-height: 1.2;
   }
 
-  h2 {
+  .product-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-block: grid(5) grid(3);
   }
 
