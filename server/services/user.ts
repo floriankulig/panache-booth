@@ -59,7 +59,7 @@ export function createUserService(reqBody: any): IUser {
   const createFlag: boolean = true;
   let user: IUser = buildAndValidateUserModel(reqBody, createFlag);
   createUserModel(user);
-  return getUserByIdService(user.userId!);
+  return getUserByIdService(user.id!);
 }
 
 export function updateUserService(reqParams: any, reqBody: any): IUser {
@@ -121,7 +121,7 @@ function multipleUsers(users: IUser[]): IUser[] {
 function buildAndValidateUserModel(userModelData: any, createFlag: boolean = false, existingUser?: IUser): IUser {
   const currentTimestamp: string = new Date().toISOString();
   let user: IUser = {
-    userId: createFlag ? uuidv4() : existingUser?.userId,
+    id: createFlag ? uuidv4() : existingUser?.id,
     userName: validateUserName(userModelData.userName, createFlag),
     email: validateEmail(userModelData.email, createFlag),
     street: validateStreet(userModelData.street, createFlag),

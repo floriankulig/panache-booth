@@ -13,7 +13,7 @@ import { customAuthUser, customAuthUserOrVendor } from "../util/customAuth";
 
 const router = express.Router();
 
-router.get("/", async (req, res )=> {
+router.get("/", async (req, res) => {
   try {
     res.status(200).json(getAllUsersService());
   } catch (error) {
@@ -23,7 +23,7 @@ router.get("/", async (req, res )=> {
 
 router.get("/:userId", customAuthUserOrVendor, async (req, res) => {
   try {
-    let userId: string = req.params.userId
+    let userId: string = req.params.userId;
     res.status(200).json(getUserByIdService(userId));
   } catch (error) {
     if (error instanceof UserError) {
@@ -34,7 +34,7 @@ router.get("/:userId", customAuthUserOrVendor, async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", customAuthUser, async (req, res) => {
   try {
     res.status(200).json(loginUserService(req.body));
   } catch (error) {
@@ -46,7 +46,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/", customAuthUser, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     res.status(200).json(createUserService(req.body));
   } catch (error: unknown) {

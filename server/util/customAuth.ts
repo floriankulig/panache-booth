@@ -35,7 +35,10 @@ export async function customAuthUserOrVendor(req: any, res: any, next: any) {
   try {
     let [email, password] = getEmailAndPasswordFromHeader(req.headers);
     let user: IUser = getUserAndCheckPassword(email, password);
-    isVendorAndUserHasOrder(user.userId!, req.params.userId);
+    console.log("tests");
+    console.log(req.params.userId);
+    console.log(user.id);
+    isUserOrIsVendorAndUserHasOrder(req.params.userId, user.id!);
     req.user = user;
     next();
   } catch (error) {
@@ -51,7 +54,7 @@ export async function customAuthIsVendor(req: any, res: any, next: any) {
   try {
     let [email, password] = getEmailAndPasswordFromHeader(req.headers);
     let user: IUser = getUserAndCheckPassword(email, password);
-    isVendor(user.userId!);
+    isVendor(user.id!);
     req.user = user;
     next();
   } catch (error) {
@@ -67,9 +70,9 @@ export async function customAuthIsVendorOwnProduct(req: any, res: any, next: any
   try {
     let [email, password] = getEmailAndPasswordFromHeader(req.headers);
     let user: IUser = getUserAndCheckPassword(email, password);
-    isVendor(user.userId!);
+    isVendor(user.id!);
     console.log(req.params.productId);
-    isVendorsProduct(user.userId!, req.params.productId);
+    isVendorsProduct(user.id!, req.params.productId);
     req.user = user;
     next();
   } catch (error) {
@@ -85,13 +88,9 @@ export async function customAuthGetOrder(req: any, res: any, next: any) {
   try {
     let [email, password] = getEmailAndPasswordFromHeader(req.headers);
     let user: IUser = getUserAndCheckPassword(email, password);
-    let order: IOrder = getOrderByIdService(req.params.orderId);
-    if (req.query.isVendor === "false") {
-      isSameUser(user.userId!, order.userId!);
-    } else {
-      orderHasProductOfVendor(order, user.userId!);
-    }
+    isSameUser(user.id!, req.params.id);
     req.user = user;
+    next();
   } catch (error) {
     if (error instanceof CustomAuthError || error instanceof UserError) {
       return res.status(401).send(error.message);
@@ -107,7 +106,7 @@ export async function customAuthUpdateOrder(req: any, res: any, next: any) {
     let user: IUser = getUserAndCheckPassword(email, password);
     let orderId: string = req.params.orderId;
     let products = req.body.products;
-    isVendorProductAndInOrder(products, user.userId!, orderId);
+    isVendorProductAndInOrder(products, user.id!, orderId);
 
     req.user = user;
     next();
@@ -153,9 +152,14 @@ function isVendorsProduct(userId: string, productId: string): void {
   }
 }
 
-function isVendorAndUserHasOrder(vendorId: string, userId: string): void {
-  isVendor(vendorId);
-  if (!userHasOrdersByVendor(vendorId, userId)) {
+function isUserOrIsVendorAndUserHasOrder(userIdParams: string, userId: string): void {
+  console.log(userIdParams);
+  console.log(userId);
+  if (isSameUser(userIdParams, userId)) {
+    return;
+  }
+  isVendor(userId);
+  if (!userHasOrdersByVendor(userId, userIdParams)) {
     throw new NoPermission();
   }
 }
@@ -169,10 +173,11 @@ function isVendorProductAndInOrder(products: any, userId: string, orderId: strin
   }
 }
 
-function isSameUser(userId: string, orderUserId: string): void {
+function isSameUser(userId: string, orderUserId: string): boolean {
   if (!(userId === orderUserId)) {
     throw new NoPermission();
   }
+  return true;
 }
 
 function orderHasProductOfVendor(order: IOrder, userId: String): void {

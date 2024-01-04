@@ -41,7 +41,7 @@ export function createUserModel(user: IUser): void {
     "values " +
     "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
   ).run(
-    user.userId, user.userName, user.email, user.password, user.isVendor,
+    user.id, user.userName, user.email, user.password, user.isVendor,
     user.postcode, user.city, user.street, user.houseNumber, user.iban,
     user.bic, user.shippingCost, user.shippingFreeFrom, user.createdAt,
     user.updatedAt);

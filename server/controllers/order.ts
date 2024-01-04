@@ -24,12 +24,14 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", customAuthGetOrder, async (req, res) => {
   try {
+    console.log("lll")
     if (req.query.isVendor === "false") {
       res.status(200).json(await getAllOrdersByUserIdService(req.params));
     } else {
       res.status(200).json(await getAllVendorOrdersByIdService(req.params));
     }
   } catch (error) {
+    console.log(error)
     if (error instanceof UserError) {
       res.status(400).send(error.message);
     } else {
