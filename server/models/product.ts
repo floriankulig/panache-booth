@@ -1,18 +1,31 @@
 import { database } from "./databases";
 import { IProduct } from "./IProduct";
 
-export function getProductByIdModel(productId: string): IProduct {
-  return <IProduct>database
-    .prepare("select * from product where id = ? and archived = 0")
-    .get(productId);
+export function getProductByIdModel(productId: string, fromOrders: boolean = false): IProduct {
+  if (fromOrders) {
+    return <IProduct>database.prepare("select * from product where id = ?").get(productId);
+  } else {
+    return <IProduct>database.prepare("select * from product where id = ? and archived = 0").get(productId);
+  }
+
 }
 
-export function getAllProductsModel(): IProduct[] {
-  return <IProduct[]>database.prepare("select * from product where archived = 0;").all();
+export function getAllProductsModel(fromOrders: boolean = false): IProduct[] {
+  if (fromOrders) {
+    return <IProduct[]>database.prepare("select * from product;").all();
+  } else {
+    return <IProduct[]>database.prepare("select * from product where archived = 0;").all();
+  }
+
 }
 
-export function getAllVendorProductsModel(productId: string): IProduct[] {
-  return <IProduct[]>database.prepare("select * from product where vendorId = ? and archived = 0").all(productId);
+export function getAllVendorProductsModel(productId: string, fromOrders: boolean = false): IProduct[] {
+  if (fromOrders) {
+    return <IProduct[]>database.prepare("select * from product where vendorId = ?").all(productId);
+  } else {
+    return <IProduct[]>database.prepare("select * from product where vendorId = ? and archived = 0").all(productId);
+  }
+
 }
 
 export function createProductModel(product: IProduct): void {
@@ -38,7 +51,7 @@ export function updateProductByIdModel(productId: string, product: IProduct): vo
   });
   sqlString = sqlString.slice(0, -1);
   sqlString += ` where id = '${productId}';`;
-  console.log(sqlString)
+  console.log(sqlString);
   database.prepare(sqlString).run();
 }
 
