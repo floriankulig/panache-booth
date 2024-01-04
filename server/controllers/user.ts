@@ -5,7 +5,7 @@ import {
   deleteUserService,
   loginUserService,
   updateUserService,
-  getUserByIdService,
+  getUserByIdService, getUserByEmailService,
 } from "../services/user";
 import { UserError } from "../util/customUserErrors";
 import { SqliteError } from "better-sqlite3";
@@ -21,6 +21,11 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/login", customAuthUser, async (req, res) => {
+
+  res.status(200).json(req.user);
+});
+
 router.get("/:userId", customAuthUserOrVendor, async (req, res) => {
   try {
     let userId: string = req.params.userId;
@@ -34,7 +39,7 @@ router.get("/:userId", customAuthUserOrVendor, async (req, res) => {
   }
 });
 
-router.post("/login", customAuthUser, async (req, res) => {
+/*router.post("/login", customAuthUser, async (req, res) => {
   try {
     res.status(200).json(loginUserService(req.body));
   } catch (error) {
@@ -44,7 +49,7 @@ router.post("/login", customAuthUser, async (req, res) => {
       res.status(500).send("Internal server error!");
     }
   }
-});
+});*/
 
 router.post("/", async (req, res) => {
   try {

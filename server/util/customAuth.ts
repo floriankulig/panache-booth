@@ -19,10 +19,13 @@ import { IOrder } from "../models/IOrder";
 
 export async function customAuthUser(req: any, res: any, next: any) {
   try {
+    console.log("lars");
     let [email, password] = getEmailAndPasswordFromHeader(req.headers);
     req.user = getUserAndCheckPassword(email, password);
+    console.log("ttt");
     next();
   } catch (error) {
+    console.log(error);
     if (error instanceof CustomAuthError || error instanceof UserError) {
       return res.status(401).send(error.message);
     } else {
@@ -35,7 +38,7 @@ export async function customAuthUserOrVendor(req: any, res: any, next: any) {
   try {
     let [email, password] = getEmailAndPasswordFromHeader(req.headers);
     let user: IUser = getUserAndCheckPassword(email, password);
-    console.log("tests");
+    console.log("tests1");
     console.log(req.params.userId);
     console.log(user.id);
     isUserOrIsVendorAndUserHasOrder(req.params.userId, user.id!);
@@ -137,7 +140,9 @@ function getUserAndCheckPassword(email: string, password: string): IUser {
   if (!user || user.password !== password) {
     throw new UsernamePasswordMismatch();
   }
-  return user;
+  const userWithoutPassword: IUser = Object.assign({}, user);
+  delete userWithoutPassword.password;
+  return userWithoutPassword;
 }
 
 function isVendor(userId: string): void {
