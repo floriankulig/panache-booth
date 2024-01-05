@@ -26,7 +26,7 @@ router.get("/login", customAuthUser, async (req, res) => {
   res.status(200).json(req.user);
 });
 
-router.get("/:userId", customAuthUserOrVendor, async (req, res) => {
+router.get("/:userId", customAuthGetUser, async (req, res) => {
   try {
     let userId: string = req.params.userId;
     res.status(200).json(getUserByIdService(userId));
