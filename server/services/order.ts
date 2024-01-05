@@ -107,6 +107,18 @@ export function updateOrderService(reqParams: any, reqBody: any) {
   return getOrderByIdService(orderId);
 }
 
+export function userHasOrdersByVendor(vendorId:string, userId: string): boolean {
+  let orders: IOrder[] = getAllOrdersByUserIdService(userId);
+  for(let order of orders) {
+    for (let product of order.products!) {
+      if (product.vendorId === vendorId) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 function individualProduct(order: IOrder): IOrder {
   if (order === undefined) {
     throw new OrderNotExistingError();
@@ -227,7 +239,7 @@ function checkIfOrderExistsById(orderId: string): boolean {
   return order !== undefined;
 }
 
-function checkIfProductIsInOrderService(orderId: string, productId: string): boolean {
+export function checkIfProductIsInOrderService(orderId: string, productId: string): boolean {
   let product: IProduct = checkIfProductIsInOrderModel(productId, orderId);
   return product !== undefined;
 }

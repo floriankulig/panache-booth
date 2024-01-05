@@ -5,14 +5,15 @@ import {
   deleteUserService,
   loginUserService,
   updateUserService,
-  getUserByIdService,
+  getUserByIdService, getUserByEmailService,
 } from "../services/user";
 import { UserError } from "../util/customUserErrors";
 import { SqliteError } from "better-sqlite3";
+import { customAuthUser, customAuthGetUser } from "../util/customAuth";
 
 const router = express.Router();
 
-router.get("/", async (req, res )=> {
+router.get("/", async (req, res) => {
   try {
     res.status(200).json(getAllUsersService());
   } catch (error) {
@@ -20,9 +21,14 @@ router.get("/", async (req, res )=> {
   }
 });
 
-router.get("/:userId", async (req, res) => {
+router.get("/login", customAuthUser, async (req, res) => {
+
+  res.status(200).json(req.user);
+});
+
+router.get("/:userId", customAuthGetUser, async (req, res) => {
   try {
-    let userId: string = req.params.userId
+    let userId: string = req.params.userId;
     res.status(200).json(getUserByIdService(userId));
   } catch (error) {
     if (error instanceof UserError) {
@@ -33,7 +39,7 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+/*router.post("/login", customAuthUser, async (req, res) => {
   try {
     res.status(200).json(loginUserService(req.body));
   } catch (error) {
@@ -43,7 +49,7 @@ router.post("/login", async (req, res) => {
       res.status(500).send("Internal server error!");
     }
   }
-});
+});*/
 
 router.post("/", async (req, res) => {
   try {
@@ -59,7 +65,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:userId", async (req, res) => {
+router.put("/:userId", customAuthUser, async (req, res) => {
   try {
     res.status(200).json(updateUserService(req.params, req.body));
   } catch (error) {
@@ -73,7 +79,7 @@ router.put("/:userId", async (req, res) => {
   }
 });
 
-router.delete("/:userId", async (req, res) => {
+router.delete("/:userId", customAuthUser, async (req, res) => {
   try {
 
     deleteUserService(req.params);

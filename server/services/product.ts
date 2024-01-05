@@ -4,7 +4,7 @@ import {
   deleteProductByIdModel,
   getAllProductsModel,
   getAllVendorProductsModel,
-  getProductByIdModel,
+  getProductByIdModel, getProductByProductIdAndUserId,
   updateProductByIdModel,
 } from "../models/product";
 import { getUserByIdModel } from "../models/user";
@@ -71,7 +71,7 @@ export function updateProductService(reqParams: any, reqBody: any): IProduct {
 export function deleteProductService(reqParams: any): void {
   let productId = reqParams.productId;
   if (checkIfProductExistsById(productId)) {
-    deleteProductByIdModel(productId)
+    deleteProductByIdModel(productId);
   } else {
     throw new ProductNotExistingError();
   }
@@ -79,6 +79,11 @@ export function deleteProductService(reqParams: any): void {
 
 export function checkIfProductExistsById(productId: string, fromOrders: boolean = false): boolean {
   let product: IProduct = getProductByIdModel(productId, fromOrders);
+  return product !== undefined;
+}
+
+export function checkIsVendorsProduct(userId: string, productId: string): boolean {
+  let product: IProduct = getProductByProductIdAndUserId(userId, productId);
   return product !== undefined;
 }
 

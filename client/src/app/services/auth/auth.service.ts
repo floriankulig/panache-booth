@@ -1,4 +1,4 @@
-import { WritableSignal, Injectable, signal } from "@angular/core";
+import { WritableSignal, Injectable, signal, effect } from "@angular/core";
 import axios, { AxiosError } from "axios";
 import { API_URL, RegisterUser, User } from "../../../models";
 import { NotificationService } from "../notification/notification.service";
@@ -12,17 +12,34 @@ export class AuthService {
 
   constructor(private notificationService: NotificationService) {
     this.getUserFromLocalStorage();
+
+    effect(() => {
+      const user = this.user();
+      console.log({ user });
+      const authToken = JSON.parse(localStorage.getItem("auth") || "");
+      console.log({ authToken });
+      if (!user && !authToken) {
+        axios.defaults.headers.common["Authorization"] = undefined;
+        return;
+      }
+      axios.defaults.headers.common["Authorization"] = `Basic ${authToken}`;
+    });
   }
 
   async login(email: string, password: string): Promise<User> | never {
     try {
-      const res = await axios.post(`${API_URL}/user/login`, {
-        email,
-        password,
+      const authToken = btoa(`${email}:${password}`);
+      // const res = await axios.post(`${API_URL}/user/login`, {
+      //   email,
+      //   password,
+      // });
+      const res = await axios.get<User>(`${API_URL}/user/login`, {
+        headers: { Authorization: `Basic ${authToken}` },
       });
       const user = res.data;
       this.user.set(user);
       this.saveUidToLocalStorage(user.id);
+      localStorage.setItem("auth", JSON.stringify(authToken));
       this.notificationService.addNotification({
         message: `Logged in as @${user.userName}!`,
         duration: 6000,
@@ -84,11 +101,14 @@ export class AuthService {
 
   async getUserFromLocalStorage(): Promise<User | null> {
     let uid = localStorage.getItem("uid") || "";
-    if (!uid) {
+    let authToken = localStorage.getItem("auth") || "";
+    if (!uid || !authToken) {
       return null;
     }
     uid = JSON.parse(uid);
+    authToken = JSON.parse(authToken);
     try {
+      axios.defaults.headers.common["Authorization"] = `Basic ${authToken}`;
       const user = await this.getUser(uid);
       this.user.set(user);
       this.notificationService.addNotification({
@@ -104,6 +124,7 @@ export class AuthService {
         )
       ) {
         localStorage.removeItem("uid");
+        localStorage.removeItem("auth");
         return null;
       }
       throw error as AxiosError;
@@ -130,6 +151,7 @@ export class AuthService {
   logout(): void {
     this.user.set(null);
     localStorage.removeItem("uid");
+    localStorage.removeItem("auth");
     this.notificationService.addNotification({
       message: `Successfully logged out!`,
       duration: 5000,

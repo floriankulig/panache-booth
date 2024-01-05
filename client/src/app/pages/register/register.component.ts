@@ -126,12 +126,7 @@ export class RegisterComponent {
         ),
       ]);
     } else {
-      if (this.router.navigated) {
-        this.location.back();
-      } else {
-        // If the last visited page is not within the app, redirect to "/"
-        this.router.navigate(["/"]);
-      }
+      this.router.navigate(["/"]);
     }
   }
 

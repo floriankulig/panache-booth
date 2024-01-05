@@ -28,6 +28,10 @@ export function getAllVendorProductsModel(productId: string, fromOrders: boolean
 
 }
 
+export function getProductByProductIdAndUserId(userId: string, prodcutId: string): IProduct {
+  return <IProduct>database.prepare("select * from product where vendorId = ? and id = ? and archived = 0;").get(userId, prodcutId);
+}
+
 export function createProductModel(product: IProduct): void {
   database.prepare(
     "insert into product " +

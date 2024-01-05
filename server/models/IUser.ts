@@ -1,5 +1,5 @@
 export interface IUser {
-  userId: string | undefined;
+  id: string | undefined;
   userName: string | undefined;
   email: string | undefined;
   password: string | undefined;
@@ -15,3 +15,5 @@ export interface IUser {
   createdAt: string | undefined;
   updatedAt: string;
 }
+
+
