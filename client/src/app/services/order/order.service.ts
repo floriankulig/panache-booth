@@ -45,7 +45,7 @@ export class OrderService {
 
   private get lastTimeOrdersOpen() {
     return new Date(
-      JSON.parse(localStorage.getItem("lastTimeOrdersOpen") || "undefined"),
+      JSON.parse(localStorage.getItem("lastTimeOrdersOpen") || ""),
     );
   }
 
