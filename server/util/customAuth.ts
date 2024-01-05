@@ -34,16 +34,20 @@ export async function customAuthUser(req: any, res: any, next: any) {
   }
 }
 
-export async function customAuthUserOrVendor(req: any, res: any, next: any) {
+export async function customAuthGetUser(req: any, res: any, next: any) {
   try {
-    let [email, password] = getEmailAndPasswordFromHeader(req.headers);
-    let user: IUser = getUserAndCheckPassword(email, password);
-    console.log("tests1");
-    console.log(req.params.userId);
-    console.log(user.id);
-    isUserOrIsVendorAndUserHasOrder(req.params.userId, user.id!);
-    req.user = user;
-    next();
+    if (req.headers.authorization !== undefined) {
+      let [email, password] = getEmailAndPasswordFromHeader(req.headers);
+      let user: IUser = getUserAndCheckPassword(email, password);
+      isUserOrIsVendorAndUserHasOrder(req.params.userId, user.id!);
+      req.user = user;
+      next();
+    } else {
+      isVendor(req.params.userId);
+      next();
+    }
+
+
   } catch (error) {
     if (error instanceof CustomAuthError || error instanceof UserError) {
       return res.status(401).send(error.message);

@@ -9,7 +9,7 @@ import {
 } from "../services/user";
 import { UserError } from "../util/customUserErrors";
 import { SqliteError } from "better-sqlite3";
-import { customAuthUser, customAuthUserOrVendor } from "../util/customAuth";
+import { customAuthUser, customAuthGetUser } from "../util/customAuth";
 
 const router = express.Router();
 
@@ -26,7 +26,7 @@ router.get("/login", customAuthUser, async (req, res) => {
   res.status(200).json(req.user);
 });
 
-router.get("/:userId", customAuthUserOrVendor, async (req, res) => {
+router.get("/:userId", customAuthGetUser, async (req, res) => {
   try {
     let userId: string = req.params.userId;
     res.status(200).json(getUserByIdService(userId));
