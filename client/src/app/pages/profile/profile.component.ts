@@ -105,7 +105,8 @@ export class ProfileComponent implements OnInit {
           if (
             ((error as AxiosError).response?.data as string).includes(
               "User does not exist",
-            )
+            ) ||
+            (error as AxiosError).code === "401"
           ) {
             this.notificationService.addNotification({
               message: "Profile does not exist.",
