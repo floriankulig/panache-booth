@@ -163,7 +163,7 @@ function isVendorsProduct(userId: string, productId: string): void {
 }
 
 function isUserOrIsVendorAndUserHasOrder(userIdParams: string, userId: string): void {
-  if (isVendor(userIdParams)) {
+  if (checkIfUserIsVendor(userIdParams)) {
     return;
   }
   if (isSameUser(userIdParams, userId)) {
@@ -174,6 +174,8 @@ function isUserOrIsVendorAndUserHasOrder(userIdParams: string, userId: string): 
     throw new NoPermission();
   }*/
 }
+
+
 
 function isVendorProductAndInOrder(products: any, userId: string, orderId: string): void {
   for (let product of products) {
