@@ -145,10 +145,11 @@ function getUserAndCheckPassword(email: string, password: string): IUser {
   return userWithoutPassword;
 }
 
-function isVendor(userId: string): void {
+function isVendor(userId: string): boolean {
   if (!checkIfUserIsVendor(userId)) {
     throw new NoPermission();
   }
+  return true;
 }
 
 function isVendorsProduct(userId: string, productId: string): void {
@@ -158,15 +159,16 @@ function isVendorsProduct(userId: string, productId: string): void {
 }
 
 function isUserOrIsVendorAndUserHasOrder(userIdParams: string, userId: string): void {
-  console.log(userIdParams);
-  console.log(userId);
+  if (isVendor(userIdParams)) {
+    return;
+  }
   if (isSameUser(userIdParams, userId)) {
     return;
   }
-  isVendor(userId);
-  if (!userHasOrdersByVendor(userId, userIdParams)) {
+  //isVendor(userId);
+  /*if (!userHasOrdersByVendor(userId, userIdParams)) {
     throw new NoPermission();
-  }
+  }*/
 }
 
 function isVendorProductAndInOrder(products: any, userId: string, orderId: string): void {
