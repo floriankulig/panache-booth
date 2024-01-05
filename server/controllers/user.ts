@@ -5,7 +5,8 @@ import {
   deleteUserService,
   loginUserService,
   updateUserService,
-  getUserByIdService, getUserByEmailService,
+  getUserByIdService,
+  getUserByEmailService,
 } from "../services/user";
 import { UserError } from "../util/customUserErrors";
 import { SqliteError } from "better-sqlite3";
@@ -22,11 +23,10 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/login", customAuthUser, async (req, res) => {
-
   res.status(200).json(req.user);
 });
 
-router.get("/:userId", customAuthUserOrVendor, async (req, res) => {
+router.get("/:userId", async (req, res) => {
   try {
     let userId: string = req.params.userId;
     res.status(200).json(getUserByIdService(userId));
@@ -57,7 +57,10 @@ router.post("/", async (req, res) => {
   } catch (error: unknown) {
     if (error instanceof UserError) {
       res.status(400).send(error.message);
-    } else if (error instanceof SqliteError && error.code === "SQLITE_CONSTRAINT_UNIQUE") {
+    } else if (
+      error instanceof SqliteError &&
+      error.code === "SQLITE_CONSTRAINT_UNIQUE"
+    ) {
       res.status(400).send("Email already existing!");
     } else {
       res.status(500).send("Internal server error!");
@@ -71,7 +74,10 @@ router.put("/:userId", customAuthUser, async (req, res) => {
   } catch (error) {
     if (error instanceof UserError) {
       res.status(400).send(error.message);
-    } else if (error instanceof SqliteError && error.code === "SQLITE_CONSTRAINT_UNIQUE") {
+    } else if (
+      error instanceof SqliteError &&
+      error.code === "SQLITE_CONSTRAINT_UNIQUE"
+    ) {
       res.status(400).send("Email already existing!");
     } else {
       res.status(500).send("Internal server error!");
@@ -81,7 +87,6 @@ router.put("/:userId", customAuthUser, async (req, res) => {
 
 router.delete("/:userId", customAuthUser, async (req, res) => {
   try {
-
     deleteUserService(req.params);
     res.sendStatus(200);
   } catch (error) {
@@ -92,6 +97,5 @@ router.delete("/:userId", customAuthUser, async (req, res) => {
     }
   }
 });
-
 
 export { router as userController };

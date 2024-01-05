@@ -118,6 +118,7 @@ export class OrdersComponent implements OnDestroy {
         );
       });
       this.orders.set(newOrders);
+      console.log(newOrders);
     } catch (error) {
       this.errorMessage = (error as AxiosError).message;
     } finally {
