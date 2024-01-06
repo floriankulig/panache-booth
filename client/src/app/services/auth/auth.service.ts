@@ -29,10 +29,6 @@ export class AuthService {
   async login(email: string, password: string): Promise<User> | never {
     try {
       const authToken = btoa(`${email}:${password}`);
-      // const res = await axios.post(`${API_URL}/user/login`, {
-      //   email,
-      //   password,
-      // });
       const res = await axios.get<User>(`${API_URL}/user/login`, {
         headers: { Authorization: `Basic ${authToken}` },
       });
