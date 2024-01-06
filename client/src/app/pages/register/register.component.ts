@@ -126,7 +126,11 @@ export class RegisterComponent {
         ),
       ]);
     } else {
-      this.router.navigate(["/"]);
+      if (this.router.navigated) {
+        this.location.back();
+      } else {
+        this.router.navigate(["/"]);
+      }
     }
   }
 
