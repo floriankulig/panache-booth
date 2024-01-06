@@ -194,6 +194,7 @@ header.header {
         display: flex;
         align-items: center;
         gap: grid(1);
+        flex-wrap: wrap;
       }
     }
 
