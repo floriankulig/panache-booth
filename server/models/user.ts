@@ -48,14 +48,19 @@ export function createUserModel(user: IUser): void {
 }
 
 export function updateUserByIdModel(userId: string, user: IUser): void {
+  console.log(user)
   let sqlString: string = "update user set";
   Object.entries(user).forEach(([key, value]) => {
     if (value !== undefined && key !== "userId" && key !== "isVendor") {
+      if (value.includes("'")) {
+        value = value.replace(/'/g, "''");
+      }
       sqlString += ` ${key} = \'${value}\',`;
     }
   });
   sqlString = sqlString.slice(0, -1);
   sqlString += ` where id = '${userId}';`;
+  console.log(sqlString)
   database.prepare(sqlString).run();
 }
 

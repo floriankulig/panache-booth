@@ -36,9 +36,6 @@ export function updateOrderModel(order: IOrder, orderId: string): void {
 }
 
 export function updateOrderProductModel(orderProduct: Omit<IOrderProduct, "quantity" | "createdAt" | "priceProduct" | "discountProduct" | "vendorShippingCost" | "vendorShippingFreeFrom">): void {
-  /*return database.prepare(
-    "update orderProduct set delivered = ?, paid = ?, updatedAt = ? where orderId = ? and productId = ?;",
-  ).run(isDeliveredNumeric, isPaidNumeric, orderProduct.updatedAt, orderProduct.orderId, orderProduct.productId);*/
   let sqlString = "update orderProduct set";
   Object.entries(orderProduct).forEach(([key, value]) => {
     if (value !== undefined) {
@@ -48,7 +45,6 @@ export function updateOrderProductModel(orderProduct: Omit<IOrderProduct, "quant
   sqlString = sqlString.slice(0, -1);
   sqlString += ` where orderId = '${orderProduct.orderId}' and productId ='${orderProduct.productId}';`;
   database.prepare(sqlString).run();
-
 }
 
 export function getAllOrdersByUserIdModel(id: string): IOrder[] {
