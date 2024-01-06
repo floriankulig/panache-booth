@@ -52,12 +52,14 @@ export class AuthService {
 
   async register(formUser: RegisterUser): Promise<User> | never {
     try {
+      const authToken = btoa(`${formUser.email}:${formUser.password}`);
       const res = await axios.post(`${API_URL}/user`, {
         ...formUser,
       });
       const user = res.data;
       this.user.set(user);
       this.saveUidToLocalStorage(user.id);
+      localStorage.setItem("auth", JSON.stringify(authToken));
       this.notificationService.addNotification({
         message: `Welcome, @${user.userName}!`,
         duration: 6000,
