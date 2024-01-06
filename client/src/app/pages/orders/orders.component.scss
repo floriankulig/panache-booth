@@ -190,6 +190,11 @@ header.header {
           width: 100%;
         }
       }
+      div {
+        display: flex;
+        align-items: center;
+        gap: grid(1);
+      }
     }
 
     &__actions {

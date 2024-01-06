@@ -108,16 +108,25 @@
             {{ vendorOrder.vendor.userName }}
             <i-feather name="external-link"> </i-feather>
           </h3>
-
-          @if (allDelivered(vendorOrder.products)) {
-          <span class="payment checked">
-            <i-feather name="truck"></i-feather>Delivered
-          </span>
-          } @else {
-          <span class="payment warn">
-            <i-feather name="alert-triangle"></i-feather>Not delivered
-          </span>
-          }
+          <div>
+            @if (allPaid(vendorOrder.products)) {
+            <span class="payment checked">
+              <i-feather name="check"></i-feather>Paid
+            </span>
+            } @else {
+            <span class="payment warn">
+              <i-feather name="alert-triangle"></i-feather>Payment pending
+            </span>
+            } @if (allDelivered(vendorOrder.products)) {
+            <span class="payment checked">
+              <i-feather name="truck"></i-feather>Delivered
+            </span>
+            } @else {
+            <span class="payment warn">
+              <i-feather name="alert-triangle"></i-feather>Not delivered
+            </span>
+            }
+          </div>
         </div>
         <ul class="order__products">
           @for (product of vendorOrder.products; track product.id ) {
