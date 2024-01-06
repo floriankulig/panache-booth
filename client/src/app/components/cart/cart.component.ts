@@ -7,7 +7,11 @@ import {
 } from "../../services";
 import { CartProduct, User } from "../../../models";
 import { IconsModule } from "../../icons/icons.module";
-import { costOfCartProducts, getDiscountedPrice } from "../../../helpers";
+import {
+  categoryById,
+  costOfCartProducts,
+  getDiscountedPrice,
+} from "../../../helpers";
 import { QuantityComponent } from "../product/quantity/quantity.component";
 import { ActivatedRoute, Router } from "@angular/router";
 
@@ -114,6 +118,9 @@ export class CartComponent implements OnDestroy {
   }
   discounted(product: CartProduct) {
     return getDiscountedPrice(product);
+  }
+  productCategory(product: CartProduct) {
+    return categoryById(product.category);
   }
 
   vendorHasFreeShipping(vendor: User) {

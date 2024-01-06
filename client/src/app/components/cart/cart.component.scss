@@ -131,6 +131,34 @@
             }
           }
 
+          &-info {
+            margin-block: grid();
+            display: flex;
+            flex-direction: column;
+            gap: grid();
+
+            .chip-list {
+              display: flex;
+              flex-wrap: wrap;
+              gap: grid(1);
+
+              & > span {
+                display: flex;
+                align-items: center;
+                gap: grid(1);
+                font-size: 0.9rem;
+                font-weight: 500;
+                padding: grid(0.75) grid(1.5);
+                border-radius: grid(2);
+                background: $offWhite;
+                i-feather {
+                  width: grid(2);
+                  height: grid(2);
+                }
+              }
+            }
+          }
+
           &-description {
             color: $textSecondaryDark;
             line-height: 1.3;

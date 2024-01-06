@@ -62,10 +62,19 @@
         </div>
         <div></div>
         <div>
-          <div>
-            <div class="chip-list"></div>
+          <div class="items__vendor--items-item-info">
+            <div class="chip-list">
+              <span
+                ><i-feather name="grid"></i-feather
+                >{{ productCategory(item)?.displayValue }}</span
+              >
+              <span>
+                <i-feather name="tag"></i-feather
+                >{{ item.price.toFixed(2) }}€</span
+              >
+            </div>
             <p class="items__vendor--items-item-description">
-              {{ item.description }}
+              {{ item.description.trim() }}
             </p>
           </div>
           <div class="items__vendor--items-item-actions">
