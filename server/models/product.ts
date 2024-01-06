@@ -62,7 +62,7 @@ export function updateProductByIdModel(productId: string, product: IProduct): vo
 export function updateInventoryAndPurchasesModel(productId: string, purchases: number) {
   let productData: any = getInventoryAndPurchasesModel(productId);
   let inventoryNew = productData.inventory - purchases;
-  let purchasesNew = productData.purchases + purchases;
+  let purchasesNew = productData.purchases + 1;
   database.prepare(`update product
                     set inventory = ${inventoryNew},
                         purchases = ${purchasesNew}
