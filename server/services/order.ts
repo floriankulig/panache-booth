@@ -12,11 +12,10 @@ import {
   getProductsOfOrderVendorModel, getStatusOfOrderModel,
   updateOrderModel, updateOrderProductModel,
 } from "../models/order";
-import { getUserByIdModel, getVendorShippingCostModel, getVendorShippingFreeFromModel } from "../models/user";
+import { getVendorShippingCostModel, getVendorShippingFreeFromModel } from "../models/user";
 import {
   IsVendorFormatError,
   UserIdFormatError,
-  UserIsNoVendorError,
   UserNotExistingError,
 } from "../util/customUserErrors";
 import {
@@ -28,24 +27,18 @@ import {
 import {
   InvalidUserError, NoProductsInOrderError,
   OrderNotExistingError,
-  OrderPriceFormatError,
   OrderQuantityFormatError, ProductNotInOrderError,
 } from "../util/customOrderErrors";
 import {
-  ProductIsVisibleFormatError,
   ProductNotExistingError,
   ProductOutOfStockError,
   ProductPriceFormatError,
 } from "../util/customProductErrors";
 import { IOrderProduct } from "../models/IOrderProduct";
 import { booleanToNumber, numberToBoolean, validateDecimalNumber } from "../util/util";
-import { it } from "node:test";
-import { Console } from "inspector";
 import { IProduct } from "../models/IProduct";
 import { checkIfProductExistsById, getProductByIdService } from "./product";
 import { checkIfUserExistsById, checkIfUserIsVendor, getUserByIdService } from "./user";
-import { setFlagsFromString } from "v8";
-import { AnyAaaaRecord } from "dns";
 import { IUser } from "../models/IUser";
 
 export function getOrderByIdService(orderId: string): IOrder {
@@ -107,9 +100,9 @@ export function updateOrderService(reqParams: any, reqBody: any) {
   return getOrderByIdService(orderId);
 }
 
-export function userHasOrdersByVendor(vendorId:string, userId: string): boolean {
+export function userHasOrdersByVendor(vendorId: string, userId: string): boolean {
   let orders: IOrder[] = getAllOrdersByUserIdService(userId);
-  for(let order of orders) {
+  for (let order of orders) {
     for (let product of order.products!) {
       if (product.vendorId === vendorId) {
         return true;
@@ -150,8 +143,8 @@ function combineOrderWithProductInfo(order: IOrder, vendorId: string = ""): IOrd
     return {
       ...order,
       user: user,
-      products: [...finalProducts]
-    }
+      products: [...finalProducts],
+    };
   } else {
     return {
       ...order,

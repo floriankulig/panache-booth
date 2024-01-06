@@ -9,7 +9,7 @@ import {
 } from "../services/product";
 import { ProductError } from "../util/customProductErrors";
 import { UserError } from "../util/customUserErrors";
-import { customAuthUser, customAuthIsVendor, customAuthIsVendorOwnProduct } from "../util/customAuth";
+import { customAuthIsVendor, customAuthIsVendorOwnProduct } from "../util/customAuth";
 
 const router = express.Router();
 
@@ -41,10 +41,8 @@ router.get("/:productId", async (req, res) => {
 
 router.post("/", customAuthIsVendor, async (req, res) => {
   try {
-    console.log("tets")
     res.status(200).json(createProductService(req.body));
   } catch (error) {
-    console.log(error)
     if (error instanceof ProductError || error instanceof UserError) {
       res.status(400).send(error.message);
     } else {
@@ -57,7 +55,6 @@ router.put("/:productId", customAuthIsVendorOwnProduct, async (req, res) => {
   try {
     res.status(200).json(await updateProductService(req.params, req.body));
   } catch (error) {
-    console.log(error)
     if (error instanceof ProductError) {
       res.status(400).send(error.message);
     } else {

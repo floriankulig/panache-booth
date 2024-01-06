@@ -18,20 +18,6 @@ export class UsernamePasswordMismatch extends CustomAuthError {
     this.name = "UsernamePasswordMismatch";
   }
 }
-/*
-export class NotAVendor extends CustomAuthError {
-  constructor() {
-    super("Vendors only!");
-    this.name = "NotAVendor";
-  }
-}
-
-export class NotVendorsProduct extends CustomAuthError {
-  constructor() {
-    super("Not your product!");
-    this.name = "NotVendorsProduct";
-  }
-}*/
 
 export class NoPermission extends CustomAuthError {
   constructor() {

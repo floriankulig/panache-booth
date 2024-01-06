@@ -7,13 +7,10 @@ import {
   getProductByIdModel, getProductByProductIdAndUserId,
   updateProductByIdModel,
 } from "../models/product";
-import { getUserByIdModel } from "../models/user";
 import { v4 as uuidv4 } from "uuid";
 import {
   IsVendorFormatError,
-  ShippingCostFormatError, UserIdFormatError,
-  UserNameFormatError,
-  UserNotExistingError,
+  UserIdFormatError,
 } from "../util/customUserErrors";
 import {
   ProductArchivedFormatError,
@@ -30,7 +27,7 @@ import { booleanToNumber, numberToBoolean, validateDecimalNumber } from "../util
 import { getUserByIdService, getVendorByIdService } from "./user";
 import { IUser } from "../models/IUser";
 
-export function getProductByIdService(productId: string, fromOrders:boolean = false): IProduct {
+export function getProductByIdService(productId: string, fromOrders: boolean = false): IProduct {
   if (!checkIfProductExistsById(productId, fromOrders)) {
     throw new ProductNotExistingError();
   }

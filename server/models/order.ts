@@ -69,7 +69,6 @@ export function getStatusOfOrderModel(orderId: string, productId: string): IOrde
 export function createOrderProductEntityModel(orderProduct: IOrderProduct) {
   let isDeliveredNumeric = orderProduct.delivered ? 1 : 0;
   let isPaidNumeric = orderProduct.paid ? 1 : 0;
-  console.log(orderProduct);
   database
     .prepare(
       "insert into orderProduct " +
@@ -84,11 +83,6 @@ export function createOrderProductEntityModel(orderProduct: IOrderProduct) {
 export function getProductsOfOrderModel(orderId: string): IProduct[] {
   return <IProduct[]>database
     .prepare(
-      /*"select product.*, orderProduct.quantity, orderProduct.delivered, orderProduct.paid " +
-      "from orders " +
-      "join orderProduct on orders.id = orderProduct.OrderId " +
-      "join product on orderProduct.productId = product.id " +
-      "where orders.id = ?;",*/
       "select product.* " +
       "from orders " +
       "join orderProduct on orders.id = orderProduct.OrderId " +

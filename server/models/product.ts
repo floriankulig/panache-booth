@@ -58,7 +58,6 @@ export function updateProductByIdModel(productId: string, product: IProduct): vo
   });
   sqlString = sqlString.slice(0, -1);
   sqlString += ` where id = '${productId}';`;
-  console.log(sqlString);
   database.prepare(sqlString).run();
 }
 

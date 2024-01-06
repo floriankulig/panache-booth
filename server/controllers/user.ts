@@ -3,9 +3,8 @@ import {
   createUserService,
   getAllUsersService,
   deleteUserService,
-  loginUserService,
   updateUserService,
-  getUserByIdService, getUserByEmailService,
+  getUserByIdService,
 } from "../services/user";
 import { UserError } from "../util/customUserErrors";
 import { SqliteError } from "better-sqlite3";
@@ -38,18 +37,6 @@ router.get("/:userId", customAuthGetUser, async (req, res) => {
     }
   }
 });
-
-/*router.post("/login", customAuthUser, async (req, res) => {
-  try {
-    res.status(200).json(loginUserService(req.body));
-  } catch (error) {
-    if (error instanceof UserError) {
-      res.status(400).send(error.message);
-    } else {
-      res.status(500).send("Internal server error!");
-    }
-  }
-});*/
 
 router.post("/", async (req, res) => {
   try {

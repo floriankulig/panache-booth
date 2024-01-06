@@ -7,25 +7,16 @@ import {
 } from "./customAuthError";
 import { UserError } from "./customUserErrors";
 import { checkIsVendorsProduct } from "../services/product";
-import {
-  checkIfProductIsInOrderService,
-  getAllOrdersByUserIdService,
-  getAllVendorOrdersByIdService, getOrderByIdService,
-  userHasOrdersByVendor,
-} from "../services/order";
-import { checkIfProductIsInOrderModel } from "../models/order";
+import { checkIfProductIsInOrderService } from "../services/order";
 import { ProductNotInOrderError } from "./customOrderErrors";
 import { IOrder } from "../models/IOrder";
 
 export async function customAuthUser(req: any, res: any, next: any) {
   try {
-    console.log("lars");
     let [email, password] = getEmailAndPasswordFromHeader(req.headers);
     req.user = getUserAndCheckPassword(email, password);
-    console.log("ttt");
     next();
   } catch (error) {
-    console.log(error);
     if (error instanceof CustomAuthError || error instanceof UserError) {
       return res.status(401).send(error.message);
     } else {
@@ -78,7 +69,6 @@ export async function customAuthIsVendorOwnProduct(req: any, res: any, next: any
     let [email, password] = getEmailAndPasswordFromHeader(req.headers);
     let user: IUser = getUserAndCheckPassword(email, password);
     isVendor(user.id!);
-    console.log(req.params.productId);
     isVendorsProduct(user.id!, req.params.productId);
     req.user = user;
     next();
@@ -174,7 +164,6 @@ function isUserOrIsVendorAndUserHasOrder(userIdParams: string, userId: string): 
     throw new NoPermission();
   }*/
 }
-
 
 
 function isVendorProductAndInOrder(products: any, userId: string, orderId: string): void {
