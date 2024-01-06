@@ -246,8 +246,30 @@ header.header {
     &__title {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: grid(1);
       font-weight: 600;
+      letter-spacing: -0.5px;
+
+      &:has(i-feather[name="external-link"]) {
+        cursor: pointer;
+      }
+
+      i-feather:not(:first-child) {
+        width: grid(2.25);
+        height: grid(2.25);
+        scale: 0.8;
+        translate: 0 -1px;
+        opacity: 0;
+        transition: all 0.15s ease;
+      }
+
+      &:hover {
+        i-feather:not(:first-child) {
+          scale: 1;
+          opacity: 1;
+        }
+      }
 
       .icon-wrapper {
         display: grid;
@@ -259,6 +281,22 @@ header.header {
         i-feather {
           width: grid(2.5);
           height: grid(2.5);
+        }
+      }
+
+      .user-address {
+        display: flex;
+        align-items: center;
+        gap: grid(0.5);
+        margin-left: grid(1);
+        letter-spacing: 0px;
+        font-size: 1rem;
+        font-weight: 500;
+        color: $textSecondary;
+        i-feather {
+          width: grid(2);
+          height: grid(2);
+          margin-bottom: 1.5px;
         }
       }
     }

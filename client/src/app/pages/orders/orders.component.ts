@@ -151,6 +151,17 @@ export class OrdersComponent implements OnDestroy {
     }
   }
 
+  viewVendor(vendor: User) {
+    this.router.navigate(["/profile"], { queryParams: { id: vendor.id } });
+  }
+
+  formattedUserAddress(user?: User) {
+    if (!user) {
+      return "";
+    }
+    return `${user.street} ${user.houseNumber}, ${user.postcode} ${user.city}`;
+  }
+
   async markOrderAsDelivered(order: Order) {
     try {
       await this.orderService.updateOrder({

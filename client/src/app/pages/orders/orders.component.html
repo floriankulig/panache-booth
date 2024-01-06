@@ -45,6 +45,10 @@
               <i-feather name="user"> </i-feather>
             </div>
             {{ order.user?.userName }}
+            <div class="user-address">
+              <i-feather name="home"></i-feather
+              >{{ formattedUserAddress(order.user) }}
+            </div>
           </h3>
           <div class="order__actions">
             <button
@@ -91,11 +95,18 @@
         } @else { @for (vendorOrder of productsByVendors(order.products); track
         vendorOrder.vendor.id) {
         <div class="order__header">
-          <h3 class="order__title">
+          <h3
+            class="order__title"
+            role="link"
+            tabindex="0"
+            (click)="viewVendor(vendorOrder.vendor)"
+            (keydown.enter)="viewVendor(vendorOrder.vendor)"
+          >
             <div class="icon-wrapper">
               <i-feather name="user"> </i-feather>
             </div>
             {{ vendorOrder.vendor.userName }}
+            <i-feather name="external-link"> </i-feather>
           </h3>
 
           @if (allDelivered(vendorOrder.products)) {
