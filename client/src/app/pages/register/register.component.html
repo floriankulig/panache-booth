@@ -22,7 +22,9 @@
   </button>
   <p>
     Already have an account?
-    <span routerLink="/login" queryParamsHandling="merge">Log in here</span>
+    <span routerLink="/login" [replaceUrl]="true" queryParamsHandling="merge"
+      >Log in here</span
+    >
   </p>
   } @else if (minStep !== maxSteps){
   <button class="transparent" (click)="locationBack()">
