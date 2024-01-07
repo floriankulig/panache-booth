@@ -25,6 +25,7 @@ import {
 } from "../util/customUserErrors";
 import { v4 as uuidv4 } from "uuid";
 import { booleanToNumber, numberToBoolean, validateDecimalNumber } from "../util/util";
+import { deleteProductByIdModel, getAllVendorProductsModel } from "../models/product";
 
 export function getUserByIdService(userId: string): IUser {
   if (!checkIfUserExistsById(userId)) {
@@ -77,6 +78,10 @@ export function updateUserService(reqParams: any, reqBody: any): IUser {
 export function deleteUserService(reqParams: any): void {
   let userId = reqParams.userId;
   if (checkIfUserExistsById(userId)) {
+    let products = getAllVendorProductsModel(userId);
+    for (let product of products) {
+      deleteProductByIdModel(product.id!)
+    }
     deleteUserByIdModel(userId);
   } else {
     throw new UserNotExistingError();
