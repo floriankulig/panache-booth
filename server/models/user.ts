@@ -1,5 +1,6 @@
 import { database } from "./databases";
 import { IUser } from "./IUser";
+import { v4 as uuidv4 } from "uuid";
 
 export function getUserByIdModel(userId: string): IUser {
   return <IUser>database
@@ -63,7 +64,8 @@ export function updateUserByIdModel(userId: string, user: IUser): void {
 }
 
 export function deleteUserByIdModel(id: string): void {
-  database.prepare("update user set archived = 1 where id = ?").run(id);
+  let uuid = uuidv4();
+  database.prepare("update user set email = ?, archived = 1 where id = ?").run(uuid, id);
 }
 
 export function loggedInUserModel(email: string, password: string) {
