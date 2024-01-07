@@ -120,11 +120,15 @@ export class RegisterComponent {
 
   locationBack() {
     if (this.activatedRoute.snapshot.queryParams["redirect"]) {
-      this.router.navigate([
-        this.router.parseUrl(
-          this.activatedRoute.snapshot.queryParams["redirect"],
-        ),
-      ]);
+      try {
+        this.router.navigate([
+          this.router.parseUrl(
+            this.activatedRoute.snapshot.queryParams["redirect"],
+          ),
+        ]);
+      } catch (e) {
+        this.router.navigate(["/"]);
+      }
     } else {
       if (this.router.navigated) {
         this.location.back();
