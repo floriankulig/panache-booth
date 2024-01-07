@@ -42,7 +42,6 @@ router.post("/", async (req, res) => {
   try {
     res.status(200).json(createUserService(req.body));
   } catch (error: unknown) {
-    console.log(error)
     if (error instanceof UserError) {
       res.status(400).send(error.message);
     } else if (error instanceof SqliteError && error.code === "SQLITE_CONSTRAINT_UNIQUE") {

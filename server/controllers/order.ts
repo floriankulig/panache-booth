@@ -30,7 +30,6 @@ router.get("/:id", customAuthGetOrder, async (req, res) => {
     }
   } catch (error) {
     if (error instanceof UserError) {
-      console.log(error)
       res.status(400).send(error.message);
     } else {
       res.status(500).send("Internal server error!");
@@ -42,7 +41,6 @@ router.post("/", customAuthUser, async (req, res) => {
   try {
     res.status(200).json(await createOrderService(req.body));
   } catch (error) {
-    console.log(error);
     if (error instanceof UserError || error instanceof OrderError || error instanceof ProductError) {
       res.status(400).send(error.message);
     } else {
