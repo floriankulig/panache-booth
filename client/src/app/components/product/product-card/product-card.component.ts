@@ -23,6 +23,7 @@ import { AddProductComponent } from "../add-product/add-product.component";
 import { categoryById, getDiscountedPrice } from "../../../../helpers";
 import { SwitchComponent } from "../../switch/switch.component";
 import { Router } from "@angular/router";
+import { animate, style, transition, trigger } from "@angular/animations";
 
 @Component({
   selector: "pb-product-card",
@@ -37,6 +38,33 @@ import { Router } from "@angular/router";
   ],
   templateUrl: "./product-card.component.html",
   styleUrl: "./product-card.component.scss",
+  animations: [
+    trigger("menuAnimation", [
+      transition(":enter", [
+        style({
+          opacity: 0,
+          scale: 0,
+        }),
+        animate(
+          "200ms cubic-bezier(0.645, 0.045, 0.355, 1)",
+          style({
+            opacity: 1,
+            scale: 1,
+          }),
+        ),
+      ]),
+      transition(":leave", [
+        style({ opacity: 1, scale: 1 }),
+        animate(
+          "150ms cubic-bezier(0.645, 0.045, 0.355, 1)",
+          style({
+            opacity: 0,
+            scale: 0.5,
+          }),
+        ),
+      ]),
+    ]),
+  ],
 })
 export class ProductCardComponent {
   @Input() product!: Product;

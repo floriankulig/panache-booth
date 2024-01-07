@@ -118,7 +118,6 @@ export class OrdersComponent implements OnDestroy {
         );
       });
       this.orders.set(newOrders);
-      console.log(newOrders);
     } catch (error) {
       this.errorMessage = (error as AxiosError).message;
     } finally {
@@ -153,6 +152,7 @@ export class OrdersComponent implements OnDestroy {
 
   viewVendor(vendor: User) {
     this.router.navigate(["/profile"], { queryParams: { id: vendor.id } });
+    this.orderService.ordersOpen.set(false);
   }
 
   formattedUserAddress(user?: User) {
