@@ -13,9 +13,7 @@ $textPrimaryDark: #fefefe;
 $textSecondaryDark: #7d7c7c;
 
 $bgPrimary: #ffffff;
-// $bgSecondary: #f3f5f7;
 $bgSecondary: #f6f6f6;
-// $bgPrimaryDark: #221c1c;
 $bgPrimaryDark: #231d1d;
 $bgSecondaryDark: #2f2f2f;
 
@@ -24,10 +22,4 @@ $headerHeight: 80px;
 
 @function grid($amount: 1) {
   @return $grid * $amount;
-}
-
-@mixin mq($breakpoint) {
-  @media screen and (max-width: $breakpoint) {
-    @content;
-  }
 }
