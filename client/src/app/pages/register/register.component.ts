@@ -86,7 +86,7 @@ export class RegisterComponent {
       this.formBuilder.group({
         iban: [initialState?.iban || "", Validators.required],
         bic: [initialState?.bic || "", Validators.required],
-        shippingCost: [initialState?.shippingCost || 0],
+        shippingCost: [initialState ? initialState?.shippingCost || 0 : ""],
         shippingFreeFrom: [
           initialState?.shippingFreeFrom && initialState?.shippingFreeFrom >= 0
             ? initialState?.shippingFreeFrom
