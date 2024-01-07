@@ -85,8 +85,8 @@ export class ProfileComponent implements OnInit {
     effect(() => {
       if (
         !!this.profile() &&
-        !this.profile()?.isVendor &&
-        !this.isOwnProfile()
+        (!this.profile()?.isVendor &&
+        !this.isOwnProfile()) || this.profile()?.archived
       ) {
         this.router.navigate(["/"]);
       }

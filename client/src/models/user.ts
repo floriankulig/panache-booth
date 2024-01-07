@@ -5,6 +5,7 @@ interface User {
   createdAt: string;
   updatedAt: string;
   isVendor: boolean;
+  archived: boolean;
   street: string;
   houseNumber: string;
   postcode: string;
@@ -15,12 +16,8 @@ interface User {
   shippingFreeFrom: number;
 }
 interface RegisterUser
-  extends Omit<User, "id" | "createdAt" | "updatedAt" | "address"> {
+  extends Omit<User, "id" | "createdAt" | "updatedAt" | "archived"> {
   password: string;
-  houseNumber: string;
-  street: string;
-  postcode: string;
-  city: string;
 }
 
 export { User, RegisterUser };

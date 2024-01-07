@@ -23,7 +23,8 @@ const createUserTable =
   "shippingCost decimal(10,2), " +
   "shippingFreeFrom decimal(10,2), " +
   "createdAt varchar(255) not null, " +
-  "updatedAt varchar(255) not null " +
+  "updatedAt varchar(255) not null, " +
+  "archived integer default 0 " +
   ");";
 
 const createProductTable =

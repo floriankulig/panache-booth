@@ -10,9 +10,12 @@ import {
   getOrderByIdModel,
   getProductsOfOrderModel,
   getProductsOfOrderVendorModel, getStatusOfOrderModel,
-  updateOrderModel, updateOrderProductModel,
+  updateOrderModel, updateOrderProductModel, getUserOfOrderByIdModel, getVendorOfOrderByIdModel,
 } from "../models/order";
-import { getVendorShippingCostModel, getVendorShippingFreeFromModel } from "../models/user";
+import {
+  getVendorShippingCostModel,
+  getVendorShippingFreeFromModel,
+} from "../models/user";
 import {
   IsVendorFormatError,
   UserIdFormatError,
@@ -38,7 +41,7 @@ import { IOrderProduct } from "../models/IOrderProduct";
 import { booleanToNumber, numberToBoolean, validateDecimalNumber } from "../util/util";
 import { IProduct } from "../models/IProduct";
 import { checkIfProductExistsById, getProductByIdService } from "./product";
-import { checkIfUserExistsById, checkIfUserIsVendor, getUserByIdService } from "./user";
+import { checkIfUserExistsById, getUserByIdService } from "./user";
 import { IUser } from "../models/IUser";
 
 export function getOrderByIdService(orderId: string): IOrder {
@@ -51,7 +54,7 @@ export function getOrderByIdService(orderId: string): IOrder {
 
 export function getAllOrdersByUserIdService(reqParams: any) {
   let userId = reqParams.id;
-  if (!checkIfUserExistsById(userId)) {
+  if (!orderCheckIfUserExistsById(userId)) {
     throw new UserNotExistingError();
   }
   return multipleOrders(getAllOrdersByUserIdModel(userId!));
@@ -59,10 +62,10 @@ export function getAllOrdersByUserIdService(reqParams: any) {
 
 export function getAllVendorOrdersByIdService(reqParams: any) {
   let vendorId = reqParams.id;
-  if (!checkIfUserExistsById(vendorId)) {
+  if (!orderCheckIfUserExistsById(vendorId)) {
     throw new UserNotExistingError();
   }
-  if (!checkIfUserIsVendor(vendorId)) {
+  if (!orderCheckIfUserIsVendor(vendorId)) {
     throw new UserNotExistingError();
   }
   return multipleOrders(getAllOrdersWithVendorProductsModel(vendorId!), vendorId);
@@ -312,4 +315,14 @@ function validatePaidFormat(paid: any): number | undefined {
     return undefined;
   }
   return booleanToNumber(paid);
+}
+
+export function orderCheckIfUserExistsById(userId: string): boolean {
+  let user: IUser = getUserOfOrderByIdModel(userId);
+  return user !== undefined;
+}
+
+export function orderCheckIfUserIsVendor(userId: string): boolean {
+  let user: IUser = getVendorOfOrderByIdModel(userId);
+  return user !== undefined;
 }
