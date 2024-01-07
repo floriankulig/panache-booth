@@ -153,6 +153,7 @@ export class OrdersComponent implements OnDestroy {
 
   viewVendor(vendor: User) {
     this.router.navigate(["/profile"], { queryParams: { id: vendor.id } });
+    this.orderService.ordersOpen.set(false);
   }
 
   formattedUserAddress(user?: User) {
