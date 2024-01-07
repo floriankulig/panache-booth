@@ -11,13 +11,15 @@ Web Engineering 2 Online Shop.
 
 ## How to run
 
-1. Stellen Sie sicher, dass Sie [Node.js](https://nodejs.org/en) inkl. npm auf Ihrem Rechner installiert haben.
-2. Öffnen Sie ein Terminal oder eine Eingabeaufforderung.
-3. Führen Sie folgenden All-In-One-Command aus:
+1. Stelle sicher, dass du [Node.js](https://nodejs.org/en) inkl. npm auf deinem Rechner installiert haben.
+2. Öffne ein Terminal oder eine Eingabeaufforderung.
+3. Führe folgenden All-In-One-Command aus:
 
 ```bash
 npm run web-engineering
 ```
+
+- Einige Client-seitigen Daten, wie z.B. der Warenkorb, werden im LocalStorage zwischengespeichert. Zum parallelen Testen mit unterschiedlichen User-Accounts sollten also keine Tabs verwendet werden, sondern eigene Fenster (im Inkognito-Modus).
 
 ## Features
 
