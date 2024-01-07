@@ -50,7 +50,7 @@ export function updateProductByIdModel(productId: string, product: IProduct): vo
   let sqlString = "update product set";
   Object.entries(product).forEach(([key, value]) => {
     if (value !== undefined && key !== "productId" && key !== "purchases" && key !== "createdAt") {
-      if (value.includes("'")) {
+      if (typeof value === "string" && value.includes("'")) {
         value = value.replace(/'/g, "''");
       }
       sqlString += ` ${key} = \'${value}\',`;

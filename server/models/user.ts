@@ -51,7 +51,7 @@ export function updateUserByIdModel(userId: string, user: IUser): void {
   let sqlString: string = "update user set";
   Object.entries(user).forEach(([key, value]) => {
     if (value !== undefined && key !== "userId" && key !== "isVendor") {
-      if (value.includes("'")) {
+      if (typeof value === "string" && value.includes("'")) {
         value = value.replace(/'/g, "''");
       }
       sqlString += ` ${key} = \'${value}\',`;
