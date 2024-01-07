@@ -2,7 +2,9 @@
   <h1>Login</h1>
   <p>
     Don't have an account yet?
-    <span routerLink="/register"><a>Register here</a></span>
+    <span routerLink="/register" queryParamsHandling="merge"
+      ><a>Register here</a></span
+    >
   </p>
 </div>
 <form [formGroup]="formGroup" (submit)="login($event)" class="right">
