@@ -15,9 +15,7 @@ export class AuthService {
 
     effect(() => {
       const user = this.user();
-      console.log({ user });
       const authToken = JSON.parse(localStorage.getItem("auth") || "");
-      console.log({ authToken });
       if (!user && !authToken) {
         axios.defaults.headers.common["Authorization"] = undefined;
         return;
