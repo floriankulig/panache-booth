@@ -57,6 +57,7 @@
         required
         pbPositiveNumber
         [allowDecimal]="true"
+        (cleanedNumber)="formGroup.get('price')?.setValue($event)"
         formControlName="price"
         placeholder="Product price in EUR"
       />

@@ -62,6 +62,6 @@ export class PositiveNumberDirective {
     } else {
       this.el.nativeElement.value = "";
     }
-    this.cleanedNumber.emit(Number(this.el.nativeElement.value));
+    this.cleanedNumber.emit(this.el.nativeElement.value);
   }
 }

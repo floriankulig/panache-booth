@@ -268,6 +268,7 @@
         [allowDecimal]="true"
         pbPositiveNumber
         formControlName="shippingCost"
+        (cleanedNumber)="formGroup.get('shippingCost')?.setValue($event)"
         placeholder="How much do you charge for shipping?"
       />
     </div>
@@ -279,6 +280,7 @@
         [allowDecimal]="true"
         pbPositiveNumber
         formControlName="shippingFreeFrom"
+        (cleanedNumber)="formGroup.get('shippingFreeFrom')?.setValue($event)"
         placeholder="Minimum amount for free shipping"
       />
     </div>
