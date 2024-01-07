@@ -1,5 +1,10 @@
 import Database from "better-sqlite3";
+import * as fs from "fs";
 
+const dbDirPath = "./database";
+if (!fs.existsSync(dbDirPath)) {
+  fs.mkdirSync(dbDirPath);
+}
 export const database = new Database("./database/webEngineering.db");
 
 const createUserTable =
