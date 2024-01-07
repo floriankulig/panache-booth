@@ -84,9 +84,10 @@ export class ProfileComponent implements OnInit {
   ) {
     effect(() => {
       if (
-        !!this.profile() &&
-        (!this.profile()?.isVendor &&
-        !this.isOwnProfile()) || this.profile()?.archived
+        (!!this.profile() &&
+          !this.profile()?.isVendor &&
+          !this.isOwnProfile()) ||
+        this.profile()?.archived
       ) {
         this.router.navigate(["/"]);
       }
@@ -140,5 +141,10 @@ export class ProfileComponent implements OnInit {
   onProductCreated() {
     this.addProductModalOpen.set(false);
     this.updateList();
+  }
+
+  onUserDelete() {
+    this.deleteModalOpen.set(false);
+    this.router.navigate(["/"]);
   }
 }

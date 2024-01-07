@@ -84,7 +84,7 @@
 <pb-modal (modalClose)="deleteModalOpen.set(false)">
   <pb-delete-confirm
     [user]="profile()"
-    (delete)="deleteModalOpen.set(false)"
+    (delete)="onUserDelete()"
   ></pb-delete-confirm>
 </pb-modal>
 } @if (addProductModalOpen()) {
