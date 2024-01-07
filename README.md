@@ -11,7 +11,7 @@ Web Engineering 2 Online Shop.
 
 ## How to run
 
-1. Stelle sicher, dass du [Node.js](https://nodejs.org/en) inkl. npm auf deinem Rechner installiert haben.
+1. Stelle sicher, dass du [Node.js](https://nodejs.org/en) inkl. npm auf deinem Rechner installiert hast.
 2. Öffne ein Terminal oder eine Eingabeaufforderung.
 3. Führe folgenden All-In-One-Command aus:
 
