@@ -47,5 +47,6 @@ npm run web-engineering
   - Simulieren eines echten Warenhauses
   - Verkäufer kann FOMO erzeugen, um Käufe zu provozieren
 - Nutzer sehen, wie oft ein Produkt gekauft wurde.
+- Verkäufer können Produkte rabattieren.
 - Käufer werden mit Notification-Indikator (im Header) bei App-Load darüber informiert, wenn sich der Status einer Bestellung geändert hat.
 - Warenkorb bleibt auch nach Schließen des Browsers bestehen
