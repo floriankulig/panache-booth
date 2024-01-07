@@ -151,8 +151,16 @@ export class OrdersComponent implements OnDestroy {
   }
 
   viewVendor(vendor: User) {
-    this.router.navigate(["/profile"], { queryParams: { id: vendor.id } });
-    this.orderService.ordersOpen.set(false);
+    if (!vendor.archived) {
+      this.router.navigate(["/profile"], { queryParams: { id: vendor.id } });
+      this.orderService.ordersOpen.set(false);
+    } else {
+      this.notificationService.addNotification({
+        type: "warning",
+        message: vendor.userName + " does not exist anymore.",
+        duration: 5000,
+      });
+    }
   }
 
   formattedUserAddress(user?: User) {

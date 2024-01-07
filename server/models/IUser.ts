@@ -14,6 +14,7 @@ export interface IUser {
   shippingFreeFrom?: number;
   createdAt: string | undefined;
   updatedAt: string;
+  archived: boolean | number | undefined;
 }
 
 

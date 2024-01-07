@@ -30,6 +30,7 @@ router.get("/:id", customAuthGetOrder, async (req, res) => {
     }
   } catch (error) {
     if (error instanceof UserError) {
+      console.log(error)
       res.status(400).send(error.message);
     } else {
       res.status(500).send("Internal server error!");

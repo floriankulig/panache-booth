@@ -2,6 +2,7 @@ import { database } from "./databases";
 import { IOrder } from "./IOrder";
 import { IOrderProduct } from "./IOrderProduct";
 import { IProduct } from "./IProduct";
+import { IUser } from "./IUser";
 
 export function getOrderByIdModel(orderId: string): IOrder {
   return <IOrder>database.prepare("select * from orders where id = ?").get(orderId);
@@ -115,4 +116,20 @@ export function getProductsOfOrderVendorModel(orderId: string, vendorId: string)
       "where orders.id = ? and product.vendorId = ?;",
     )
     .all(orderId, vendorId);
+}
+
+export function getUserOfOrderByIdModel(userId: string): IUser {
+  return <IUser>database
+    .prepare(
+      "select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
+      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where id = ?",
+    ).get(userId);
+}
+
+export function getVendorOfOrderByIdModel(userId: string): IUser {
+  return <IUser>database
+    .prepare(
+      "select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
+      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where id = ? and isVendor = 1;",
+    ).get(userId);
 }

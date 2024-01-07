@@ -27,12 +27,12 @@ import { booleanToNumber, numberToBoolean, validateDecimalNumber } from "../util
 import { getUserByIdService, getVendorByIdService } from "./user";
 import { IUser } from "../models/IUser";
 
-export function getProductByIdService(productId: string, fromOrders: boolean = false): IProduct {
+export function getProductByIdService(productId: string, fromOrders: boolean = false, order: boolean = false): IProduct {
   if (!checkIfProductExistsById(productId, fromOrders)) {
     throw new ProductNotExistingError();
   }
   let product: IProduct = getProductByIdModel(productId, fromOrders);
-  return individualProduct(product);
+  return individualProduct(product, order);
 }
 
 export function getAllProductsService(): IProduct[] {
@@ -84,17 +84,17 @@ export function checkIsVendorsProduct(userId: string, productId: string): boolea
   return product !== undefined;
 }
 
-function individualProduct(product: IProduct): IProduct {
+function individualProduct(product: IProduct, order: boolean = false): IProduct {
   if (product === undefined) {
     throw new ProductNotExistingError();
   }
   product.isVisible = numberToBoolean(product.isVisible);
   product.archived = numberToBoolean(product.archived);
-  return combineVendorWithProduct(product);
+  return combineVendorWithProduct(product, order);
 }
 
-function combineVendorWithProduct(product: IProduct): IProduct {
-  let vendorInfo: IUser = getUserByIdService(product.vendorId!);
+function combineVendorWithProduct(product: IProduct, order: boolean = false): IProduct {
+  let vendorInfo: IUser = getUserByIdService(product.vendorId!, order);
   return {
     ...product,
     vendor: vendorInfo,

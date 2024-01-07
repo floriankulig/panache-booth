@@ -5,7 +5,7 @@ export function getUserByIdModel(userId: string): IUser {
   return <IUser>database
     .prepare(
       "select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
-      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where id = ?",
+      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt, archived from user where id = ? ",
     ).get(userId);
 }
 
@@ -13,14 +13,14 @@ export function getVendorByIdModel(userId: string): IUser {
   return <IUser>database
     .prepare(
       "select id, userName, email, street, houseNumber, postcode, isVendor, city, " +
-      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt from user where id = ? and isVendor = 1;",
+      "iban, bic, shippingCost, shippingFreeFrom, createdAt, updatedAt, archived from user where id = ? and isVendor = 1;",
     ).get(userId);
 }
 
 export function getUserByEmailModel(email: string): IUser {
   return <IUser>database
     .prepare(
-      "select * from user where email = ?",
+      "select * from user where email = ? and archived = 0",
     ).get(email);
 }
 
@@ -28,7 +28,7 @@ export function getAllUsersModel(): IUser[] {
   return <IUser[]>database
     .prepare(
       "select id, userName, email, street, houseNumber, postcode, isVendor, city, iban, bic, shippingCost, " +
-      "shippingFreeFrom, createdAt, updatedAt from user",
+      "shippingFreeFrom, createdAt, updatedAt, archived from user",
     ).all();
 }
 
@@ -36,14 +36,14 @@ export function createUserModel(user: IUser): void {
   database.prepare(
     "insert into user " +
     "(id, userName, email, password, isVendor, postcode, city, street, houseNumber, " +
-    "iban, bic, shippingCost, shippingFreeFrom, " +
+    "iban, bic, shippingCost, shippingFreeFrom, archived, " +
     "createdAt, updatedAt) " +
     "values " +
-    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
   ).run(
     user.id, user.userName, user.email, user.password, user.isVendor,
     user.postcode, user.city, user.street, user.houseNumber, user.iban,
-    user.bic, user.shippingCost, user.shippingFreeFrom, user.createdAt,
+    user.bic, user.shippingCost, user.shippingFreeFrom, user.archived, user.createdAt,
     user.updatedAt);
 }
 
@@ -58,12 +58,12 @@ export function updateUserByIdModel(userId: string, user: IUser): void {
     }
   });
   sqlString = sqlString.slice(0, -1);
-  sqlString += ` where id = '${userId}';`;
+  sqlString += ` where id = '${userId}' and archived = 0;`;
   database.prepare(sqlString).run();
 }
 
 export function deleteUserByIdModel(id: string): void {
-  database.prepare("delete from user where id = ?").run(id);
+  database.prepare("update user set archived = 1 where id = ?").run(id);
 }
 
 export function loggedInUserModel(email: string, password: string) {
@@ -72,7 +72,7 @@ export function loggedInUserModel(email: string, password: string) {
     "isVendor, postcode, city, street, houseNumber, " +
     "iban, bic, shippingCost, shippingFreeFrom, " +
     "createdAt, updatedAt from user ";
-  sql += `where (email = '${email}') and (password = '${password}');`;
+  sql += `where (email = '${email}') and (password = '${password}') and archived = 0;`;
   return database.prepare(sql).get();
 }
 

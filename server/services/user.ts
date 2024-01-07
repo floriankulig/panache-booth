@@ -26,9 +26,13 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { booleanToNumber, numberToBoolean, validateDecimalNumber } from "../util/util";
 import { deleteProductByIdModel, getAllVendorProductsModel } from "../models/product";
+import { ProductArchivedFormatError } from "../util/customProductErrors";
+import { orderCheckIfUserExistsById } from "./order";
 
-export function getUserByIdService(userId: string): IUser {
-  if (!checkIfUserExistsById(userId)) {
+export function getUserByIdService(userId: string, order: boolean = false): IUser {
+  if (!checkIfUserExistsById(userId) && !order) {
+    throw new UserNotExistingError();
+  } else if (!orderCheckIfUserExistsById(userId) && order) {
     throw new UserNotExistingError();
   }
   let user: IUser = getUserByIdModel(userId);
@@ -133,6 +137,7 @@ function buildAndValidateUserModel(userModelData: any, createFlag: boolean = fal
     houseNumber: validateHouseNumber(userModelData.houseNumber, createFlag),
     postcode: validatePostcode(userModelData.postcode, createFlag),
     city: validateCity(userModelData.city, createFlag),
+    archived: createFlag ? 0 : validateArchived(userModelData.archived, createFlag),
     password: validatePassword(userModelData.password, createFlag),
     isVendor: createFlag ? validateIsVendor(userModelData.isVendor, createFlag) : existingUser?.isVendor,
     iban: createFlag && userModelData.isVendor ? validateIban(userModelData.iban, createFlag) :
@@ -325,4 +330,14 @@ function passwordRequirements(password: string): boolean {
     uppercaseRegex.test(password) &&
     numberRegex.test(password)
   );
+}
+
+function validateArchived(archived: any, createFlag: boolean): number | undefined {
+  if (typeof archived !== "boolean") {
+    if (createFlag || archived !== undefined) {
+      throw new ProductArchivedFormatError();
+    }
+    return undefined;
+  }
+  return booleanToNumber(archived);
 }
