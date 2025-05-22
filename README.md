@@ -4,6 +4,8 @@ Web Engineering 2 Online Shop.
 
 [GitHub](https://github.com/floriankulig/panache-booth)
 
+<img src="preview.jpg" style="width: 100%" />
+
 ## Authors
 
 - [Lars Huzel](https://github.com/lars-1503)
