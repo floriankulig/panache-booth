@@ -1,5 +1,7 @@
 # Panache Booth
 
+A fictional peer-to-peer retail shop with a focus on user experience and conversion optimization.
+
 Web Engineering 2 Online Shop.
 
 [GitHub](https://github.com/floriankulig/panache-booth)
